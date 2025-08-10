@@ -1,0 +1,27 @@
+site_name: AI Research Portfolio
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - content.code.copy
+    - navigation.tracking
+    - navigation.sections
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - Phases:
+      - Phase 1 – TMDB: phases/phase-1-tmdb.md
+      - Phase 2 – NetBox MCP: phases/phase-2-netbox-mcp.md
+  - Methods:
+      - Retrieval & Planning: methods/retrieval-and-planning.md
+      - Evaluation: methods/evaluation.md
+      - Tooling: methods/tooling.md
+  - ADRs:
+      - ADR-0001: adr/0001-adopt-mkdocs-material.md
+      - ADR-0002: adr/0002-chatbox-architecture.md
