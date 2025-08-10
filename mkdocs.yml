@@ -1,27 +1,77 @@
-site_name: AI Research Portfolio
+site_name: RTF AI Research Portfolio
 theme:
   name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - navigation.instant
-    - content.code.copy
     - navigation.tracking
     - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+    - toc.integrate
+
 markdown_extensions:
   - admonition
-  - codehilite
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
+
 nav:
   - Home: index.md
-  - Phases:
-      - Phase 1 – TMDB: phases/phase-1-tmdb.md
-      - Phase 2 – NetBox MCP: phases/phase-2-netbox-mcp.md
-  - Methods:
+  - Phase 1 - TMDB Chatbox:
+      - Overview: phases/phase-1-tmdb/overview.md
+      - Implementation Details: phases/phase-1-tmdb/implementation.md
+      - Demo Scenarios: phases/phase-1-tmdb/demos.md
+      - Lessons Learned: phases/phase-1-tmdb/lessons-learned.md
+  - Phase 2 - NetBox MCP:
+      - Overview: phases/phase-2-netbox/overview.md
+      - Performance Analysis: phases/phase-2-netbox/performance-analysis.md
+      - MCP Integration: phases/phase-2-netbox/mcp-integration.md
+      - Demo Scenarios: phases/phase-2-netbox/demos.md
+  - Future Development:
+      - Orchestration Plan: future-development/orchestration-plan.md
+      - Phase 1A Foundation: future-development/phase-1a-foundation.md
+      - Phase 2 Neo4j Integration: future-development/phase-2-neo4j.md
+      - Phase 3 RAG Intelligence: future-development/phase-3-rag.md
+      - Phase 4 Analytics Platform: future-development/phase-4-analytics.md
+  - Research Methods:
       - Retrieval & Planning: methods/retrieval-and-planning.md
       - Evaluation: methods/evaluation.md
       - Tooling: methods/tooling.md
-  - ADRs:
-      - ADR-0001: adr/0001-adopt-mkdocs-material.md
-      - ADR-0002: adr/0002-chatbox-architecture.md
+  - Architecture Decisions:
+      - ADR-0001 MkDocs Material: adr/0001-adopt-mkdocs-material.md
+      - ADR-0002 Chatbox Architecture: adr/0002-chatbox-architecture.md
+
+plugins:
+  - search
+  - mermaid2

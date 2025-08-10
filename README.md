@@ -1,6 +1,6 @@
 # AI Research Portfolio (2025)
 
-This repository is the hub for my ongoing research exploring LLM-driven developer tooling,
+This repository is the hub for RTF's ongoing research exploring LLM-driven developer tooling,
 symbolic/semantic retrieval, and multi-step planning. It curates findings, decisions,
 and demos across two phases:
 

@@ -6,7 +6,6 @@
 - Prototype knowledge-graph strategies to avoid N+1 calls
 
 ## Status
-- Repo cloned from: https://github.com/Deployment-Team/netbox-mcp
 - Claude Code API integrated and MCP server running locally
 - Next: research-dev UX (prompts, guardrails), performance, KG ingestion plan
 
