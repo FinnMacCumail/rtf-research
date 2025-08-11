@@ -136,28 +136,6 @@ flowchart TD
     E --> R
 ```
 
-## Investment & Resource Requirements
-
-### Phase 1A: Foundation ($)
-- **Development**: 2-3 senior developers
-- **Infrastructure**: Minimal (existing systems + OpenAI API)
-- **Risk**: Low (incremental improvement to existing system)
-
-### Phase 2: Graph Integration ($$)
-- **Development**: 2-3 developers + Neo4j specialist
-- **Infrastructure**: Neo4j Enterprise + additional server capacity
-- **Risk**: Medium (new technology integration complexity)
-
-### Phase 3: RAG Intelligence ($$$)  
-- **Development**: 3-4 developers + ML engineer
-- **Infrastructure**: Vector database + document processing pipeline + storage
-- **Risk**: Medium-High (document quality dependency + ML complexity)
-
-### Phase 4: Analytics Platform ($$)
-- **Development**: 2-3 developers + data scientist
-- **Infrastructure**: Analytics processing + dashboard hosting
-- **Risk**: Low-Medium (building on established foundation)
-
 ## Success Metrics & KPIs
 
 ### Technical Performance
