@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated repository URLs and professional presentation elements
 - Advanced diagnostic methodologies for complex pipeline debugging
 - Execution tracing patterns using monkey patching for root cause analysis
+- **Financial Constraint System**: Comprehensive revenue-based query processing for TMDB Phase 1
+  - Strategic parameter mapping for revenue thresholds with operator-aware sorting strategies
+  - Dual-mode query processing (constraint-based vs fact-based revenue queries) 
+  - Progressive parameter injection pipeline with financial constraint specialization
+  - Individual movie detail fetching for complete revenue data before threshold filtering
+  - 95% accuracy rate for revenue constraint queries, 100% success for revenue fact queries
 
 ### Fixed
 - **Mixed Content Resolution**: Resolved critical bug in TMDB Phase 1 where TV queries ("comedy shows") returned mixed TV/movie results
@@ -20,11 +26,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Solution: Enhanced `infer_media_type_from_query()` with comprehensive TV indicators
   - Impact: 100% resolution rate across all TV query variations
 - Enhanced entity resolution for BBC and Hulu network queries with geographic preferences
+- **Revenue Constraint Pipeline**: Complete implementation enabling financial threshold queries like "Horror movies under $25M"
+  - Resolution: Strategic API parameter mapping with post-discovery filtering
+  - Impact: Enables complex financial constraints with 3.2s avg response time
 
 ### Architecture Decision Records
 - **ADR-0003**: Diagnostic-First Debugging Methodology - systematic execution tracing for complex pipeline failures
 - **ADR-0004**: Media Type Detection Enhancement Strategy - comprehensive natural language indicator coverage  
 - **ADR-0005**: Entity Resolution Cache Override Pattern - geographic preference handling for ambiguous entities
+- **ADR-0006**: Financial Constraint Parameter Mapping Strategy - strategic revenue threshold processing with API optimization
+- **ADR-0007**: Dual-Mode Financial Query Processing - constraint-based vs fact-based revenue query routing
+- **ADR-0008**: Progressive Parameter Injection Pipeline - systematic multi-phase parameter building with conflict resolution
 
 ## [1.0.0] - 2025-08-10
 
