@@ -100,6 +100,37 @@ export TMDB_API_KEY="your_tmdb_api_key"
 export OPENAI_API_KEY="your_openai_api_key"
 ```
 
+### ChromaDB Vector Database Setup
+
+The system requires ChromaDB to be populated with TMDB API endpoint embeddings before first use.
+
+#### 1. Initial Database Population
+```bash
+# Navigate to project directory
+cd /path/to/tmdbGPT
+
+# Populate TMDB API endpoint embeddings (54 endpoints)
+python core/embeddings/semantic_embed.py
+
+# Populate parameter search embeddings  
+python core/embeddings/embed_tmdb_parameters.py
+```
+
+#### 2. Verify ChromaDB Initialization
+```bash
+# Check that chroma_db directory was created
+ls chroma_db/
+# Expected: chroma.sqlite3 and collection subdirectories
+
+# Test semantic search functionality
+python -c "from core.embeddings.hybrid_retrieval import retrieve_semantic_matches; print(retrieve_semantic_matches('find movies by actor'))"
+```
+
+#### 3. Troubleshooting
+- **First Run**: Sentence transformer model downloads (~90MB) automatically
+- **Permissions**: Ensure write access to project directory for chroma_db creation  
+- **Dependencies**: Run `pip install chromadb sentence-transformers` if missing
+
 ### Running Demos
 ```bash
 # Execute demo scenarios

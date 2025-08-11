@@ -32,7 +32,11 @@ constraints = {
 ### API Integration Patterns
 
 **RAG-Powered Endpoint Selection**
-- ChromaDB vector similarity routing between `/discover/movie`, `/person`, `/search` based on query-to-endpoint matching
+- ChromaDB vector database with 54 TMDB API endpoint descriptions embedded using all-MiniLM-L6-v2
+- **Setup Process**: Run `semantic_embed.py` to populate endpoints collection from `data/tmdb.json`
+- **Parameter Embeddings**: Run `embed_tmdb_parameters.py` to create parameter search index from `data/tmdb_parameters.json`
+- **Query Process**: Natural language → sentence embeddings → vector similarity → ranked endpoint matches
+- **Integration**: Combined with parameter-aware reranking and media type boosting for optimal routing
 - Example: "movies starring actors" query matches `/discover/movie` endpoint description with highest similarity
 - Parameter mapping from TMDB Search API resolved entities to selected endpoint parameters
 - Role-aware validation ensuring cast/crew relationships are correctly identified
