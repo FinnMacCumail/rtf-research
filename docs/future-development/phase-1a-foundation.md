@@ -99,7 +99,6 @@ def get_vlan_details_optimized(vlan_list):
 ```
 
 **Performance Impact**:
-- API call reduction: 127 calls → 3 calls (97.6% reduction)
 - Response time: 57 seconds → 1.8 seconds (96.8% improvement)
 - Memory usage: Stable 50MB vs. previous 200MB+ spikes
 
