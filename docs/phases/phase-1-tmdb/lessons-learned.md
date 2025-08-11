@@ -137,3 +137,8 @@ tv_indicators = ["tv show", "series", "shows", "television", "episodes"]
 - Improved semantic understanding of natural language TV queries
 
 **Learning**: Complex query routing issues often have simple root causes that require systematic diagnostic approaches to identify. Comprehensive execution tracing is essential for debugging multi-stage processing pipelines.
+
+**Architectural Decisions**: The resolution approach is documented in:
+- [ADR-0003: Diagnostic-First Debugging Methodology](../../adr/0003-diagnostic-first-debugging.md)
+- [ADR-0004: Media Type Detection Enhancement Strategy](../../adr/0004-media-type-detection-enhancement.md)
+- [ADR-0005: Entity Resolution Cache Override Pattern](../../adr/0005-entity-resolution-cache-override.md)

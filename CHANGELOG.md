@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Impact: 100% resolution rate across all TV query variations
 - Enhanced entity resolution for BBC and Hulu network queries with geographic preferences
 
+### Architecture Decision Records
+- **ADR-0003**: Diagnostic-First Debugging Methodology - systematic execution tracing for complex pipeline failures
+- **ADR-0004**: Media Type Detection Enhancement Strategy - comprehensive natural language indicator coverage  
+- **ADR-0005**: Entity Resolution Cache Override Pattern - geographic preference handling for ambiguous entities
+
 ## [1.0.0] - 2025-08-10
 
 ### Added

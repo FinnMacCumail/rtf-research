@@ -45,3 +45,7 @@ def create_fallback_tracer():
 - **Analysis**: Trace execution differences to isolate root cause
 
 **Learning**: Systematic comparison of working vs. failing cases often reveals single-point failures that comprehensive testing might miss.
+
+**Related Architecture Decisions**: 
+- [ADR-0003: Diagnostic-First Debugging Methodology](../adr/0003-diagnostic-first-debugging.md) - Documents the systematic approach to execution tracing
+- [ADR-0004: Media Type Detection Enhancement Strategy](../adr/0004-media-type-detection-enhancement.md) - Example application of comparative analysis methodology
