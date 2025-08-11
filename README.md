@@ -117,11 +117,41 @@ User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolu
 - **Phase 2**: NetBox MCP Server – https://github.com/FinnMacCumail/mcp-netbox
 
 ## Future Development
-A comprehensive four-phase OpenAI orchestration plan exists to transform Phase 2 into an intelligent infrastructure advisor:
-1. **Foundation**: GPT-4o-mini intent parsing with LangGraph tool orchestration
-2. **Graph Integration**: Neo4j database for instant complex queries (1-3s vs 30s-3min)
-3. **RAG Intelligence**: Institutional memory with operational documentation
-4. **Analytics Platform**: Predictive capabilities using graph algorithms
 
-**Performance Targets**: 99% cost reduction, 15-50x query performance improvements
+### Strategic Vision: Intelligent Infrastructure Advisor
+
+A comprehensive four-phase OpenAI orchestration plan exists to transform the NetBox MCP system from a static data repository into an **intelligent infrastructure advisor** through progressive enhancement with modern AI orchestration technologies.
+
+### Architectural Transformation Overview
+
+The transformation progresses through four strategic phases:
+
+1. **Phase 1A: Foundation & Quick Wins**
+   - **Objective**: Replace Claude CLI process management with efficient OpenAI GPT-4o-mini intent parsing and LangGraph tool orchestration
+   - **Capabilities**: Intelligent query classification, multi-step workflow orchestration, performance optimization
+   - **Impact**: Immediate 90% cost reduction + 15x performance improvement
+
+2. **Phase 2: Neo4j Graph Intelligence**
+   - **Objective**: Add pre-computed relationship intelligence using Neo4j graph database for instant complex queries
+   - **Capabilities**: Graph-based relationship queries, real-time synchronization, hybrid routing intelligence
+   - **Impact**: Enable previously impossible relationship queries (20-50x faster complex analysis)
+
+3. **Phase 3: RAG-Powered Semantic Intelligence**
+   - **Objective**: Add contextual understanding through operational documentation and institutional memory integration
+   - **Capabilities**: Semantic search across documentation, contextual recommendations, operational pattern recognition
+   - **Impact**: Transform system into organizational knowledge advisor with historical context
+
+4. **Phase 4: Advanced Analytics Platform**
+   - **Objective**: Deploy graph algorithms and predictive analytics for intelligent infrastructure insights
+   - **Capabilities**: Network bottleneck identification, capacity planning, predictive maintenance, operational intelligence
+   - **Impact**: Predictive capabilities delivering 10-100x operational efficiency gains
+
+### Performance Transformation Targets
+
+- **Cost Optimization**: 99% reduction (from $0.13 to $0.001 per query)
+- **Simple Queries**: 15x faster (3-10 seconds → 200ms-1 second)
+- **Complex Queries**: 20-50x faster (30 seconds-3 minutes → 1-3 seconds)
+- **New Capabilities**: Analytical insights previously impossible with traditional approaches
+
+👉 **Comprehensive Technical Plan**: [Four-Phase Orchestration Details](docs/future-development/orchestration-plan.md)
 
