@@ -91,7 +91,7 @@
 **API Response Cache**: ~200MB for typical usage session
 **Constraint Processing**: Minimal memory footprint (<10MB peak)
 
-**Learning**: Semantic search infrastructure has reasonable memory requirements for entertainment domain.
+**Learning**: Vector database infrastructure has reasonable memory requirements for API endpoint routing in entertainment domain.
 
 ## Future Development Insights
 

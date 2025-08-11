@@ -22,6 +22,6 @@ flowchart TD
 - https://github.com/FinnMacCumail/tmdbGPT
 
 ## Highlights
-- Intent classification tied to TMDB endpoints
-- Entity resolution (people, genres, networks/companies) with produced/consumed parameter mapping
-- Validation & reranking; templates for answers
+- ChromaDB semantic routing: 54 TMDB API endpoint descriptions for intelligent query-to-endpoint matching
+- Entity resolution via TMDB Search API calls (people, genres, networks/companies) with parameter mapping
+- Constraint-based validation & reranking; flexible response templates

@@ -6,10 +6,10 @@ The TMDB chatbox implements a sophisticated natural language processing pipeline
 
 ### Core Components
 
-**ChromaDB Integration**
-- Semantic search using sentence transformers for similarity matching
-- Vector embeddings for movie/TV show titles, actor names, and genre classifications
-- Efficient retrieval of relevant entities based on natural language queries
+**ChromaDB API Endpoint Router**
+- Semantic search using sentence transformers (all-MiniLM-L6-v2) for API endpoint selection
+- Vector embeddings for 54 TMDB API endpoint descriptions with metadata (media_type, supported_intents, parameters)
+- Efficient routing of natural language queries to optimal TMDB API endpoints
 
 **Multi-Entity Constraint Engine**
 ```python
@@ -31,22 +31,23 @@ constraints = {
 
 ### API Integration Patterns
 
-**Dynamic Endpoint Selection**
-- Intelligent routing between `/discover/movie`, `/person`, `/search` based on query intent
-- Parameter mapping from natural language entities to TMDB API parameters
+**RAG-Powered Endpoint Selection**
+- ChromaDB vector similarity routing between `/discover/movie`, `/person`, `/search` based on query-to-endpoint matching
+- Example: "movies starring actors" query matches `/discover/movie` endpoint description with highest similarity
+- Parameter mapping from TMDB Search API resolved entities to selected endpoint parameters
 - Role-aware validation ensuring cast/crew relationships are correctly identified
 
-**Result Validation & Reranking**
-- Post-processing validation to ensure results match original query intent
-- Semantic reranking using embedding similarity scores
+**Entity Resolution via TMDB Search API**
+- Post-routing entity resolution using TMDB Search API calls (e.g., "Tom Hanks" → person_id)
+- Constraint building from resolved entity IDs and query parameters
 - Template-based formatting (list, timeline, comparison, fact-based responses)
 
 ### Performance Optimizations
 
 **Caching Strategy**
 - Intelligent caching of TMDB API responses with TTL management
-- Semantic cache for similar queries using vector similarity
-- Entity resolution cache to avoid repeated person/company lookups
+- Endpoint routing cache for similar query patterns using vector similarity
+- Entity resolution cache to avoid repeated TMDB Search API person/company lookups
 
 **Batch Processing**
 - Parallel API calls for multi-entity queries

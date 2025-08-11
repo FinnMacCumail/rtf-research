@@ -46,7 +46,7 @@ This repository documents AI research focused on LLM-driven developer tooling ac
 **Phase 1 - TMDB Chatbox:**
 - Natural language movie/TV show query system using TMDB API
 - Multi-entity constraint solving with role-aware validation
-- Semantic search using ChromaDB and sentence transformers
+- ChromaDB RAG API endpoint routing using sentence transformers
 - Progressive constraint relaxation with comprehensive logging
 - Repository: https://github.com/FinnMacCumail/tmdbGPT
 
@@ -63,7 +63,7 @@ A comprehensive four-phase OpenAI orchestration plan exists to replace Claude CL
 
 1. **Phase 1A**: Foundation with GPT-4o-mini intent parsing, LangGraph tool orchestration
 2. **Phase 2**: Neo4j graph database integration for instant complex queries  
-3. **Phase 3**: RAG-powered semantic intelligence with institutional memory
+3. **Phase 3**: RAG-powered semantic intelligence with institutional memory (expanding beyond API endpoint routing)
 4. **Phase 4**: Advanced analytics platform using graph algorithms
 
 **Key Performance Targets:**

@@ -10,10 +10,10 @@ This repository documents RTF's comprehensive 6-month research program addressin
 ### Research Evolution Overview
 The research progressed through two comprehensive phases, each building sophisticated anti-hallucination mechanisms:
 
-- **Phase 1 – TMDB RAG + Constraint-Based Validation System**
+- **Phase 1 – TMDB RAG API Routing + Constraint-Based Validation System**
   - **Repository**: https://github.com/FinnMacCumail/tmdbGPT
-  - **Anti-Hallucination Focus**: RAG semantic search, symbolic constraint trees, progressive relaxation, weighted endpoint selection
-  - **Key Innovation**: Multi-stage RAG + API validation pipeline preventing fabricated movie/TV data
+  - **Anti-Hallucination Focus**: RAG API endpoint routing, symbolic constraint trees, progressive relaxation, TMDB search API validation
+  - **Key Innovation**: Multi-stage RAG endpoint routing + API validation pipeline preventing fabricated movie/TV data
 
 - **Phase 2 – NetBox MCP Protocol Integration**  
   - **Repository**: https://github.com/FinnMacCumail/mcp-netbox
@@ -27,11 +27,11 @@ The research progressed through two comprehensive phases, each building sophisti
 ### Problem Definition
 Traditional LLM applications suffer from hallucination—generating plausible but factually incorrect responses, particularly problematic in technical domains where accuracy is critical. This research systematically addresses hallucination through structured validation approaches.
 
-### Phase 1: TMDB RAG + Constraint-Based Validation Pipeline
+### Phase 1: TMDB RAG API Routing + Constraint-Based Validation Pipeline
 
 **Query Processing Architecture:**
 ```
-User Query → Intent Recognition → RAG Semantic Search → Entity Extraction → Constraint Tree → Weighted Endpoint Selection → API Validation → Response
+User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolution (TMDB Search API) → Constraint Building → API Execution → Response Validation
 ```
 
 **Intent Recognition & Classification:**
@@ -39,16 +39,16 @@ User Query → Intent Recognition → RAG Semantic Search → Entity Extraction 
 - **Query Type Classification**: Movie search, person lookup, relationship queries, temporal constraints
 - **Ambiguity Detection**: Identifies unclear queries requiring user clarification to prevent assumption-based responses
 
-**RAG Semantic Search Process:**
-- **ChromaDB Vector Database**: Semantic search across movie/TV titles, actor names, and genre metadata
-- **Sentence Transformers**: Text-to-vector conversion enabling similarity matching for entity resolution
-- **Embedding-Based Disambiguation**: Vector similarity scores resolve ambiguous entity references (e.g., multiple actors with same name)
-- **Semantic Grounding**: Retrieved embeddings provide factual context before constraint building, preventing fabricated entity relationships
+**RAG API Endpoint Routing Process:**
+- **ChromaDB Vector Database**: Semantic search across 54 TMDB API endpoint descriptions for optimal routing
+- **Sentence Transformers**: Query-to-vector conversion using all-MiniLM-L6-v2 model enabling similarity matching between user queries and API capabilities
+- **Endpoint-Based Routing**: Vector similarity scores determine which TMDB APIs to call (e.g., /discover vs /search vs /person)
+- **Semantic API Matching**: Retrieved endpoint embeddings guide query routing to prevent incorrect API usage
 
-**Entity Recognition & Validation:**
-- **RAG-Enhanced Named Entity Extraction**: Actors, directors, movies, genres validated through semantic similarity scoring
-- **Multi-Stage Disambiguation**: ChromaDB similarity search + contextual validation + TMDB database cross-reference
-- **Vector-Verified Entity Resolution**: All entities must pass both semantic similarity threshold (>0.8) and database validation
+**Entity Resolution & Validation:**
+- **TMDB Search API Integration**: Actors, directors, movies, genres resolved through TMDB Search API calls
+- **Multi-Stage Entity Resolution**: Search API calls resolve "Tom Hanks" → person_id, then cross-reference validation
+- **API-Verified Entity Resolution**: All entities validated through TMDB database lookups with constraint building
 
 **Weighted Endpoint Selection Algorithm:**
 - **Decision Matrix**: Routes between `/discover/movie`, `/person`, `/search` based on:
@@ -97,19 +97,19 @@ User Query → Intent Recognition → RAG Semantic Search → Entity Extraction 
 - **Enterprise Safety**: Zero fabricated infrastructure data across production environments
 
 **Key Research Innovations:**
-1. **RAG + Constraint Hybrid Architecture**: Semantic retrieval combined with symbolic validation preventing fabricated responses
-2. **Multi-Stage Entity Validation**: ChromaDB semantic search + database cross-reference + constraint verification
+1. **RAG-Powered API Orchestration**: Novel use of semantic search for API endpoint selection rather than content retrieval
+2. **Semantic Query Routing**: Vector similarity matching user queries to optimal TMDB API endpoints from 54 endpoint descriptions
 3. **Progressive Relaxation with Provenance**: Systematic fallbacks maintaining accuracy audit trails
 4. **MCP Protocol Safety Integration**: Structured tool protocols eliminating response fabrication
-5. **Multi-Protocol RAG Orchestration**: Seamless integration of semantic retrieval with enterprise tool safety
+5. **Multi-Protocol API Intelligence**: Seamless integration of semantic endpoint routing with enterprise tool safety
 
 ## Technical Implementation Highlights
 
-- **RAG + Constraint Hybrid Architecture**: ChromaDB vector database with sentence transformers providing semantic grounding before API validation
-- **Multi-Stage Entity Validation**: Semantic similarity scoring (>0.8 threshold) + database cross-reference + constraint verification
-- **Vector-Enhanced Endpoint Selection**: Semantic similarity informing intelligent API routing decisions
+- **RAG API Orchestration**: ChromaDB vector database storing 54 TMDB endpoint descriptions with semantic routing using all-MiniLM-L6-v2
+- **Semantic Endpoint Intelligence**: Vector similarity matching queries to API capabilities (e.g., "movies starring actors" → /discover/movie)
+- **TMDB API-Based Entity Resolution**: Search API calls resolve entity names to IDs before constraint building
 - **MCP Protocol Integration**: Claude Code API orchestrating 142+ validated tools with enterprise safety controls
-- **RAG-Informed Constraint Relaxation**: Semantic search results guide systematic fallback strategies
+- **Intelligent Query Routing**: Semantic endpoint selection preventing incorrect API usage patterns
 - **Enterprise Safety Architecture**: Dual-tool validation, atomic operations, and comprehensive audit logging
 
 ## Implementation Repositories

@@ -79,7 +79,7 @@ graph TD
 
 **Core Objectives**:
 - Ingest operational documentation, runbooks, incident reports
-- Implement semantic search across structured + unstructured data
+- Implement semantic search across structured + unstructured data (expanding beyond API endpoint routing)
 - Build contextual recommendation engine
 - Create institutional memory integration
 

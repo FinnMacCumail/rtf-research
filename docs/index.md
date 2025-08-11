@@ -6,7 +6,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 
 ## Project Overview
 
-- **Phase 1 – TMDB Chatbox**: Natural language movie/TV query system with multi-entity constraint solving, semantic search using ChromaDB, and progressive constraint relaxation
+- **Phase 1 – TMDB Chatbox**: Natural language movie/TV query system with multi-entity constraint solving, RAG API endpoint routing using ChromaDB, and progressive constraint relaxation
 - **Phase 2 – NetBox MCP Integration**: Enterprise-grade NetBox MCP server with 142+ tools, performance optimization for token overflow and N+1 query issues
 
 ## Research Highlights
