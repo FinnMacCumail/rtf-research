@@ -10,10 +10,10 @@ This repository documents RTF's comprehensive 6-month research program addressin
 ### Research Evolution Overview
 The research progressed through two comprehensive phases, each building sophisticated anti-hallucination mechanisms:
 
-- **Phase 1 – TMDB Constraint-Based Validation System**
+- **Phase 1 – TMDB RAG + Constraint-Based Validation System**
   - **Repository**: https://github.com/FinnMacCumail/tmdbGPT
-  - **Anti-Hallucination Focus**: Symbolic constraint trees, progressive relaxation, weighted endpoint selection
-  - **Key Innovation**: Multi-stage query processing pipeline preventing fabricated movie/TV data
+  - **Anti-Hallucination Focus**: RAG semantic search, symbolic constraint trees, progressive relaxation, weighted endpoint selection
+  - **Key Innovation**: Multi-stage RAG + API validation pipeline preventing fabricated movie/TV data
 
 - **Phase 2 – NetBox MCP Protocol Integration**  
   - **Repository**: https://github.com/FinnMacCumail/mcp-netbox
@@ -27,11 +27,11 @@ The research progressed through two comprehensive phases, each building sophisti
 ### Problem Definition
 Traditional LLM applications suffer from hallucination—generating plausible but factually incorrect responses, particularly problematic in technical domains where accuracy is critical. This research systematically addresses hallucination through structured validation approaches.
 
-### Phase 1: TMDB Constraint-Based Validation Pipeline
+### Phase 1: TMDB RAG + Constraint-Based Validation Pipeline
 
 **Query Processing Architecture:**
 ```
-User Query → Intent Recognition → Entity Extraction → Constraint Tree → Weighted Endpoint Selection → Validation → Response
+User Query → Intent Recognition → RAG Semantic Search → Entity Extraction → Constraint Tree → Weighted Endpoint Selection → API Validation → Response
 ```
 
 **Intent Recognition & Classification:**
@@ -39,10 +39,16 @@ User Query → Intent Recognition → Entity Extraction → Constraint Tree → 
 - **Query Type Classification**: Movie search, person lookup, relationship queries, temporal constraints
 - **Ambiguity Detection**: Identifies unclear queries requiring user clarification to prevent assumption-based responses
 
-**Entity Recognition & Disambiguation:**
-- **Named Entity Extraction**: Actors, directors, movies, genres with confidence scoring
-- **Disambiguation Strategy**: Handles multiple people with identical names through contextual validation
-- **Cross-Reference Validation**: All entities verified against TMDB database before constraint building
+**RAG Semantic Search Process:**
+- **ChromaDB Vector Database**: Semantic search across movie/TV titles, actor names, and genre metadata
+- **Sentence Transformers**: Text-to-vector conversion enabling similarity matching for entity resolution
+- **Embedding-Based Disambiguation**: Vector similarity scores resolve ambiguous entity references (e.g., multiple actors with same name)
+- **Semantic Grounding**: Retrieved embeddings provide factual context before constraint building, preventing fabricated entity relationships
+
+**Entity Recognition & Validation:**
+- **RAG-Enhanced Named Entity Extraction**: Actors, directors, movies, genres validated through semantic similarity scoring
+- **Multi-Stage Disambiguation**: ChromaDB similarity search + contextual validation + TMDB database cross-reference
+- **Vector-Verified Entity Resolution**: All entities must pass both semantic similarity threshold (>0.8) and database validation
 
 **Weighted Endpoint Selection Algorithm:**
 - **Decision Matrix**: Routes between `/discover/movie`, `/person`, `/search` based on:
@@ -50,7 +56,8 @@ User Query → Intent Recognition → Entity Extraction → Constraint Tree → 
   - Entity confidence levels (weighted average)
   - Expected result quality metrics
   - API endpoint performance characteristics
-- **Dynamic Optimization**: Learning system improves routing based on query success patterns
+  - Weighted Endpoint Selection: Static scoring system optimizes API
+  routing using semantic similarity and rule-based parameter matching
 
 **Progressive Constraint Relaxation:**
 - **Constraint Hierarchy**: Primary (must match) → Secondary (should match) → Tertiary (nice to have)
@@ -90,18 +97,19 @@ User Query → Intent Recognition → Entity Extraction → Constraint Tree → 
 - **Enterprise Safety**: Zero fabricated infrastructure data across production environments
 
 **Key Research Innovations:**
-1. **Hybrid Constraint Trees**: Symbolic + semantic validation preventing fabricated responses
-2. **Progressive Relaxation with Provenance**: Systematic fallbacks maintaining accuracy audit trails
-3. **MCP Protocol Safety Integration**: Structured tool protocols eliminating response fabrication
-4. **Multi-Protocol Orchestration**: Seamless integration of constraint validation with enterprise tool safety
+1. **RAG + Constraint Hybrid Architecture**: Semantic retrieval combined with symbolic validation preventing fabricated responses
+2. **Multi-Stage Entity Validation**: ChromaDB semantic search + database cross-reference + constraint verification
+3. **Progressive Relaxation with Provenance**: Systematic fallbacks maintaining accuracy audit trails
+4. **MCP Protocol Safety Integration**: Structured tool protocols eliminating response fabrication
+5. **Multi-Protocol RAG Orchestration**: Seamless integration of semantic retrieval with enterprise tool safety
 
 ## Technical Implementation Highlights
 
-- **Symbolic + Semantic Hybrid Retrieval**: ChromaDB semantic search combined with constraint-based API validation
-- **Multi-Entity Constraint Solving**: Complex relationship queries (actors AND directors AND timeframes) with systematic validation
-- **Weighted Endpoint Selection**: Intelligent API routing optimizing for query complexity, accuracy, and performance
+- **RAG + Constraint Hybrid Architecture**: ChromaDB vector database with sentence transformers providing semantic grounding before API validation
+- **Multi-Stage Entity Validation**: Semantic similarity scoring (>0.8 threshold) + database cross-reference + constraint verification
+- **Vector-Enhanced Endpoint Selection**: Semantic similarity informing intelligent API routing decisions
 - **MCP Protocol Integration**: Claude Code API orchestrating 142+ validated tools with enterprise safety controls
-- **Progressive Constraint Relaxation**: Systematic fallback strategies maintaining accuracy while improving response rates
+- **RAG-Informed Constraint Relaxation**: Semantic search results guide systematic fallback strategies
 - **Enterprise Safety Architecture**: Dual-tool validation, atomic operations, and comprehensive audit logging
 
 ## Implementation Repositories
