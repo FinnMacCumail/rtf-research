@@ -51,7 +51,6 @@ graph TD
 ## Phase Progression Strategy
 
 ### Phase 1A: Foundation & Quick Wins
-**Timeline**: 3-4 months  
 **Investment**: Moderate (primarily development time)  
 **ROI**: Immediate 90% cost reduction + 15x performance improvement
 
@@ -62,7 +61,6 @@ graph TD
 - Establish reliable foundation for advanced features
 
 ### Phase 2: Neo4j Graph Intelligence  
-**Timeline**: 4-6 months  
 **Investment**: Higher (Neo4j infrastructure + data migration)
 **ROI**: Enable previously impossible relationship queries
 
@@ -73,7 +71,6 @@ graph TD
 - Create hybrid routing (graph vs. direct API calls)
 
 ### Phase 3: RAG-Powered Semantic Intelligence
-**Timeline**: 6-8 months
 **Investment**: Highest (document processing + vector database)  
 **ROI**: Transform system into organizational knowledge advisor
 
@@ -84,7 +81,6 @@ graph TD
 - Create institutional memory integration
 
 ### Phase 4: Advanced Analytics Platform
-**Timeline**: 8-12 months  
 **Investment**: Moderate (algorithm development + UI enhancements)
 **ROI**: Predictive capabilities worth 10-100x operational efficiency gains
 
@@ -143,22 +139,22 @@ flowchart TD
 ## Investment & Resource Requirements
 
 ### Phase 1A: Foundation ($)
-- **Development**: 2-3 senior developers × 3-4 months
+- **Development**: 2-3 senior developers
 - **Infrastructure**: Minimal (existing systems + OpenAI API)
 - **Risk**: Low (incremental improvement to existing system)
 
 ### Phase 2: Graph Integration ($$)
-- **Development**: 2-3 developers × 4-6 months + Neo4j specialist
+- **Development**: 2-3 developers + Neo4j specialist
 - **Infrastructure**: Neo4j Enterprise + additional server capacity
 - **Risk**: Medium (new technology integration complexity)
 
 ### Phase 3: RAG Intelligence ($$$)  
-- **Development**: 3-4 developers × 6-8 months + ML engineer
+- **Development**: 3-4 developers + ML engineer
 - **Infrastructure**: Vector database + document processing pipeline + storage
 - **Risk**: Medium-High (document quality dependency + ML complexity)
 
 ### Phase 4: Analytics Platform ($$)
-- **Development**: 2-3 developers × 8-12 months + data scientist
+- **Development**: 2-3 developers + data scientist
 - **Infrastructure**: Analytics processing + dashboard hosting
 - **Risk**: Low-Medium (building on established foundation)
 
