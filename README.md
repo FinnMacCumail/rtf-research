@@ -20,7 +20,6 @@ The research progressed through two comprehensive phases, each building sophisti
   - **Anti-Hallucination Focus**: Enterprise safety controls, dual-tool validation, structured protocol enforcement
   - **Key Innovation**: Claude Code API + MCP integration with 142+ validated tools across DCIM/Virtualization/IPAM
 
-👉 **Full technical documentation:** https://finnmaccumail.github.io/rtf-research/
 
 ## Research Methodology: Multi-Protocol Anti-Hallucination System
 
