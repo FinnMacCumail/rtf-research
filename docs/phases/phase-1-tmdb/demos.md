@@ -16,6 +16,18 @@
 
 ---
 
+**Query**: "Movies by Spielberg starring Tom Hanks"
+
+**Processing Flow**:
+1. **Entity Extraction**: Identifies `Steven Spielberg` (director), `Tom Hanks` (actor)
+2. **Constraint Building**: Creates dual-role AND constraint
+3. **API Orchestration**: Uses `/discover/movie` endpoint with director and cast parameters
+4. **Results**: Returns complete filmography - *Saving Private Ryan*, *Catch Me If You Can*, *The Terminal*, *Bridge of Spies*, *The Post*, plus related documentaries
+
+**Demonstration Value**: Real-world validation of excellent performance for actor+director constraint combinations
+
+---
+
 **Query**: "Who created Breaking Bad?"
 
 **Processing Flow**:
@@ -82,6 +94,8 @@
 ```
 
 **Demonstration Value**: Shows multi-role constraint solving, cross-role relationship discovery, and comprehensive intersection of actor and writer filmographies. Reveals actual Hollywood collaborations and partnerships.
+
+**Performance Update**: Multi-entity constraint queries show **significant improvement** from earlier system versions. Recent testing demonstrates excellent performance on dual-constraint queries like actor+writer combinations, though comprehensive success rate data is still being collected.
 
 ## Setup Instructions
 
