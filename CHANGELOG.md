@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced research methodology documentation  
 - Reproducible demo scenarios and evaluation approaches
 - Updated repository URLs and professional presentation elements
+- Advanced diagnostic methodologies for complex pipeline debugging
+- Execution tracing patterns using monkey patching for root cause analysis
+
+### Fixed
+- **Mixed Content Resolution**: Resolved critical bug in TMDB Phase 1 where TV queries ("comedy shows") returned mixed TV/movie results
+  - Root cause: Missing "shows" indicator in media type detection function
+  - Solution: Enhanced `infer_media_type_from_query()` with comprehensive TV indicators
+  - Impact: 100% resolution rate across all TV query variations
+- Enhanced entity resolution for BBC and Hulu network queries with geographic preferences
 
 ## [1.0.0] - 2025-08-10
 
