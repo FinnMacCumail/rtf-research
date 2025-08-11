@@ -31,8 +31,17 @@ Traditional LLM applications suffer from hallucination—generating plausible bu
 
 **Query Processing Architecture:**
 ```
-User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolution (TMDB Search API) → Constraint Building → API Execution → Response Validation
+User Query → Parse/Extract → Semantic Endpoint Retrieval → Entity Resolution → Plan Assembly → Execution → Validation → Formatting
 ```
+
+**7-Phase Execution Pipeline:**
+- **Phase 1**: Natural language parsing with entity/intent extraction
+- **Phase 2**: Semantic search across 54 TMDB endpoint descriptions  
+- **Phase 3**: Entity resolution via TMDB Search API calls
+- **Phase 4**: Multi-step plan assembly with dependency injection
+- **Phase 5**: Constraint-aware execution with validation
+- **Phase 6**: Post-validation with credit verification
+- **Phase 7**: Response formatting with provenance tracking
 
 **Intent Recognition & Classification:**
 - **LLM + SpaCy Integration**: Hybrid approach using language model understanding with structured linguistic analysis
@@ -61,8 +70,16 @@ User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolu
 
 **Progressive Constraint Relaxation:**
 - **Constraint Hierarchy**: Primary (must match) → Secondary (should match) → Tertiary (nice to have)
-- **Systematic Fallbacks**: Expands date ranges, relaxes genre constraints, broadens search scope
+- **Systematic Fallbacks**: Expands date ranges, relaxes genre constraints, broadens search scope  
 - **Provenance Logging**: Complete audit trail of which constraints were modified and why
+- **Fallback Sequence**: Constraint relaxation → semantic fallback → generic discovery with minimal constraints
+
+**Advanced Implementation Features:**
+- **Intent Correction Logic**: Automatic detection and correction of mismatched movie/TV classifications
+- **Symbol-Free vs Constraint-Based Routing**: Dynamic routing strategy based on query complexity
+- **Episode-Level Data Requirements**: Specialized handling for TV writers/directors requiring episode-specific validation
+- **Multi-Layer Validation**: Symbolic filtering, role validation, and post-execution credit verification
+- **Dynamic Plan Injection**: Real-time plan expansion based on resolved dependencies and constraint satisfaction
 
 ### Phase 2: NetBox MCP + Claude Code API Integration
 
@@ -92,8 +109,7 @@ User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolu
 ### Cross-Phase Validation Results
 
 **Quantitative Anti-Hallucination Metrics:**
-- **NetBox Phase**: 100% tool accessibility with structured response validation
-- **Performance Optimization**: 127 API calls → 3 calls through intelligent tool orchestration (97.6% reduction)
+- **NetBox Phase**: 100% tool accessibility with structured response validation  
 - **Enterprise Safety**: Zero fabricated infrastructure data across production environments
 
 **Key Research Innovations:**
@@ -106,10 +122,12 @@ User Query → Intent Recognition → RAG API Endpoint Routing → Entity Resolu
 ## Technical Implementation Highlights
 
 - **RAG API Orchestration**: ChromaDB vector database storing 54 TMDB endpoint descriptions with semantic routing using all-MiniLM-L6-v2
-- **Semantic Endpoint Intelligence**: Vector similarity matching queries to API capabilities (e.g., "movies starring actors" → /discover/movie)
-- **TMDB API-Based Entity Resolution**: Search API calls resolve entity names to IDs before constraint building
+- **Static Scoring System**: Fixed scoring weights (cast: 0.4, director: 0.4) with boost factors for media type and parameters  
+- **TMDB Search API Entity Resolution**: Direct API calls for "Tom Hanks" → person_id resolution with fuzzy matching support
+- **Constraint Tree Logic**: Symbolic AND/OR constraint satisfaction with set intersection for multi-entity queries
+- **Multi-Step Execution Engine**: 7-phase pipeline with dynamic plan expansion and dependency injection
+- **Comprehensive Validation**: Post-execution credit verification ensuring accurate role attribution
 - **MCP Protocol Integration**: Claude Code API orchestrating 142+ validated tools with enterprise safety controls
-- **Intelligent Query Routing**: Semantic endpoint selection preventing incorrect API usage patterns
 - **Enterprise Safety Architecture**: Dual-tool validation, atomic operations, and comprehensive audit logging
 
 ## Implementation Repositories
