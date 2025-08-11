@@ -2,7 +2,7 @@
 
 ## Research Overview: Systematic Anti-Hallucination in Domain-Specific LLM Applications
 
-This repository documents RTF's comprehensive 6-month research program addressing the critical challenge of **LLM hallucination in domain-specific applications**. Through systematic development of constraint-based validation, multi-protocol tool orchestration, and enterprise safety controls, this research demonstrates how to achieve reliable, factually accurate LLM responses in complex technical domains.
+This repository documents RTF's comprehensive 8-month research program addressing the critical challenge of **LLM hallucination in domain-specific applications**. Through systematic development of constraint-based validation, multi-protocol tool orchestration, and enterprise safety controls, this research demonstrates how to achieve reliable, factually accurate LLM responses in complex technical domains.
 
 ### Core Research Hypothesis
 *Multi-stage validation combining symbolic constraints, structured tool protocols, and progressive verification can eliminate fabricated responses while maintaining natural language interaction quality.*
