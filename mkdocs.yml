@@ -60,7 +60,8 @@ nav:
       - Demo Scenarios: phases/phase-2-netbox/demos.md
   - Future Development:
       - Orchestration Plan: future-development/orchestration-plan.md
-      - Phase 1A Foundation: future-development/phase-1a-foundation.md
+      - Phase 3 OpenAI Orchestration: future-development/phase-3-openai-orchestration.md
+      - Legacy Phase 1A Foundation: future-development/phase-1a-foundation.md
       - Phase 2 Neo4j Integration: future-development/phase-2-neo4j.md
       - Phase 3 RAG Intelligence: future-development/phase-3-rag.md
       - Phase 4 Analytics Platform: future-development/phase-4-analytics.md

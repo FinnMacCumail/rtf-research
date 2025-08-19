@@ -56,32 +56,32 @@ graph TD
 
 **Core Objectives**:
 - Replace Claude CLI with OpenAI GPT-4o-mini intent parsing
-- Implement LangGraph tool chain orchestration  
-- Solve critical token overflow and N+1 query issues
-- Establish reliable foundation for advanced features
+- Implement LangGraph tool orchestration for existing NetBox MCP tools
+- Provide graceful handling of token overflow and N+1 query limitations
+- Establish reliable coordination foundation for advanced features
 
 **Technical Implementation Details**:
 
 **OpenAI-Powered Query Classification System**
 - Build intent recognition using GPT-4o-mini to understand user query intent
 - Distinguish between simple lookups and complex multi-step queries
-- Map user questions to appropriate NetBox MCP operations with natural language processing
-- Handle variations in query phrasing and build error handling for ambiguous requests
-- Create decision framework for routing different query types
+- Map user questions to appropriate existing NetBox MCP tool chains
+- Handle variations in query phrasing and provide graceful error handling
+- Create intelligent routing for different query types using existing tools
 
-**LangGraph Tool Chain Orchestration Engine**
-- Identify common query patterns through pattern matching analysis
-- Document device → interface → cable relationship chains
+**LangGraph Tool Orchestration Engine**
+- Coordinate existing NetBox MCP tools through intelligent orchestration
+- Document device → interface → cable relationship chains using current tools
 - Map site → rack → device → utilization workflows using LangGraph state machines
-- Build chain execution engine for multiple NetBox operations in sequence
+- Build coordination engine for multiple existing NetBox operations in sequence
 - Implement error recovery, progress tracking, and result aggregation
 
-**Performance & Reliability Optimization**
-- Replace Claude CLI process spawning with direct HTTP API calls to NetBox MCP server
-- Add connection pooling, parallel execution using asyncio
-- Implement intelligent caching using Redis for frequently requested data
-- Build retry logic for transient network/API issues
-- Add streaming responses and progress indicators for long-running operations
+**Performance & User Experience Optimization**
+- Replace Claude CLI process spawning with direct coordination of NetBox MCP tools
+- Add intelligent caching using Redis for frequently requested data
+- Implement graceful limitation handling for known tool constraints
+- Build retry logic and fallback strategies for tool limitations
+- Add streaming responses and progress indicators for long-running orchestrations
 
 **Success Metrics**:
 - Simple queries complete in under 2 seconds (vs current 3-10 seconds)
@@ -90,30 +90,30 @@ graph TD
 - 100% query success rate without requiring multiple attempts
 
 ### Phase 2: Neo4j Graph Intelligence  
-**Investment**: Higher (Neo4j infrastructure + data migration)
+**Investment**: Higher (Neo4j infrastructure + data coordination)
 **ROI**: Enable previously impossible relationship queries
 
 **Core Objectives**:  
-- Deploy Neo4j graph database with NetBox schema mapping
-- Implement real-time synchronization via webhooks
-- Build Cypher query capabilities for complex relationships
-- Create hybrid routing (graph vs. direct API calls)
+- Deploy Neo4j graph database populated via existing NetBox MCP tools
+- Implement data synchronization using current tool capabilities
+- Build Cypher query capabilities leveraging coordinated data extraction
+- Create hybrid routing (graph vs. orchestrated tool chains)
 
 **Technical Implementation Details**:
 
 **Schema Discovery & Design**
-- Analyze all 142+ available NetBox MCP operations to understand data relationships
-- Map entity types (devices, sites, racks, cables, interfaces, IPs) and their connections
-- Identify foreign key relationships using existing MCP tool parameter analysis
-- Design Neo4j graph schema capturing these relationships efficiently
-- Plan hierarchical, connectivity, and logical relationships using typed graph structures
+- Analyze all 142+ available NetBox MCP tools to understand data relationships
+- Map entity types (devices, sites, racks, cables, interfaces, IPs) via existing tools
+- Identify relationships through coordinated tool chain analysis
+- Design Neo4j graph schema based on tool-accessible data structures
+- Plan hierarchical, connectivity, and logical relationships using orchestrated data
 
 **Data Population Pipeline**
-- Create process to extract all entity data from NetBox using existing 142+ MCP tools
-- Implement parallel data fetching using asyncio to populate Neo4j efficiently
-- Build relationship detection logic using existing foreign key resolution
-- Create validation using graph constraints to ensure data matches NetBox reality
-- Design initial population process using batch Neo4j transactions
+- Create orchestrated process to extract data using existing 142+ MCP tools
+- Implement parallel tool coordination using asyncio for efficient Neo4j population
+- Build relationship detection through intelligent tool chain orchestration
+- Create validation using graph constraints coordinated with tool responses
+- Design population process using batched tool orchestration
 
 **Graph Query Capabilities Using Cypher**
 - Build capability to traverse device connections using Cypher queries
