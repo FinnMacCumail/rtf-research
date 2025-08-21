@@ -58,6 +58,11 @@ nav:
       - Performance Analysis: phases/phase-2-netbox/performance-analysis.md
       - MCP Integration: phases/phase-2-netbox/mcp-integration.md
       - Demo Scenarios: phases/phase-2-netbox/demos.md
+  - Phase 3 - OpenAI Orchestration:
+      - Overview: phases/phase-3-openai/overview.md
+      - Implementation Details: phases/phase-3-openai/implementation.md
+      - Interactive Demos: phases/phase-3-openai/demos.md
+      - Lessons Learned: phases/phase-3-openai/lessons-learned.md
   - Future Development:
       - Orchestration Plan: future-development/orchestration-plan.md
       - Phase 3 OpenAI Orchestration: future-development/phase-3-openai-orchestration.md
@@ -72,6 +77,11 @@ nav:
   - Architecture Decisions:
       - ADR-0001 MkDocs Material: adr/0001-adopt-mkdocs-material.md
       - ADR-0002 Chatbox Architecture: adr/0002-chatbox-architecture.md
+      - ADR-0013 Multi-Agent Architecture: adr/0013-multi-agent-orchestration-architecture.md
+      - ADR-0014 OpenAI Model Selection: adr/0014-openai-model-selection-strategy.md
+      - ADR-0015 CLI Testing Infrastructure: adr/0015-cli-testing-infrastructure-design.md
+      - ADR-0016 Agent Communication Protocol: adr/0016-agent-communication-protocol.md
+      - ADR-0017 Session Management Strategy: adr/0017-session-management-strategy.md
 
 plugins:
   - search
