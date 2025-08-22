@@ -82,6 +82,9 @@ nav:
       - ADR-0015 CLI Testing Infrastructure: adr/0015-cli-testing-infrastructure-design.md
       - ADR-0016 Agent Communication Protocol: adr/0016-agent-communication-protocol.md
       - ADR-0017 Session Management Strategy: adr/0017-session-management-strategy.md
+      - ADR-0018 LangGraph StateGraph Architecture: adr/0018-langgraph-stategraph-architecture.md
+      - ADR-0019 Limitation Handling Strategy: adr/0019-limitation-handling-strategy.md
+      - ADR-0020 Intelligent Caching Redis Strategy: adr/0020-intelligent-caching-redis-strategy.md
 
 plugins:
   - search
