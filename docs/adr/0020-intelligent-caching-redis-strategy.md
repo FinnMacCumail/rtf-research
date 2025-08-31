@@ -1,8 +1,13 @@
-# ADR-0020 — Intelligent Caching with Redis Strategy
+# ADR-0020 — Intelligent Caching with Redis Strategy ⚠️ UNUSED - ORCHESTRATION FAILURE
+
+## ⚠️ IMPLEMENTATION STATUS
+**Status**: **UNUSED** - Never implemented due to orchestration system failure  
+**Orchestration Success Rate**: 0% (system never worked)  
+**Working Alternative**: Individual NetBox MCP tools (93.8% success rate)
 
 ## Context
 
-NetBox MCP tool orchestration involves coordinating 35+ tools with varying data volatility patterns. Key caching challenges:
+NetBox MCP tool orchestration **ATTEMPTED** coordinating 35+ tools with varying data volatility patterns. Key caching challenges that were **NEVER SOLVED** due to orchestration failure:
 
 1. **API Call Optimization**: Reduce redundant NetBox API calls across workflow executions
 2. **Data Volatility Management**: Different NetBox data types have different update frequencies

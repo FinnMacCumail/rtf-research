@@ -1,8 +1,13 @@
-# ADR-0016 — Agent Communication Protocol
+# ADR-0016 — Agent Communication Protocol ⚠️ OBSOLETE - SYSTEM FAILURE
+
+## ⚠️ OBSOLETE STATUS
+**Status**: **OBSOLETE** - Agent communication never worked  
+**System Success Rate**: 0% (complete orchestration failure)  
+**Evidence**: comprehensive_comparison_report.md
 
 ## Context
 
-Multi-agent orchestration requires reliable communication between 5 specialized agents. Key challenges:
+Multi-agent orchestration **ATTEMPTED** reliable communication between 5 specialized agents. Key challenges that were **NEVER SOLVED**:
 
 1. **Async Coordination**: Agents may process requests at different speeds
 2. **Message Ordering**: Ensure proper sequence in multi-step workflows

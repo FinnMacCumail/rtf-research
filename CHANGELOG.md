@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **CRITICAL UPDATE - August 2025**: Documentation cleanup following NetBox orchestration system failure
+  - Complete removal of failed orchestration strategic planning documents
+  - Updated ADRs to reflect 0% orchestration success rate vs 93.8% individual tool success
+  - Corrected research findings to accurately represent implementation reality
 - Professional meta portfolio documentation structure
 - Enhanced research methodology documentation  
 - Reproducible demo scenarios and evaluation approaches
