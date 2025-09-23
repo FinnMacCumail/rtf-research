@@ -53,3 +53,19 @@
   - ADR-0007: Dual-mode processing architecture with routing accuracy validation  
   - ADR-0008: Progressive parameter injection with systematic conflict resolution
 - **Research Impact**: Demonstrates specialized constraint handling for complex domains requiring API strategy beyond generic parameter mapping
+
+## 2025-08-31 — Phase 3 OpenAI Orchestration Failure
+- **Orchestration Failure**: Multi-agent OpenAI orchestration system achieved 0% success rate (0/16 test queries)
+- **Evidence**: ADR-0013 documents complete system failure vs claimed 100% success
+- **Individual Tools Success**: NetBox MCP tools achieved 93.8% success rate when used directly
+- **Root Causes**: Excessive orchestration complexity, tool integration issues, communication overhead, state management problems
+- **Decision**: Abandoned OpenAI orchestration approach in favor of simpler solutions
+
+## 2025-09-22 — Phase 4 Deepagents Completion ✅
+- **Deepagents Implementation Success**: Successfully replaced Claude CLI with intelligent NetBox tool orchestration using the deepagents framework
+- **Key Repository**: [Deepagents NetBox Agent](https://github.com/FinnMacCumail/deepagents/blob/master/examples/netbox/netbox_agent.py) provides complete Claude CLI replacement
+- **Architecture Achievements**: LangGraph-based workflow orchestration, dynamic tool discovery, intelligent caching with performance monitoring
+- **Framework Benefits**: Context quarantine, virtual file system, human-in-the-loop capabilities, sophisticated cache monitoring
+- **NetBox Integration**: Automatic wrapper generation for all NetBox MCP tools with conversation-level caching and multi-turn context preservation
+- **Performance Impact**: Intelligent prompt caching with configurable TTL, granular cost optimization tracking, natural language infrastructure queries
+- **Foundation Established**: Phase 4 provides architectural foundation for subsequent development milestones (Phase 5-7) through proven deepagents orchestration

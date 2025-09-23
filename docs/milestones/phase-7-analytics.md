@@ -1,4 +1,4 @@
-# Phase 4: Advanced Analytics Platform
+# Phase 7: Advanced Analytics Platform
 
 ## Objective
 

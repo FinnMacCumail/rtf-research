@@ -1,4 +1,4 @@
-# Phase 3: RAG-Powered Semantic Intelligence
+# Phase 6: RAG-Powered Semantic Intelligence
 
 ## Objective
 
