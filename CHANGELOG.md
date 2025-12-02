@@ -111,9 +111,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Research Milestones
 - **Phase 1 ✅ Complete**: TMDB chatbox with semantic+symbolic retrieval
-- **Phase 2 ✅ Complete**: NetBox MCP server with 142+ tools and 93.8% individual tool success rate
+- **Phase 2 ✅ Complete**: NetBoxLabs official MCP server with 3 generic tools and field filtering
 - **Phase 3 ❌ Failed**: OpenAI orchestration attempt with 0% success rate - documented failure analysis
-- **Phase 4 ✅ Complete**: Deepagents solution successfully replacing Claude CLI with intelligent tool orchestration
+- **Phase 4 ✅ Complete**: Agent framework comparison study (Deepagents vs Claude SDK)
 - **Performance Analysis**: Identified N+1 query optimization opportunities (VLAN queries: 127 calls → optimized batching)
 - **Architectural Foundation**: Established reliable foundation for upcoming milestones (Phase 5-7)
 

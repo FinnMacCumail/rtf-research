@@ -223,9 +223,9 @@ Executive Summary:
 
 ### Prerequisites
 ```bash
-# Clone repository
-git clone https://github.com/FinnMacCumail/mcp-netbox.git
-cd mcp-netbox
+# Clone NetBoxLabs MCP server repository
+git clone https://github.com/netboxlabs/netbox-mcp-server.git
+cd netbox-mcp-server
 
 # Python environment  
 python -m venv netbox-mcp-env

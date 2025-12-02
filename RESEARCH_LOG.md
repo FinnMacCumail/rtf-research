@@ -14,9 +14,9 @@
 - Demonstrated semantic + symbolic retrieval for complex queries.
 
 ## 2025-05-15 — NetBox MCP research phase
-- Evaluated NetBox MCP server architecture and tool landscape (142+ tools across DCIM/Virtualization/IPAM).
+- Evaluated NetBoxLabs official MCP server architecture (3 generic tools: get_objects, get_object_by_id, get_changelogs).
 - Identified performance bottlenecks: token overflow on large responses, N+1 query patterns.
-- Began integration testing with Claude Code MCP protocol.
+- Began integration testing with MCP protocol and field filtering capabilities.
 
 ## 2025-06-30 — Performance optimization discoveries  
 - Documented critical VLAN query issue: 127 API calls for 63 VLANs (N+1 pattern).

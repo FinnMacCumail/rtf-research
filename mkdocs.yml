@@ -62,8 +62,19 @@ nav:
       - Overview: phases/phase-3-openai-failed/overview.md
       - Implementation Details: phases/phase-3-openai-failed/implementation.md
       - Interactive Demos: phases/phase-3-openai-failed/demos.md
-  - Phase 4 - Deepagents Solution:
-      - Overview: phases/phase-4-deepagents/overview.md
+  - Phase 4 - Framework Comparison:
+      - Research Overview: phases/phase-4-framework-comparison/overview.md
+      - Deepagents Architecture: phases/phase-4-framework-comparison/deepagents-architecture.md
+      - Claude SDK Architecture: phases/phase-4-framework-comparison/claude-sdk-architecture.md
+      - Comparative Analysis: phases/phase-4-framework-comparison/comparative-analysis.md
+      - Lessons Learned: phases/phase-4-framework-comparison/lessons-learned.md
+  - Framework Comparison:
+      - Overview: framework-comparison/overview.md
+      - Architectural Patterns: framework-comparison/architectural-patterns.md
+      - Flexibility vs Convenience: framework-comparison/flexibility-vs-convenience.md
+      - Tool Orchestration: framework-comparison/tool-orchestration.md
+      - Production Considerations: framework-comparison/production-considerations.md
+      - Selection Guide: framework-comparison/selection-guide.md
   - Development Milestones:
       - Phase 5 Neo4j Integration: milestones/phase-5-neo4j.md
       - Phase 6 RAG Intelligence: milestones/phase-6-rag.md
@@ -83,6 +94,11 @@ nav:
       - ADR-0018 LangGraph StateGraph Architecture: adr/0018-langgraph-stategraph-architecture.md
       - ADR-0019 Limitation Handling Strategy: adr/0019-limitation-handling-strategy.md
       - ADR-0020 Intelligent Caching Redis Strategy: adr/0020-intelligent-caching-redis-strategy.md
+      - ADR-0021 Dynamic Tool Generation: adr/0021-dynamic-tool-generation-strategy.md
+      - ADR-0022 Interactive CLI Architecture: adr/0022-interactive-cli-architecture-design.md
+      - ADR-0023 Claude API Prompt Caching: adr/0023-claude-api-prompt-caching-implementation.md
+      - ADR-0024 Cache Performance Monitoring: adr/0024-cache-performance-monitoring-strategy.md
+      - ADR-0025 Project Requirements Framework: adr/0025-project-requirements-package-framework.md
 
 plugins:
   - search

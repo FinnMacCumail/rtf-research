@@ -15,20 +15,23 @@ The research progressed through four comprehensive phases, building sophisticate
   - **Anti-Hallucination Focus**: RAG API endpoint routing, symbolic constraint trees, progressive relaxation, TMDB search API validation
   - **Key Innovation**: Multi-stage RAG endpoint routing + API validation pipeline preventing fabricated movie/TV data
 
-- **Phase 2 – NetBox MCP Protocol Integration**
-  - **Repository**: https://github.com/FinnMacCumail/mcp-netbox
-  - **Anti-Hallucination Focus**: Enterprise safety controls, dual-tool validation, structured protocol enforcement
-  - **Key Innovation**: Direct MCP tool integration with 151 validated NetBox tools (93.8% success rate) across DCIM/Virtualization/IPAM
+- **Phase 2 – NetBox MCP Server (Shared Infrastructure)**
+  - **Repository**: https://github.com/netboxlabs/netbox-mcp-server
+  - **Purpose**: Official NetBoxLabs read-only MCP server providing foundational NetBox data access
+  - **Core Tools**: 3 generic tools with field filtering (get_objects, get_object_by_id, get_changelogs)
+  - **Key Innovation**: Simplified architecture reducing token overhead; shared infrastructure layer for Phase 4 frameworks
 
 - **Phase 3 – OpenAI Multi-Agent Orchestration (Failed)**
   - **Repository**: No working implementation (0% success rate)
   - **Anti-Hallucination Focus**: Attempted multi-agent coordination with complex orchestration
   - **Failure Analysis**: Excessive complexity reduced rather than enhanced system reliability (see ADR-0013)
 
-- **Phase 4 – Deepagents LangGraph Orchestration**
-  - **Repository**: https://github.com/FinnMacCumail/deepagents
-  - **Anti-Hallucination Focus**: Intelligent tool orchestration, cache performance monitoring, context quarantine
-  - **Key Innovation**: Successful Claude CLI replacement using simplified LangGraph architecture with dynamic tool discovery
+- **Phase 4 – Agent Framework Comparison: Deepagents vs Claude SDK**
+  - **Repositories**:
+    - Deepagents: https://github.com/FinnMacCumail/deepagents
+    - Claude SDK: https://github.com/FinnMacCumail/claude-agentic-netbox
+  - **Research Focus**: Empirical comparison of flexible vs production-ready agent frameworks
+  - **Key Innovation**: Validated that framework choice is context-dependent; both approaches successfully build production agents with different trade-offs (flexibility vs convenience)
 
 
 ## Research Methodology: Multi-Protocol Anti-Hallucination System
@@ -90,12 +93,13 @@ User Query → Parse/Extract → Semantic Endpoint Retrieval → Entity Resoluti
 - **Multi-Layer Validation**: Symbolic filtering, role validation, and post-execution credit verification
 - **Dynamic Plan Injection**: Real-time plan expansion based on resolved dependencies and constraint satisfaction
 
-### Phase 2: NetBox MCP + Claude Code API Integration
+### Phase 2: NetBox MCP Server (Shared Infrastructure)
 
-**MCP Protocol Architecture:**
-- **Tool Discovery Process**: Claude Code API automatically discovers 142+ NetBox MCP tools
-- **Capability Advertisement**: Each tool declares parameters, return types, and safety constraints
-- **Dynamic Registration**: Real-time tool availability detection and capability matching
+**NetBoxLabs MCP Server Architecture:**
+- **Generic Tool Design**: 3 tools handle all NetBox object types (get_objects, get_object_by_id, get_changelogs)
+- **Field Filtering**: Specify exact fields needed to minimize token usage
+- **Read-Only Interface**: Safe, idempotent operations for all queries
+- **Shared Foundation**: Infrastructure layer used by both Phase 4 agent frameworks
 
 **Claude Code API Integration Patterns:**
 - **Query-to-Tool Mapping**: Natural language intent parsed and matched to appropriate MCP tools
@@ -115,36 +119,64 @@ User Query → Parse/Extract → Semantic Endpoint Retrieval → Entity Resoluti
 - **Enterprise Safety Controls**: Mandatory confirmation for write operations, comprehensive audit logging
 - **Automatic Rollback**: Complex operations with built-in failure recovery
 
-### Phase 4: Deepagents LangGraph Orchestration + Claude CLI Replacement
+### Phase 4: Agent Framework Comparison Study
 
-**Deepagents Framework Architecture:**
+**Research Question**: What are the trade-offs between flexible, open-source agent frameworks (Deepagents/LangChain) versus opinionated, production-ready SDKs (Claude Agent SDK)?
+
+**Methodology**: Implement the same NetBox infrastructure agent using both frameworks to empirically compare architectural approaches.
+
+#### Implementation A: Deepagents (LangChain)
+**Repository**: https://github.com/FinnMacCumail/deepagents
+
+**Framework Philosophy**: Open-source, maximum flexibility, DIY orchestration
+
+**Architecture:**
 ```
 User Query → Deep Agent → LangGraph Workflow → Tool Discovery → Dynamic Wrappers → NetBox MCP Tools → Cache Monitor → Response
 ```
 
-**LangGraph Workflow Orchestration:**
-- **Workflow States**: Typed state management through NetworkOrchestrationState for complex multi-tool operations
-- **Node-Based Processing**: Sophisticated state machine orchestration replacing simple sequential execution
-- **Conditional Routing**: Intelligent path selection based on query complexity and tool availability
-- **Error Recovery**: Built-in retry mechanisms and graceful degradation patterns
+**Key Features:**
+- Planning & task decomposition
+- Sub-agent delegation capabilities
+- Filesystem as memory pattern
+- Custom tool integration
+- LangGraph-based orchestration
+- Dynamic tool discovery
 
-**Dynamic Tool Discovery & Wrapper Generation:**
-- **Automatic Discovery**: Runtime detection and cataloging of all available NetBox MCP tools
-- **Intelligent Wrapping**: Automatic generation of enhanced tool wrappers with caching and error handling
-- **Parameter Validation**: Type checking and constraint validation for all tool parameters
-- **Metadata-Driven Integration**: Tool capabilities advertised through structured metadata for optimal routing
+#### Implementation B: Claude Agent SDK
+**Repository**: https://github.com/FinnMacCumail/claude-agentic-netbox
 
-**Intelligent Caching System:**
-- **Prompt Caching**: Configurable TTL-based caching with performance tracking for reduced token consumption
-- **Tool-Specific Strategies**: Differentiated caching approaches based on data volatility patterns
-- **Cache Performance Monitoring**: Granular metrics tracking hit rates, cost savings, and response time improvements
-- **Context-Aware Invalidation**: Intelligent cache invalidation based on tool dependencies and data relationships
+**Framework Philosophy**: Official Anthropic SDK, production-ready out-of-box, managed orchestration
 
-**Context Quarantine & Virtual File System:**
-- **Context Isolation**: Sub-agent architecture preventing conversation pollution and maintaining clean state
-- **Virtual File System**: Safe tool interactions with built-in safety controls and transaction management
-- **Human-in-the-Loop**: Optional intervention capabilities for complex operations requiring verification
-- **Session Boundaries**: Clear separation between conversation contexts and tool execution environments
+**Architecture:**
+```
+User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stream → Response
+```
+
+**Key Features:**
+- Model Context Protocol (MCP) integration
+- Built-in permission system
+- WebSocket streaming responses
+- Session lifecycle management
+- Type-safe implementation (Pydantic)
+- Hook-based extensibility
+
+#### Key Findings
+
+**Both Frameworks Succeed:**
+- ✅ Natural language NetBox queries work effectively
+- ✅ Multi-step tool coordination successful
+- ✅ Context management strategies apply to both
+- ✅ Production deployment viable for both
+
+**Different Optimization Targets:**
+- **Deepagents**: Flexibility, control, experimentation (46h initial dev, 1,200 LOC)
+- **Claude SDK**: Speed, reliability, maintenance (2.5h initial dev, 400 LOC)
+
+**Framework Choice is Context-Dependent:**
+- No universal "best" framework
+- Choice depends on project maturity, team capabilities, business constraints
+- Both can coexist: Claude SDK for production, Deepagents for R&D
 
 **Cache Performance Monitoring:**
 - **Hit Rate Analytics**: Real-time tracking of cache effectiveness across different tool types
@@ -185,7 +217,7 @@ User Query → Deep Agent → LangGraph Workflow → Tool Discovery → Dynamic 
 - **Constraint Tree Logic**: Symbolic AND/OR constraint satisfaction with set intersection for multi-entity queries
 - **Multi-Step Execution Engine**: 7-phase pipeline with dynamic plan expansion and dependency injection
 - **Comprehensive Validation**: Post-execution credit verification ensuring accurate role attribution
-- **MCP Protocol Integration**: Claude Code API orchestrating 142+ validated tools with enterprise safety controls
+- **NetBoxLabs MCP Server Integration**: Official 3-tool generic interface with field filtering for token optimization
 - **Enterprise Safety Architecture**: Dual-tool validation, atomic operations, and comprehensive audit logging
 - **Deepagents LangGraph Integration**: Claude Sonnet-4 with sophisticated workflow orchestration replacing failed multi-agent systems
 - **Dynamic Tool Wrapper Generation**: Automatic discovery and wrapping of NetBox MCP tools with enhanced error handling
@@ -205,11 +237,13 @@ User Query → Deep Agent → LangGraph Workflow → Tool Discovery → Dynamic 
 ### Completed Phases
 
 - **Phase 1 ✅**: TMDB Chatbox – Natural language movie/TV query system
-- **Phase 2 ✅**: NetBox MCP Server – 142+ tools across DCIM/Virtualization/IPAM
+- **Phase 2 ✅**: NetBox MCP Server – Official NetBoxLabs MCP server with 3 generic tools
 - **Phase 3 ❌ FAILED**: OpenAI Orchestration – 0% success rate (see ADR-0013)
-- **Phase 4 ✅ COMPLETED**: [Deepagents NetBox Agent](https://github.com/FinnMacCumail/deepagents/blob/master/examples/netbox/netbox_agent.py)
-  - **Achievement**: Successfully replaced Claude CLI with LangGraph-based intelligent tool orchestration
-  - **Key Innovations**: Dynamic tool discovery, intelligent caching system, conversation management, multi-step NetBox coordination
+- **Phase 4 ✅ COMPLETED**: Agent Framework Comparison Study
+  - **Achievement**: Empirical comparison of Deepagents vs Claude SDK frameworks
+  - **Implementation A**: [Deepagents](https://github.com/FinnMacCumail/deepagents) - Flexible, research-oriented framework
+  - **Implementation B**: [Claude SDK](https://github.com/FinnMacCumail/claude-agentic-netbox) - Production-ready, managed framework
+  - **Key Finding**: Framework choice is context-dependent; both successfully build production agents
   - **Performance Results**: Intelligent prompt caching, cost optimization through cache monitoring, natural language NetBox queries
   - **Architecture**: Deepagents framework with automatic NetBox MCP tool wrapper generation and sophisticated cache performance tracking
 
