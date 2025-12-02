@@ -99,6 +99,7 @@ nav:
       - ADR-0023 Claude API Prompt Caching: adr/0023-claude-api-prompt-caching-implementation.md
       - ADR-0024 Cache Performance Monitoring: adr/0024-cache-performance-monitoring-strategy.md
       - ADR-0025 Project Requirements Framework: adr/0025-project-requirements-package-framework.md
+      - ADR-0026 Claude SDK Requirements Package: adr/0026-claude-sdk-project-requirements-package.md
 
 plugins:
   - search
