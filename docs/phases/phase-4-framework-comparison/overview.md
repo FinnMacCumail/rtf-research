@@ -97,6 +97,147 @@ async for chunk in agent.query(user_query):
 
 **See**: [Claude SDK Architecture Details](claude-sdk-architecture.md)
 
+### Model Selection Enhancement (December 2025)
+
+Following the successful Claude SDK implementation, user feedback indicated desire for explicit model control while maintaining cost efficiency. Investigation revealed an undocumented SDK feature: **intelligent multi-model routing**.
+
+#### Discovery: Intelligent Routing
+
+When `ClaudeAgentOptions(model=None)` is specified, the SDK automatically routes between Claude models based on task complexity:
+
+| Query Type | SDK Selects | Optimization |
+|-----------|-------------|--------------|
+| MCP tool execution | Claude Haiku 4.5 | Cost ($0.25/1M tokens) |
+| Simple responses | Claude Haiku 4.5 | Speed & cost |
+| Medium complexity | Claude Sonnet 4 | Balanced with caching |
+| Complex analysis | Claude Sonnet 4.5 | Extended thinking |
+
+**Cost Impact**: 70-80% cost reduction vs using only Sonnet or Opus for all operations.
+
+**Example Query**: "How many NetBox sites are there?"
+```
+API Calls:
+1. claude-haiku-4-5 (tool: netbox_get_objects)
+2. claude-haiku-4-5 (additional tool calls)
+3. claude-sonnet-4 (response synthesis with caching)
+
+Cost: ~$0.004 vs $0.018 if all Sonnet
+Savings: 76%
+```
+
+#### Implementation
+
+Enhanced the Claude SDK implementation with explicit model selection while preserving intelligent routing:
+
+```python
+# 4 model options available
+class ChatAgent:
+    def __init__(self, config: Config, model: str | None = None):
+        """
+        Args:
+            model: "auto" (None), "claude-haiku-4-5",
+                   "claude-sonnet-4-5", or "claude-opus-4"
+        """
+        self.options = ClaudeAgentOptions(
+            model=model,  # None enables intelligent routing
+            mcp_servers=get_netbox_mcp_config(config)
+        )
+
+# API endpoint for model discovery
+@app.get("/models")
+async def get_models() -> list[ModelInfo]:
+    return [
+        ModelInfo(id="auto", name="Claude (Automatic Selection)", ...),
+        ModelInfo(id="claude-sonnet-4-5-20250929", ...),
+        ModelInfo(id="claude-opus-4-20250514", ...),
+        ModelInfo(id="claude-haiku-4-5-20250925", ...),
+    ]
+
+# WebSocket protocol for runtime model switching
+{
+    "type": "model_change",
+    "model": "claude-sonnet-4-5-20250929"  # or "auto"
+}
+```
+
+**Frontend**: `ModelSelector.vue` component provides modal interface with:
+- Current model indicator in header
+- Warning about context reset when switching
+- Persistence in localStorage
+- Server-side validation
+
+**Key Insight**: Even with explicit model selection, SDK continues using intelligent routing for tool execution. The specified model controls response quality, not tool execution costs.
+
+#### Attempted: Ollama/LiteLLM Integration (Reverted)
+
+**Goal**: Enable local Ollama models (Qwen 2.5:14b) alongside Anthropic models via LiteLLM proxy.
+
+**Dual-Path Architecture Planned**:
+```
+Path A (Anthropic): Frontend → Backend → Claude SDK → Anthropic API
+Path B (Ollama):    Frontend → Backend → LiteLLM → Ollama API
+```
+
+**Problems Encountered**:
+
+1. **Tool Results Not Displayed** (Critical):
+   - Qwen 2.5 executed MCP tools successfully
+   - Backend logs showed data returned correctly
+   - Model generated acknowledgments but omitted actual data
+   - Example: Query "How many sites?" → Response "I'll check that" [no count]
+   - Claude models correctly integrated tool results into responses
+
+2. **Loss of SDK Features**:
+   - Routing Anthropic through LiteLLM would break:
+     - MCP protocol integration (subprocess isolation incompatible)
+     - Thinking block streaming
+     - Prompt caching (84% hit rate lost)
+     - Permission system
+     - Intelligent routing (70-80% cost savings lost)
+
+3. **Architecture Complexity**:
+   - Dual-path system with separate agent implementations
+   - Health check orchestration for multiple services
+   - Docker Compose for LiteLLM proxy management
+   - Model compatibility testing across providers
+
+4. **Framework Incompatibility**:
+   - Claude SDK assumes direct Anthropic API access
+   - LiteLLM proxy adapts to OpenAI-compatible API
+   - SDK features depend on native protocol, broken by proxy translation
+
+**Decision**: Reverted to Anthropic-only model selection after 6 hours of implementation and debugging.
+
+**Rationale**:
+- Tool result reliability more valuable than local model support
+- SDK feature preservation outweighs multi-provider flexibility
+- Intelligent routing makes Anthropic costs acceptable
+- Framework lock-in acceptable trade-off for reliability
+
+**Documentation**: Full analysis in [ADR-0027](../../adr/0027-intelligent-routing-and-model-selection.md)
+
+#### Model Selection Impact
+
+**Benefits**:
+- ✅ Preserved 70-80% cost optimization through intelligent routing
+- ✅ User control when predictability needed
+- ✅ All SDK features maintained (MCP, streaming, caching, permissions)
+- ✅ Simplified architecture (single integration path)
+- ✅ Discovered and documented undocumented SDK capability
+
+**Trade-offs**:
+- ⚠️ Anthropic ecosystem lock-in
+- ⚠️ No local model support (privacy/offline use cases)
+- ⚠️ Limited to Claude model family
+
+**Recommendations**:
+- **Default**: Use "Auto" mode for 70-80% cost savings
+- **Explicit Haiku**: High-volume automated queries
+- **Explicit Sonnet**: Complex analysis, predictable SLAs
+- **Explicit Opus**: Maximum reasoning capability
+
+**Research Contribution**: Documents that SDK features depend on architecture assumptions (direct API access, native protocol). Proxy layers break these assumptions, making multi-provider support incompatible with managed SDK benefits.
+
 ## Comparative Analysis Framework
 
 ### Evaluation Dimensions

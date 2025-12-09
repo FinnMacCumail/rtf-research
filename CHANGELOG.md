@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 4 Model Selection Enhancement - December 2025**: Intelligent routing and explicit model control for Claude SDK implementation
+  - **Discovery**: Documented Claude SDK's intelligent multi-model routing (Haiku for tools, Sonnet/Opus for responses)
+  - **Cost Optimization**: 70-80% cost reduction through automatic model selection when `model=None`
+  - **User Control**: Implemented explicit model selection (Auto, Haiku 4.5, Sonnet 4.5, Opus 4) with WebSocket-based switching
+  - **Frontend**: `ModelSelector.vue` component with modal interface, current model indicator, and localStorage persistence
+  - **API**: `/models` endpoint for model discovery, WebSocket protocol for runtime model changes
+  - **Failed Multi-Provider Attempt**: Documented Ollama/LiteLLM integration attempt and reversion
+    - Problems: Tool results not displayed (Qwen 2.5:14b), SDK feature loss (MCP, streaming, caching, permissions)
+    - Architecture complexity: Dual-path system with separate agents, health checks, Docker Compose orchestration
+    - Framework incompatibility: SDK assumes direct Anthropic API; proxy translation breaks native protocol
+  - **Research Contribution**: Documents that SDK features depend on architecture assumptions; proxy layers break managed SDK benefits
+  - **Repository**: https://github.com/FinnMacCumail/claude-agentic-netbox
 - **Research Documentation Accuracy Update - August 2025**: Comprehensive correction of research findings following systematic evaluation
   - Documentation cleanup to accurately reflect Phase 3 OpenAI orchestration failure (0% success rate)
   - Corrected ADRs and research findings to represent actual implementation results vs theoretical claims
@@ -97,6 +109,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ADR-0018**: LangGraph StateGraph Architecture ⚠️ FAILED - 5-node workflow system failure documentation
 - **ADR-0019**: Limitation Handling Strategy - Progressive disclosure approach (superseded by deepagents framework)
 - **ADR-0020**: Intelligent Caching Redis Strategy - Tool-specific TTL configuration (concepts applied in deepagents solution)
+- **ADR-0021**: Phase 4 Framework Comparison Study - Deepagents vs Claude SDK comparative implementation
+- **ADR-0022**: Project Requirements Package Framework (Deepagents) - pyproject.toml architecture for LangChain-based implementation
+- **ADR-0026**: Claude SDK Project Requirements Package - pyproject.toml architecture for managed SDK implementation
+- **ADR-0027**: Intelligent Routing and Model Selection Strategy - Documents intelligent routing discovery, model selection implementation, and Ollama/LiteLLM reversion
 
 ## [1.0.0] - 2025-08-10
 

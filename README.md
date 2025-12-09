@@ -160,6 +160,8 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - Session lifecycle management
 - Type-safe implementation (Pydantic)
 - Hook-based extensibility
+- Intelligent multi-model routing (December 2025)
+- Explicit model selection with cost optimization
 
 #### Key Findings
 
@@ -208,6 +210,8 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 6. **Simplified LangGraph Architecture**: Successful orchestration through streamlined deepagents framework
 7. **Intelligent Caching Integration**: Cache performance monitoring with cost optimization tracking
 8. **Multi-Protocol API Intelligence**: Seamless integration spanning TMDB, NetBox MCP, and deepagents orchestration
+9. **Intelligent Multi-Model Routing Discovery**: Documented Claude SDK's automatic model selection (70-80% cost savings)
+10. **Framework Architecture Dependencies**: Established that SDK features require direct API access; proxy layers break managed benefits
 
 ## Technical Implementation Highlights
 
@@ -246,6 +250,7 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
   - **Key Finding**: Framework choice is context-dependent; both successfully build production agents
   - **Performance Results**: Intelligent prompt caching, cost optimization through cache monitoring, natural language NetBox queries
   - **Architecture**: Deepagents framework with automatic NetBox MCP tool wrapper generation and sophisticated cache performance tracking
+  - **Model Selection Enhancement (December 2025)**: Discovered intelligent multi-model routing (70-80% cost savings), implemented explicit model selection, documented failed Ollama/LiteLLM integration attempt
 
 ### Upcoming Milestones
 

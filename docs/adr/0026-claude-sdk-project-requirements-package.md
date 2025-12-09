@@ -611,6 +611,91 @@ Use Deepagents/LangChain for flexibility, accepting higher development and maint
 4. **Maintain Production with SDK** - Use SDK for stable, standard workflows
 5. **R&D with Deepagents** - Experiment with novel approaches separately
 
+## Model Selection Enhancement (December 2025)
+
+Following the successful initial implementation, user feedback indicated desire for explicit model control while maintaining cost efficiency. This led to discovery and documentation of an undocumented SDK feature: **intelligent multi-model routing**.
+
+### Intelligent Routing Discovery
+
+**Finding**: When `ClaudeAgentOptions(model=None)`, the SDK automatically routes between Claude models based on task complexity:
+- MCP tool execution → Claude Haiku 4.5 (cost optimization)
+- Simple/medium responses → Claude Sonnet 4 (balanced with caching)
+- Complex analysis → Claude Sonnet 4.5 (extended thinking)
+
+**Cost Impact**: 70-80% cost reduction vs using only Sonnet/Opus for all operations.
+
+**Example**: Query "How many NetBox sites?" executes 5 tool calls with Haiku ($0.25/1M tokens) and 1 response with Sonnet ($3.00/1M), totaling $0.004 vs $0.018 if all Sonnet (76% savings).
+
+### Implementation
+
+**Backend Enhancement**:
+```python
+class ChatAgent:
+    def __init__(self, config: Config, model: str | None = None):
+        """
+        Args:
+            model: Explicit model ID or None for automatic routing
+        """
+        self.options = ClaudeAgentOptions(
+            model=model,  # None = intelligent routing
+            mcp_servers=get_netbox_mcp_config(config)
+        )
+```
+
+**API Endpoint**:
+```python
+@app.get("/models")
+async def get_models() -> list[ModelInfo]:
+    return [
+        ModelInfo(id="auto", name="Claude (Automatic Selection)"),
+        ModelInfo(id="claude-sonnet-4-5-20250929", name="Claude Sonnet 4.5"),
+        ModelInfo(id="claude-opus-4-20250514", name="Claude Opus 4"),
+        ModelInfo(id="claude-haiku-4-5-20250925", name="Claude Haiku 4.5"),
+    ]
+```
+
+**WebSocket Protocol**:
+```python
+# Client sends model change request
+{
+    "type": "model_change",
+    "model": "claude-sonnet-4-5-20250929"  # or "auto"
+}
+```
+
+**Frontend**: `ModelSelector.vue` component (450 LOC) provides modal interface with current model indicator, context reset warning, and localStorage persistence.
+
+### Attempted Multi-Provider Support (Reverted)
+
+**Goal**: Enable Ollama local models (Qwen 2.5:14b) via LiteLLM proxy for multi-provider flexibility.
+
+**Problems Encountered**:
+1. **Tool Results Not Displayed** (Critical) - Qwen 2.5 executed tools but didn't integrate results into responses
+2. **SDK Feature Loss** - LiteLLM proxy broke MCP integration, streaming, caching (84% hit rate), permissions, and intelligent routing
+3. **Architecture Complexity** - Dual-path system with separate agents, health checks, Docker Compose orchestration
+4. **Framework Incompatibility** - SDK assumes direct Anthropic API; proxy translation breaks native protocol dependencies
+
+**Decision**: Reverted to Anthropic-only after 6 hours implementation/debugging.
+
+**Rationale**: Tool result reliability and SDK feature preservation more valuable than multi-provider flexibility. Intelligent routing makes Anthropic costs acceptable.
+
+**Documentation**: Full analysis in [ADR-0027](0027-intelligent-routing-and-model-selection.md)
+
+### Impact
+
+**Benefits**:
+- Preserved 70-80% cost optimization through intelligent routing
+- User control for predictable model usage
+- All SDK features maintained (MCP, streaming, caching, permissions)
+- Simplified single-path architecture
+
+**Trade-offs**:
+- Anthropic ecosystem lock-in
+- No local model support (privacy/offline constraints)
+- Limited to Claude model family
+
+**Key Insight**: SDK features depend on architecture assumptions (direct API, native protocol). Proxy layers break these assumptions, making multi-provider support incompatible with managed SDK benefits.
+
 ## References
 
 - **Repository**: [https://github.com/FinnMacCumail/claude-agentic-netbox](https://github.com/FinnMacCumail/claude-agentic-netbox)
