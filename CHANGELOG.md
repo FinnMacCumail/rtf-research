@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: Production DeepAgents - June 2026**: Successor to the Phase 4 deepagents build, on packaged DeepAgents 0.6.10 ([ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents))
+  - **Dual native backend**: local Ollama / llama.cpp + Ollama Cloud frontier models, no proxy layer — resolves ADR-0027's local-model failure (ADR-0028)
+  - **Model-matrix evaluation harness** (LangSmith): 10-model cloud sweep on `netbox-benchmark-v2`; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency; small local models remain too weak for the hardest queries (ADR-0030)
+  - **Observability**: first LangSmith adoption in the programme; trace-driven diagnosis caught a 0.6 default-middleware answer-overwrite regression invisible at the answer level (ADR-0029, ADR-0031)
+  - **QuickJS / PTC investigation**: deferred with explicit re-trigger conditions after three verification spikes (no benefit on a single-source sequential workload) (ADR-0032)
+  - **Docs**: Phase 5 section (overview, multi-model-evaluation, observability-and-monitoring, lessons-learned); Research Methods → Benchmarking + Observability; ADRs 0028–0032
+  - **Old repo superseded**: [deepagents](https://github.com/FinnMacCumail/deepagents) marked superseded; design rationale harvested into the successor's `docs/lineage/`
+  - **Navigation**: added the 11 previously-unlinked ADRs (0003–0012, 0027) to the docs nav; renumbered planned milestones to Phase 6–8
 - **Phase 4 Model Selection Enhancement - December 2025**: Intelligent routing and explicit model control for Claude SDK implementation
   - **Discovery**: Documented Claude SDK's intelligent multi-model routing (Haiku for tools, Sonnet/Opus for responses)
   - **Cost Optimization**: 70-80% cost reduction through automatic model selection when `model=None`

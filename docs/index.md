@@ -10,6 +10,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2 – NetBox MCP Server**: Official NetBoxLabs MCP server with 3 generic tools (get_objects, get_object_by_id, get_changelogs) providing shared infrastructure for agent frameworks
 - **Phase 3 – OpenAI Orchestration (FAILED)**: Multi-agent orchestration attempt with 0% success rate - see ADR-0013 for failure analysis
 - **Phase 4 – Agent Framework Comparison**: Empirical comparison of Deepagents (LangChain) vs Claude SDK approaches to building production NetBox agents
+- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027
 
 ## Research Highlights
 
@@ -17,19 +18,21 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Performance Optimization**: Field filtering and generic tool patterns for token efficiency
 - **Architecture Pattern**: Extraction → Retrieval → Planning → Execution → Validation → Formatting
 - **Phase 4 Completion**: Empirical framework comparison validating context-dependent framework selection
-- **Future Roadmap**: Neo4j graph integration (Phase 5), RAG intelligence (Phase 6), and analytics platform (Phase 7)
+- **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality while small local models remain insufficient
+- **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
 
 ## Implementation Repositories
 
 - **Phase 1**: [TMDB Chatbox](https://github.com/FinnMacCumail/tmdbGPT) - Natural language movie/TV query system
 - **Phase 2**: [NetBoxLabs MCP Server](https://github.com/netboxlabs/netbox-mcp-server) - Official NetBox MCP server infrastructure
-- **Phase 4A**: [Deepagents Implementation](https://github.com/FinnMacCumail/deepagents) - LangChain-based flexible framework
+- **Phase 4A**: [Deepagents Implementation](https://github.com/FinnMacCumail/deepagents) - LangChain-based flexible framework *(superseded by Phase 5)*
 - **Phase 4B**: [Claude SDK Implementation](https://github.com/FinnMacCumail/claude-agentic-netbox) - Anthropic SDK production framework
+- **Phase 5**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) - Production DeepAgents 0.6.10 with dual local/cloud models, model-matrix evaluation, and observability
 
 ## Research Timeline
 ```mermaid
 timeline
-    title RTF AI Research Timeline (2025)
+    title RTF AI Research Timeline (2025–2026)
     2025-01 : Project Kickoff : LLM landscape survey : Research questions defined
     2025-01–04 : Phase 1 Development : TMDB API integration : Multi-entity constraint solving : Semantic + symbolic retrieval
     2025-04 : Phase 1 Complete : Progressive constraint relaxation : Role-aware validation system
@@ -38,7 +41,9 @@ timeline
     2025-08 : Documentation Phase : Professional portfolio creation : GitHub Pages deployment
     2025-09 : Phase 3 Failed : OpenAI multi-agent orchestration : 0% success rate : Documented failure analysis
     2025-10 : Phase 4 Complete : Agent framework comparison study : Deepagents vs Claude SDK : Empirical validation
-    2025-11+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
+    2025-12 : ADR-0027 : Claude SDK model selection : Local/LiteLLM attempt reverted
+    2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
+    2026-07+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 
 ## Core Architecture

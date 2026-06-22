@@ -68,6 +68,11 @@ nav:
       - Claude SDK Architecture: phases/phase-4-framework-comparison/claude-sdk-architecture.md
       - Comparative Analysis: phases/phase-4-framework-comparison/comparative-analysis.md
       - Lessons Learned: phases/phase-4-framework-comparison/lessons-learned.md
+  - Phase 5 - Production DeepAgents:
+      - Overview: phases/phase-5-production-deepagents/overview.md
+      - Multi-Model Evaluation: phases/phase-5-production-deepagents/multi-model-evaluation.md
+      - Observability & Monitoring: phases/phase-5-production-deepagents/observability-and-monitoring.md
+      - Lessons Learned: phases/phase-5-production-deepagents/lessons-learned.md
   - Framework Comparison:
       - Overview: framework-comparison/overview.md
       - Architectural Patterns: framework-comparison/architectural-patterns.md
@@ -75,17 +80,29 @@ nav:
       - Tool Orchestration: framework-comparison/tool-orchestration.md
       - Production Considerations: framework-comparison/production-considerations.md
       - Selection Guide: framework-comparison/selection-guide.md
-  - Development Milestones:
-      - Phase 5 Neo4j Integration: milestones/phase-5-neo4j.md
-      - Phase 6 RAG Intelligence: milestones/phase-6-rag.md
-      - Phase 7 Analytics Platform: milestones/phase-7-analytics.md
+  - Development Milestones (Planned):
+      - Phase 6 Neo4j Integration: milestones/phase-5-neo4j.md
+      - Phase 7 RAG Intelligence: milestones/phase-6-rag.md
+      - Phase 8 Analytics Platform: milestones/phase-7-analytics.md
   - Research Methods:
       - Retrieval & Planning: methods/retrieval-and-planning.md
       - Evaluation: methods/evaluation.md
+      - Benchmarking: methods/benchmarking.md
+      - Observability: methods/observability.md
       - Tooling: methods/tooling.md
   - Architecture Decisions:
       - ADR-0001 MkDocs Material: adr/0001-adopt-mkdocs-material.md
       - ADR-0002 Chatbox Architecture: adr/0002-chatbox-architecture.md
+      - ADR-0003 Diagnostic-First Debugging: adr/0003-diagnostic-first-debugging.md
+      - ADR-0004 Media Type Detection: adr/0004-media-type-detection-enhancement.md
+      - ADR-0005 Entity Resolution Cache Override: adr/0005-entity-resolution-cache-override.md
+      - ADR-0006 Financial Constraint Mapping: adr/0006-financial-constraint-parameter-mapping.md
+      - ADR-0007 Dual-Mode Financial Queries: adr/0007-dual-mode-financial-query-processing.md
+      - ADR-0008 Progressive Parameter Injection: adr/0008-progressive-parameter-injection-pipeline.md
+      - ADR-0009 Endpoint-Aware Constraint Validation: adr/0009-endpoint-aware-constraint-validation.md
+      - ADR-0010 Multi-Layer Pipeline Debugging: adr/0010-multi-layer-pipeline-debugging.md
+      - ADR-0011 Temporal Sorting Interaction: adr/0011-temporal-sorting-constraint-interaction.md
+      - ADR-0012 Intent-Aware Sorting: adr/0012-intent-aware-sorting-strategy.md
       - ADR-0013 Multi-Agent Architecture: adr/0013-multi-agent-orchestration-architecture.md
       - ADR-0014 OpenAI Model Selection: adr/0014-openai-model-selection-strategy.md
       - ADR-0015 CLI Testing Infrastructure: adr/0015-cli-testing-infrastructure-design.md
@@ -100,6 +117,12 @@ nav:
       - ADR-0024 Cache Performance Monitoring: adr/0024-cache-performance-monitoring-strategy.md
       - ADR-0025 Project Requirements Framework: adr/0025-project-requirements-package-framework.md
       - ADR-0026 Claude SDK Requirements Package: adr/0026-claude-sdk-project-requirements-package.md
+      - ADR-0027 Intelligent Routing & Model Selection: adr/0027-intelligent-routing-and-model-selection.md
+      - ADR-0028 Native Local & Cloud Models on DeepAgents: adr/0028-native-local-and-cloud-models-on-deepagents.md
+      - ADR-0029 LangSmith Observability Platform: adr/0029-langsmith-observability-platform.md
+      - ADR-0030 Model-Matrix Evaluation Harness: adr/0030-model-matrix-evaluation-harness.md
+      - ADR-0031 DeepAgents 0.6 Upgrade & HarnessProfile: adr/0031-deepagents-0.6-upgrade-and-harnessprofile-workaround.md
+      - ADR-0032 QuickJS / PTC Deferral: adr/0032-quickjs-ptc-deferral.md
 
 plugins:
   - search

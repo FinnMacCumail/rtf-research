@@ -33,6 +33,11 @@ The research progressed through four comprehensive phases, building sophisticate
   - **Research Focus**: Empirical comparison of flexible vs production-ready agent frameworks
   - **Key Innovation**: Validated that framework choice is context-dependent; both approaches successfully build production agents with different trade-offs (flexibility vs convenience)
 
+- **Phase 5 – Production DeepAgents: Multi-Model & Observability**
+  - **Repository**: https://github.com/FinnMacCumail/ollamaDeepAgents (supersedes the Phase 4 Deepagents build)
+  - **Research Focus**: Taking the Deepagents agent to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability
+  - **Key Innovation**: Resolved ADR-0027's local-model failure via a native (no-proxy) backend; a frontier cloud model (`deepseek-v4-flash:cloud`) matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest multi-step queries
+
 
 ## Research Methodology: Multi-Protocol Anti-Hallucination System
 
@@ -234,7 +239,8 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **Phase 1**: TMDB Chatbox – https://github.com/FinnMacCumail/tmdbGPT
 - **Phase 2**: NetBox MCP Server – https://github.com/FinnMacCumail/mcp-netbox
 - **Phase 3**: OpenAI Orchestration (Failed) – No working implementation (0% success rate)
-- **Phase 4**: Deepagents Solution – https://github.com/FinnMacCumail/deepagents
+- **Phase 4**: Deepagents Solution – https://github.com/FinnMacCumail/deepagents *(superseded by Phase 5)*
+- **Phase 5**: Production DeepAgents – https://github.com/FinnMacCumail/ollamaDeepAgents
 
 ## Development Milestones
 
@@ -252,19 +258,25 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
   - **Architecture**: Deepagents framework with automatic NetBox MCP tool wrapper generation and sophisticated cache performance tracking
   - **Model Selection Enhancement (December 2025)**: Discovered intelligent multi-model routing (70-80% cost savings), implemented explicit model selection, documented failed Ollama/LiteLLM integration attempt
 
+- **Phase 5 ✅ COMPLETED**: Production DeepAgents – Multi-Model & Observability
+  - **Repository**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) (supersedes the Phase 4 Deepagents build)
+  - **Achievement**: DeepAgents 0.6.10, dual local/cloud model backend (no proxy), LangSmith model-matrix evaluation harness, trace-driven observability
+  - **Key Finding**: Resolved ADR-0027's local-model failure; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest queries
+  - **Decisions**: ADRs 0028 (native local+cloud) · 0029 (LangSmith) · 0030 (eval harness) · 0031 (0.6 upgrade) · 0032 (QuickJS/PTC deferral)
+
 ### Upcoming Milestones
 
-**Phase 5: Neo4j Graph Intelligence**
+**Phase 6: Neo4j Graph Intelligence**
 - **Objective**: Add pre-computed relationship intelligence using Neo4j graph database for instant complex queries
 - **Capabilities**: Graph-based relationship queries, real-time synchronization, hybrid routing intelligence
 - **Impact**: Enable previously impossible relationship queries (20-50x faster complex analysis)
 
-**Phase 6: RAG-Powered Semantic Intelligence**
+**Phase 7: RAG-Powered Semantic Intelligence**
 - **Objective**: Add contextual understanding through operational documentation and institutional memory integration
 - **Capabilities**: Semantic search across documentation, contextual recommendations, operational pattern recognition
 - **Impact**: Transform system into organizational knowledge advisor with historical context
 
-**Phase 7: Advanced Analytics Platform**
+**Phase 8: Advanced Analytics Platform**
 - **Objective**: Deploy graph algorithms and predictive analytics for intelligent infrastructure insights
 - **Capabilities**: Network bottleneck identification, capacity planning, predictive maintenance, operational intelligence
 - **Impact**: Predictive capabilities delivering 10-100x operational efficiency gains
