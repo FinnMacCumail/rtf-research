@@ -100,6 +100,8 @@ starting point for agentic systems: it surfaces failure modes (answer-overwrite 
 that metric counters and log lines would never reveal.
 
 **See also**: [Multi-Model Evaluation](multi-model-evaluation.md) ·
+[Evaluating for Correctness](evaluation-correctness.md) ·
 [Lessons Learned](lessons-learned.md) ·
 [Research Methods → Observability](../../methods/observability.md) ·
-[ADR-0029](../../adr/0029-langsmith-observability-platform.md)
+[ADR-0029](../../adr/0029-langsmith-observability-platform.md) ·
+[ADR-0033](../../adr/0033-reference-grounded-correctness-evaluator.md)

@@ -97,6 +97,8 @@ Two side-findings emerged from running the matrix as a controlled experiment rat
 | ADR-0027 status | Superseded by **ADR-0028** — local+cloud works on DeepAgents via a native backend |
 
 **See also**: [Observability & Monitoring](observability-and-monitoring.md) ·
+[Evaluating for Correctness](evaluation-correctness.md) ·
 [Research Methods → Benchmarking](../../methods/benchmarking.md) ·
 [ADR-0028](../../adr/0028-native-local-and-cloud-models-on-deepagents.md) ·
-[ADR-0030](../../adr/0030-model-matrix-evaluation-harness.md)
+[ADR-0030](../../adr/0030-model-matrix-evaluation-harness.md) ·
+[ADR-0033](../../adr/0033-reference-grounded-correctness-evaluator.md)

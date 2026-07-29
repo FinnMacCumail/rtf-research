@@ -72,6 +72,8 @@ nav:
       - Overview: phases/phase-5-production-deepagents/overview.md
       - Multi-Model Evaluation: phases/phase-5-production-deepagents/multi-model-evaluation.md
       - Observability & Monitoring: phases/phase-5-production-deepagents/observability-and-monitoring.md
+      - Evaluating for Correctness: phases/phase-5-production-deepagents/evaluation-correctness.md
+      - GraphQL Read Path: phases/phase-5-production-deepagents/graphql-read-path.md
       - Lessons Learned: phases/phase-5-production-deepagents/lessons-learned.md
   - Framework Comparison:
       - Overview: framework-comparison/overview.md
@@ -123,6 +125,8 @@ nav:
       - ADR-0030 Model-Matrix Evaluation Harness: adr/0030-model-matrix-evaluation-harness.md
       - ADR-0031 DeepAgents 0.6 Upgrade & HarnessProfile: adr/0031-deepagents-0.6-upgrade-and-harnessprofile-workaround.md
       - ADR-0032 QuickJS / PTC Deferral: adr/0032-quickjs-ptc-deferral.md
+      - ADR-0033 Reference-Grounded Correctness Evaluator: adr/0033-reference-grounded-correctness-evaluator.md
+      - ADR-0034 Read-Only GraphQL Complementary Read Path: adr/0034-read-only-graphql-complementary-read-path.md
 
 plugins:
   - search

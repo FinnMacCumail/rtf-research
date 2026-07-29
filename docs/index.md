@@ -10,7 +10,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2 – NetBox MCP Server**: Official NetBoxLabs MCP server with 3 generic tools (get_objects, get_object_by_id, get_changelogs) providing shared infrastructure for agent frameworks
 - **Phase 3 – OpenAI Orchestration (FAILED)**: Multi-agent orchestration attempt with 0% success rate - see ADR-0013 for failure analysis
 - **Phase 4 – Agent Framework Comparison**: Empirical comparison of Deepagents (LangChain) vs Claude SDK approaches to building production NetBox agents
-- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027
+- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended (July 2026) with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a read-only GraphQL cross-domain read path (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads)
 
 ## Research Highlights
 
@@ -19,6 +19,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Architecture Pattern**: Extraction → Retrieval → Planning → Execution → Validation → Formatting
 - **Phase 4 Completion**: Empirical framework comparison validating context-dependent framework selection
 - **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality while small local models remain insufficient
+- **Anti-Hallucination in Evaluation**: a reference-grounded correctness evaluator catches confident fabrications a completeness metric certifies as complete (a hallucinated "7.7% utilization" vs a verified 0% scored 0.9 on completeness, 0.0 on correctness) — reordering the model leaderboard toward the more *truthful* model
 - **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
 
 ## Implementation Repositories
@@ -43,6 +44,7 @@ timeline
     2025-10 : Phase 4 Complete : Agent framework comparison study : Deepagents vs Claude SDK : Empirical validation
     2025-12 : ADR-0027 : Claude SDK model selection : Local/LiteLLM attempt reverted
     2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
+    2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
     2026-07+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 

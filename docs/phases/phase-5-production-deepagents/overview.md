@@ -103,4 +103,6 @@ middleware** that converts NetBox filter violations into structured, recoverable
 
 **See also**: [Multi-Model Evaluation](multi-model-evaluation.md) ·
 [Observability & Monitoring](observability-and-monitoring.md) ·
+[Evaluating for Correctness](evaluation-correctness.md) ·
+[GraphQL Read Path](graphql-read-path.md) ·
 [Lessons Learned](lessons-learned.md) · [ADR-0028](../../adr/0028-native-local-and-cloud-models-on-deepagents.md)
