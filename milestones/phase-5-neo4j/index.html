@@ -1,0 +1,2075 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../../framework-comparison/selection-guide/" rel="prev"/>
+<link href="../phase-6-rag/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>Phase 6 Neo4j Integration - RTF AI Research Portfolio</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="cyan" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#phase-5-neo4j-graph-database-integration">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="RTF AI Research Portfolio" class="md-header__button md-logo" data-md-component="logo" href="../.." title="RTF AI Research Portfolio">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            RTF AI Research Portfolio
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Phase 6 Neo4j Integration
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="cyan" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="cyan" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--integrated" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="RTF AI Research Portfolio" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="RTF AI Research Portfolio">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    RTF AI Research Portfolio
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 1 - TMDB Chatbox
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 1 - TMDB Chatbox
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/demos/">
+<span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 2 - NetBox MCP
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 2 - NetBox MCP
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/performance-analysis/">
+<span class="md-ellipsis">
+    
+  
+    Performance Analysis
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/mcp-integration/">
+<span class="md-ellipsis">
+    
+  
+    MCP Integration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/demos/">
+<span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/demos/">
+<span class="md-ellipsis">
+    
+  
+    Interactive Demos
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 4 - Framework Comparison
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 4 - Framework Comparison
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/overview/">
+<span class="md-ellipsis">
+    
+  
+    Research Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/deepagents-architecture/">
+<span class="md-ellipsis">
+    
+  
+    Deepagents Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/claude-sdk-architecture/">
+<span class="md-ellipsis">
+    
+  
+    Claude SDK Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/comparative-analysis/">
+<span class="md-ellipsis">
+    
+  
+    Comparative Analysis
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 5 - Production DeepAgents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 5 - Production DeepAgents
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/multi-model-evaluation/">
+<span class="md-ellipsis">
+    
+  
+    Multi-Model Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/observability-and-monitoring/">
+<span class="md-ellipsis">
+    
+  
+    Observability &amp; Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/evaluation-correctness/">
+<span class="md-ellipsis">
+    
+  
+    Evaluating for Correctness
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/graphql-read-path/">
+<span class="md-ellipsis">
+    
+  
+    GraphQL Read Path
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/0-7-5-upgrade/">
+<span class="md-ellipsis">
+    
+  
+    DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/langchain-ecosystem/">
+<span class="md-ellipsis">
+    
+  
+    LangChain Ecosystem vs Cloud Platform MCP
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Framework Comparison
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Framework Comparison
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/architectural-patterns/">
+<span class="md-ellipsis">
+    
+  
+    Architectural Patterns
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/flexibility-vs-convenience/">
+<span class="md-ellipsis">
+    
+  
+    Flexibility vs Convenience
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/tool-orchestration/">
+<span class="md-ellipsis">
+    
+  
+    Tool Orchestration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/production-considerations/">
+<span class="md-ellipsis">
+    
+  
+    Production Considerations
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../framework-comparison/selection-guide/">
+<span class="md-ellipsis">
+    
+  
+    Selection Guide
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Development Milestones (Planned)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Development Milestones (Planned)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Phase 6 Neo4j Integration
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Phase 6 Neo4j Integration
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#objective">
+<span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#strategic-approach">
+<span class="md-ellipsis">
+      
+        Strategic Approach
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#schema-discovery-design">
+<span class="md-ellipsis">
+      
+        Schema Discovery &amp; Design
+      
+    </span>
+</a>
+<nav aria-label="Schema Discovery &amp; Design" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#netbox-to-graph-schema-mapping">
+<span class="md-ellipsis">
+      
+        NetBox to Graph Schema Mapping
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relationship-pattern-analysis">
+<span class="md-ellipsis">
+      
+        Relationship Pattern Analysis
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-population-pipeline">
+<span class="md-ellipsis">
+      
+        Data Population Pipeline
+      
+    </span>
+</a>
+<nav aria-label="Data Population Pipeline" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#initial-graph-construction">
+<span class="md-ellipsis">
+      
+        Initial Graph Construction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-quality-assurance">
+<span class="md-ellipsis">
+      
+        Data Quality Assurance
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#graph-query-capabilities">
+<span class="md-ellipsis">
+      
+        Graph Query Capabilities
+      
+    </span>
+</a>
+<nav aria-label="Graph Query Capabilities" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#complex-relationship-queries">
+<span class="md-ellipsis">
+      
+        Complex Relationship Queries
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advanced-analytical-queries">
+<span class="md-ellipsis">
+      
+        Advanced Analytical Queries
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#synchronization-system">
+<span class="md-ellipsis">
+      
+        Synchronization System
+      
+    </span>
+</a>
+<nav aria-label="Synchronization System" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#real-time-updates-via-netbox-webhooks">
+<span class="md-ellipsis">
+      
+        Real-time Updates via NetBox Webhooks
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#batch-synchronization-safety-net">
+<span class="md-ellipsis">
+      
+        Batch Synchronization Safety Net
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hybrid-system-integration">
+<span class="md-ellipsis">
+      
+        Hybrid System Integration
+      
+    </span>
+</a>
+<nav aria-label="Hybrid System Integration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#smart-query-routing">
+<span class="md-ellipsis">
+      
+        Smart Query Routing
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-optimization">
+<span class="md-ellipsis">
+      
+        Performance Optimization
+      
+    </span>
+</a>
+<nav aria-label="Performance Optimization" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-performance-tuning">
+<span class="md-ellipsis">
+      
+        Query Performance Tuning
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#success-metrics">
+<span class="md-ellipsis">
+      
+        Success Metrics
+      
+    </span>
+</a>
+<nav aria-label="Success Metrics" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-targets">
+<span class="md-ellipsis">
+      
+        Performance Targets
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#technical-metrics">
+<span class="md-ellipsis">
+      
+        Technical Metrics
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#user-experience-impact">
+<span class="md-ellipsis">
+      
+        User Experience Impact
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../phase-6-rag/">
+<span class="md-ellipsis">
+    
+  
+    Phase 7 RAG Intelligence
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../phase-7-analytics/">
+<span class="md-ellipsis">
+    
+  
+    Phase 8 Analytics Platform
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Research Methods
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Methods
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/retrieval-and-planning/">
+<span class="md-ellipsis">
+    
+  
+    Retrieval &amp; Planning
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/evaluation/">
+<span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/benchmarking/">
+<span class="md-ellipsis">
+    
+  
+    Benchmarking
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/observability/">
+<span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/tooling/">
+<span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_10" type="checkbox"/>
+<label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Architecture Decisions
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_10_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_10">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture Decisions
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0001-adopt-mkdocs-material/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0001 MkDocs Material
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0002-chatbox-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0002 Chatbox Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0003-diagnostic-first-debugging/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0003 Diagnostic-First Debugging
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0004-media-type-detection-enhancement/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0004 Media Type Detection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0005-entity-resolution-cache-override/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0005 Entity Resolution Cache Override
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0006-financial-constraint-parameter-mapping/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0006 Financial Constraint Mapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0007-dual-mode-financial-query-processing/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0007 Dual-Mode Financial Queries
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0008-progressive-parameter-injection-pipeline/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0008 Progressive Parameter Injection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0009-endpoint-aware-constraint-validation/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0009 Endpoint-Aware Constraint Validation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0010-multi-layer-pipeline-debugging/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0010 Multi-Layer Pipeline Debugging
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0011-temporal-sorting-constraint-interaction/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0011 Temporal Sorting Interaction
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0012-intent-aware-sorting-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0012 Intent-Aware Sorting
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0013-multi-agent-orchestration-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0013 Multi-Agent Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0014-openai-model-selection-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0014 OpenAI Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0015-cli-testing-infrastructure-design/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0015 CLI Testing Infrastructure
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0016-agent-communication-protocol/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0016 Agent Communication Protocol
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0017-session-management-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0017 Session Management Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0018-langgraph-stategraph-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0018 LangGraph StateGraph Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0019-limitation-handling-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0019 Limitation Handling Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0020-intelligent-caching-redis-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0020 Intelligent Caching Redis Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0021-dynamic-tool-generation-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0021 Dynamic Tool Generation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0022-interactive-cli-architecture-design/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0022 Interactive CLI Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0023-claude-api-prompt-caching-implementation/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0023 Claude API Prompt Caching
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0024-cache-performance-monitoring-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0024 Cache Performance Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0025-project-requirements-package-framework/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0025 Project Requirements Framework
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0026-claude-sdk-project-requirements-package/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0026 Claude SDK Requirements Package
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0027-intelligent-routing-and-model-selection/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0027 Intelligent Routing &amp; Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0028-native-local-and-cloud-models-on-deepagents/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0028 Native Local &amp; Cloud Models on DeepAgents
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0029-langsmith-observability-platform/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0029 LangSmith Observability Platform
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0030-model-matrix-evaluation-harness/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0030 Model-Matrix Evaluation Harness
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0031-deepagents-0.6-upgrade-and-harnessprofile-workaround/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0031 DeepAgents 0.6 Upgrade &amp; HarnessProfile
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0032-quickjs-ptc-deferral/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0032 QuickJS / PTC Deferral
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0033-reference-grounded-correctness-evaluator/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0033 Reference-Grounded Correctness Evaluator
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0034-read-only-graphql-complementary-read-path/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0034 Read-Only GraphQL Complementary Read Path
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0035-deepagents-0.7.5-upgrade/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0035 DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="phase-5-neo4j-graph-database-integration">Phase 5: Neo4j Graph Database Integration<a class="headerlink" href="#phase-5-neo4j-graph-database-integration" title="Permanent link">¶</a></h1>
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">¶</a></h2>
+<p>Add pre-computed relationship intelligence using <strong>Neo4j graph database</strong> to enable instant complex queries while maintaining the reliable tool chain foundation as backup for edge cases.</p>
+<h2 id="strategic-approach">Strategic Approach<a class="headerlink" href="#strategic-approach" title="Permanent link">¶</a></h2>
+<p>Transform network infrastructure data from relational tables into a <strong>graph-first data model</strong> that mirrors the physical reality of network relationships, enabling sub-second traversal of complex network topologies and dependencies.</p>
+<pre class="mermaid"><code>graph TD
+    A[NetBox Relational Data] --&gt; B[Graph Schema Mapping]
+    B --&gt; C[Neo4j Graph Database]
+    C --&gt; D[Cypher Query Engine]
+    D --&gt; E[Complex Relationship Queries]
+
+    F[Real-time Updates] --&gt; G[NetBox Webhooks]  
+    G --&gt; H[Graph Sync Engine]
+    H --&gt; C
+
+    I[Query Router] --&gt; J{Query Complexity}
+    J --&gt;|Simple| K[Direct NetBox API]
+    J --&gt;|Complex| D
+    J --&gt;|Hybrid| L[Graph + API Combination]
+
+    style C fill:#4caf50
+    style E fill:#e8f5e8</code></pre>
+<h2 id="schema-discovery-design">Schema Discovery &amp; Design<a class="headerlink" href="#schema-discovery-design" title="Permanent link">¶</a></h2>
+<h3 id="netbox-to-graph-schema-mapping">NetBox to Graph Schema Mapping<a class="headerlink" href="#netbox-to-graph-schema-mapping" title="Permanent link">¶</a></h3>
+<p><strong>Core Entity Types</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">// Primary network entities</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="n">Site</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'HQ-DC1'</span><span class="p">,</span><span class="w"> </span><span class="n">slug</span><span class="p">:</span><span class="w"> </span><span class="s">'hq-dc1'</span><span class="p">})</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Rack</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'A-01'</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="p">:</span><span class="w"> </span><span class="m">42</span><span class="p">})</span><span class="w">  </span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'SW-CORE-01'</span><span class="p">,</span><span class="w"> </span><span class="n">device_type</span><span class="p">:</span><span class="w"> </span><span class="s">'Catalyst-9500'</span><span class="p">})</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Interface</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'GigE1/0/1'</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s">'ethernet'</span><span class="p">})</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">'CAB-001'</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s">'cat6'</span><span class="p">})</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">VLAN</span><span class="w"> </span><span class="p">{</span><span class="n">vid</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'Production'</span><span class="p">})</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">ip</span><span class="p">:</span><span class="n">IPAddress</span><span class="w"> </span><span class="p">{</span><span class="n">address</span><span class="p">:</span><span class="w"> </span><span class="s">'192.168.100.1/24'</span><span class="p">})</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="c1">// Hierarchical relationships</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONTAINS</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HOUSES</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w">  </span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="c1">// Network connectivity</span>
+</span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">TERMINATES_AT</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">i2</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span>
+</span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MEMBER_OF</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ASSIGNED_IP</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+</span><span id="__span-0-20"><a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a href="#__codelineno-0-21" id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="c1">// Logical relationships</span>
+</span><span id="__span-0-22"><a href="#__codelineno-0-22" id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">SPANS_DEVICE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span><span id="__span-0-23"><a href="#__codelineno-0-23" id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">ip</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALLOCATED_TO</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h3 id="relationship-pattern-analysis">Relationship Pattern Analysis<a class="headerlink" href="#relationship-pattern-analysis" title="Permanent link">¶</a></h3>
+<p><strong>Identified Key Patterns</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">// Device-to-device connectivity (Layer 1)</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">i1</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="o">]-&gt;</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">      </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="o">]-</span><span class="p">(</span><span class="n">i2</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">d1</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">type</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="c1">// VLAN spanning analysis (Layer 2)  </span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">VLAN</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">SPANS_DEVICE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">device_count</span><span class="p">,</span><span class="w"> </span><span class="k">collect</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">devices</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="c1">// IP subnet utilization (Layer 3)</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">subnet</span><span class="p">:</span><span class="n">Prefix</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONTAINS_IP</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">ip</span><span class="p">:</span><span class="n">IPAddress</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALLOCATED_TO</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">subnet</span><span class="p">.</span><span class="n">cidr</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">used_ips</span><span class="p">,</span><span class="w"> </span><span class="k">collect</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">devices</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="c1">// Power dependency chains  </span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">POWERED_BY</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">outlet</span><span class="p">:</span><span class="n">PowerOutlet</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">FED_BY</span><span class="o">]-&gt;</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">      </span><span class="p">(</span><span class="n">pdu</span><span class="p">:</span><span class="n">PDU</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONNECTED_TO</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">ups</span><span class="p">:</span><span class="n">UPS</span><span class="p">)</span>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">pdu</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">ups</span><span class="p">.</span><span class="n">name</span>
+</span></code></pre></div></p>
+<h2 id="data-population-pipeline">Data Population Pipeline<a class="headerlink" href="#data-population-pipeline" title="Permanent link">¶</a></h2>
+<h3 id="initial-graph-construction">Initial Graph Construction<a class="headerlink" href="#initial-graph-construction" title="Permanent link">¶</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neo4j</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncGraphDatabase</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">netbox_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetBoxAPI</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">GraphPopulationEngine</span><span class="p">:</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neo4j_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">netbox_client</span><span class="p">:</span> <span class="n">NetBoxAPI</span><span class="p">):</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">AsyncGraphDatabase</span><span class="o">.</span><span class="n">driver</span><span class="p">(</span><span class="n">neo4j_uri</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s1">'neo4j'</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">))</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">netbox</span> <span class="o">=</span> <span class="n">netbox_client</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">populate_initial_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="sd">        Parallel extraction and graph population from NetBox</span>
+</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="sd">        """</span>
+</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a>        <span class="c1"># Extract all entity types concurrently</span>
+</span><span id="__span-2-15"><a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a>        <span class="n">extraction_tasks</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-2-16"><a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_sites</span><span class="p">(),</span>
+</span><span id="__span-2-17"><a href="#__codelineno-2-17" id="__codelineno-2-17" name="__codelineno-2-17"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_devices</span><span class="p">(),</span> 
+</span><span id="__span-2-18"><a href="#__codelineno-2-18" id="__codelineno-2-18" name="__codelineno-2-18"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_interfaces</span><span class="p">(),</span>
+</span><span id="__span-2-19"><a href="#__codelineno-2-19" id="__codelineno-2-19" name="__codelineno-2-19"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_cables</span><span class="p">(),</span>
+</span><span id="__span-2-20"><a href="#__codelineno-2-20" id="__codelineno-2-20" name="__codelineno-2-20"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_vlans</span><span class="p">(),</span>
+</span><span id="__span-2-21"><a href="#__codelineno-2-21" id="__codelineno-2-21" name="__codelineno-2-21"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_ip_addresses</span><span class="p">(),</span>
+</span><span id="__span-2-22"><a href="#__codelineno-2-22" id="__codelineno-2-22" name="__codelineno-2-22"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">extract_power_infrastructure</span><span class="p">()</span>
+</span><span id="__span-2-23"><a href="#__codelineno-2-23" id="__codelineno-2-23" name="__codelineno-2-23"></a>        <span class="p">]</span>
+</span><span id="__span-2-24"><a href="#__codelineno-2-24" id="__codelineno-2-24" name="__codelineno-2-24"></a>
+</span><span id="__span-2-25"><a href="#__codelineno-2-25" id="__codelineno-2-25" name="__codelineno-2-25"></a>        <span class="n">extracted_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">extraction_tasks</span><span class="p">)</span>
+</span><span id="__span-2-26"><a href="#__codelineno-2-26" id="__codelineno-2-26" name="__codelineno-2-26"></a>
+</span><span id="__span-2-27"><a href="#__codelineno-2-27" id="__codelineno-2-27" name="__codelineno-2-27"></a>        <span class="c1"># Build graph in dependency order</span>
+</span><span id="__span-2-28"><a href="#__codelineno-2-28" id="__codelineno-2-28" name="__codelineno-2-28"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-2-29"><a href="#__codelineno-2-29" id="__codelineno-2-29" name="__codelineno-2-29"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_sites</span><span class="p">,</span> <span class="n">extracted_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span><span id="__span-2-30"><a href="#__codelineno-2-30" id="__codelineno-2-30" name="__codelineno-2-30"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_devices</span><span class="p">,</span> <span class="n">extracted_data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="__span-2-31"><a href="#__codelineno-2-31" id="__codelineno-2-31" name="__codelineno-2-31"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_interfaces</span><span class="p">,</span> <span class="n">extracted_data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span><span id="__span-2-32"><a href="#__codelineno-2-32" id="__codelineno-2-32" name="__codelineno-2-32"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_relationships</span><span class="p">,</span> <span class="n">extracted_data</span><span class="p">)</span>
+</span><span id="__span-2-33"><a href="#__codelineno-2-33" id="__codelineno-2-33" name="__codelineno-2-33"></a>
+</span><span id="__span-2-34"><a href="#__codelineno-2-34" id="__codelineno-2-34" name="__codelineno-2-34"></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Initial graph population completed"</span><span class="p">)</span>
+</span><span id="__span-2-35"><a href="#__codelineno-2-35" id="__codelineno-2-35" name="__codelineno-2-35"></a>
+</span><span id="__span-2-36"><a href="#__codelineno-2-36" id="__codelineno-2-36" name="__codelineno-2-36"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">devices_data</span><span class="p">):</span>
+</span><span id="__span-2-37"><a href="#__codelineno-2-37" id="__codelineno-2-37" name="__codelineno-2-37"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-2-38"><a href="#__codelineno-2-38" id="__codelineno-2-38" name="__codelineno-2-38"></a><span class="sd">        Batch create device nodes with properties</span>
+</span><span id="__span-2-39"><a href="#__codelineno-2-39" id="__codelineno-2-39" name="__codelineno-2-39"></a><span class="sd">        """</span>
+</span><span id="__span-2-40"><a href="#__codelineno-2-40" id="__codelineno-2-40" name="__codelineno-2-40"></a>        <span class="n">cypher</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-2-41"><a href="#__codelineno-2-41" id="__codelineno-2-41" name="__codelineno-2-41"></a><span class="s2">        UNWIND $devices as device</span>
+</span><span id="__span-2-42"><a href="#__codelineno-2-42" id="__codelineno-2-42" name="__codelineno-2-42"></a><span class="s2">        CREATE (d:Device {</span>
+</span><span id="__span-2-43"><a href="#__codelineno-2-43" id="__codelineno-2-43" name="__codelineno-2-43"></a><span class="s2">            id: device.id,</span>
+</span><span id="__span-2-44"><a href="#__codelineno-2-44" id="__codelineno-2-44" name="__codelineno-2-44"></a><span class="s2">            name: device.name,</span>
+</span><span id="__span-2-45"><a href="#__codelineno-2-45" id="__codelineno-2-45" name="__codelineno-2-45"></a><span class="s2">            device_type: device.device_type.model,</span>
+</span><span id="__span-2-46"><a href="#__codelineno-2-46" id="__codelineno-2-46" name="__codelineno-2-46"></a><span class="s2">            serial: device.serial,</span>
+</span><span id="__span-2-47"><a href="#__codelineno-2-47" id="__codelineno-2-47" name="__codelineno-2-47"></a><span class="s2">            status: device.status.value,</span>
+</span><span id="__span-2-48"><a href="#__codelineno-2-48" id="__codelineno-2-48" name="__codelineno-2-48"></a><span class="s2">            site_id: device.site.id,</span>
+</span><span id="__span-2-49"><a href="#__codelineno-2-49" id="__codelineno-2-49" name="__codelineno-2-49"></a><span class="s2">            rack_id: device.rack.id</span>
+</span><span id="__span-2-50"><a href="#__codelineno-2-50" id="__codelineno-2-50" name="__codelineno-2-50"></a><span class="s2">        })</span>
+</span><span id="__span-2-51"><a href="#__codelineno-2-51" id="__codelineno-2-51" name="__codelineno-2-51"></a><span class="s2">        """</span>
+</span><span id="__span-2-52"><a href="#__codelineno-2-52" id="__codelineno-2-52" name="__codelineno-2-52"></a>        <span class="k">await</span> <span class="n">tx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cypher</span><span class="p">,</span> <span class="n">devices</span><span class="o">=</span><span class="n">devices_data</span><span class="p">)</span>
+</span><span id="__span-2-53"><a href="#__codelineno-2-53" id="__codelineno-2-53" name="__codelineno-2-53"></a>
+</span><span id="__span-2-54"><a href="#__codelineno-2-54" id="__codelineno-2-54" name="__codelineno-2-54"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_relationships</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">all_data</span><span class="p">):</span>
+</span><span id="__span-2-55"><a href="#__codelineno-2-55" id="__codelineno-2-55" name="__codelineno-2-55"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-2-56"><a href="#__codelineno-2-56" id="__codelineno-2-56" name="__codelineno-2-56"></a><span class="sd">        Create relationships between entities in batch operations</span>
+</span><span id="__span-2-57"><a href="#__codelineno-2-57" id="__codelineno-2-57" name="__codelineno-2-57"></a><span class="sd">        """</span>
+</span><span id="__span-2-58"><a href="#__codelineno-2-58" id="__codelineno-2-58" name="__codelineno-2-58"></a>        <span class="c1"># Site -&gt; Device relationships</span>
+</span><span id="__span-2-59"><a href="#__codelineno-2-59" id="__codelineno-2-59" name="__codelineno-2-59"></a>        <span class="n">site_device_cypher</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-2-60"><a href="#__codelineno-2-60" id="__codelineno-2-60" name="__codelineno-2-60"></a><span class="s2">        MATCH (s:Site {id: $site_id})</span>
+</span><span id="__span-2-61"><a href="#__codelineno-2-61" id="__codelineno-2-61" name="__codelineno-2-61"></a><span class="s2">        MATCH (d:Device {site_id: $site_id})</span>
+</span><span id="__span-2-62"><a href="#__codelineno-2-62" id="__codelineno-2-62" name="__codelineno-2-62"></a><span class="s2">        CREATE (s)-[:CONTAINS]-&gt;(d)</span>
+</span><span id="__span-2-63"><a href="#__codelineno-2-63" id="__codelineno-2-63" name="__codelineno-2-63"></a><span class="s2">        """</span>
+</span><span id="__span-2-64"><a href="#__codelineno-2-64" id="__codelineno-2-64" name="__codelineno-2-64"></a>
+</span><span id="__span-2-65"><a href="#__codelineno-2-65" id="__codelineno-2-65" name="__codelineno-2-65"></a>        <span class="c1"># Interface -&gt; Device relationships  </span>
+</span><span id="__span-2-66"><a href="#__codelineno-2-66" id="__codelineno-2-66" name="__codelineno-2-66"></a>        <span class="n">interface_device_cypher</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-2-67"><a href="#__codelineno-2-67" id="__codelineno-2-67" name="__codelineno-2-67"></a><span class="s2">        MATCH (d:Device {id: $device_id})</span>
+</span><span id="__span-2-68"><a href="#__codelineno-2-68" id="__codelineno-2-68" name="__codelineno-2-68"></a><span class="s2">        MATCH (i:Interface {device_id: $device_id})</span>
+</span><span id="__span-2-69"><a href="#__codelineno-2-69" id="__codelineno-2-69" name="__codelineno-2-69"></a><span class="s2">        CREATE (d)-[:HAS_INTERFACE]-&gt;(i)</span>
+</span><span id="__span-2-70"><a href="#__codelineno-2-70" id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="s2">        """</span>
+</span><span id="__span-2-71"><a href="#__codelineno-2-71" id="__codelineno-2-71" name="__codelineno-2-71"></a>
+</span><span id="__span-2-72"><a href="#__codelineno-2-72" id="__codelineno-2-72" name="__codelineno-2-72"></a>        <span class="c1"># Cable connections (most complex)</span>
+</span><span id="__span-2-73"><a href="#__codelineno-2-73" id="__codelineno-2-73" name="__codelineno-2-73"></a>        <span class="n">cable_connection_cypher</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-2-74"><a href="#__codelineno-2-74" id="__codelineno-2-74" name="__codelineno-2-74"></a><span class="s2">        MATCH (c:Cable {id: $cable_id})</span>
+</span><span id="__span-2-75"><a href="#__codelineno-2-75" id="__codelineno-2-75" name="__codelineno-2-75"></a><span class="s2">        MATCH (i1:Interface {id: $termination_a_id})</span>
+</span><span id="__span-2-76"><a href="#__codelineno-2-76" id="__codelineno-2-76" name="__codelineno-2-76"></a><span class="s2">        MATCH (i2:Interface {id: $termination_b_id})</span>
+</span><span id="__span-2-77"><a href="#__codelineno-2-77" id="__codelineno-2-77" name="__codelineno-2-77"></a><span class="s2">        CREATE (i1)-[:CONNECTED_VIA]-&gt;(c)&lt;-[:CONNECTED_VIA]-(i2)</span>
+</span><span id="__span-2-78"><a href="#__codelineno-2-78" id="__codelineno-2-78" name="__codelineno-2-78"></a><span class="s2">        """</span>
+</span><span id="__span-2-79"><a href="#__codelineno-2-79" id="__codelineno-2-79" name="__codelineno-2-79"></a>
+</span><span id="__span-2-80"><a href="#__codelineno-2-80" id="__codelineno-2-80" name="__codelineno-2-80"></a>        <span class="c1"># Execute relationship creation in parallel where possible</span>
+</span><span id="__span-2-81"><a href="#__codelineno-2-81" id="__codelineno-2-81" name="__codelineno-2-81"></a>        <span class="n">relationship_tasks</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-2-82"><a href="#__codelineno-2-82" id="__codelineno-2-82" name="__codelineno-2-82"></a>            <span class="n">tx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">site_device_cypher</span><span class="p">,</span> <span class="n">site_id</span><span class="o">=</span><span class="n">site_id</span><span class="p">)</span>
+</span><span id="__span-2-83"><a href="#__codelineno-2-83" id="__codelineno-2-83" name="__codelineno-2-83"></a>            <span class="k">for</span> <span class="n">site_id</span> <span class="ow">in</span> <span class="n">extract_site_ids</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+</span><span id="__span-2-84"><a href="#__codelineno-2-84" id="__codelineno-2-84" name="__codelineno-2-84"></a>        <span class="p">]</span>
+</span><span id="__span-2-85"><a href="#__codelineno-2-85" id="__codelineno-2-85" name="__codelineno-2-85"></a>
+</span><span id="__span-2-86"><a href="#__codelineno-2-86" id="__codelineno-2-86" name="__codelineno-2-86"></a>        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">relationship_tasks</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="data-quality-assurance">Data Quality Assurance<a class="headerlink" href="#data-quality-assurance" title="Permanent link">¶</a></h3>
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// Constraint definitions for data integrity</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">CONSTRAINT</span><span class="w"> </span><span class="n">device_name_unique</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">;</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">CONSTRAINT</span><span class="w"> </span><span class="n">interface_device_interface_unique</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">;</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">CONSTRAINT</span><span class="w"> </span><span class="n">cable_id_unique</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="p">)</span><span class="w"> </span><span class="n">REQUIRE</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">;</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="c1">// Data validation queries</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="c1">// Find devices without sites (orphaned devices)</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">CONTAINS</span><span class="o">]-</span><span class="p">(:</span><span class="n">Site</span><span class="p">)</span>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="c1">// Find cables with missing terminations</span>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="p">)</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">TERMINATES_AT</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Interface</span><span class="p">)</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">label</span>
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a>
+</span><span id="__span-3-17"><a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="c1">// Find IP addresses without device assignments</span>
+</span><span id="__span-3-18"><a href="#__codelineno-3-18" id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ip</span><span class="p">:</span><span class="n">IPAddress</span><span class="p">)</span>
+</span><span id="__span-3-19"><a href="#__codelineno-3-19" id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">ip</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALLOCATED_TO</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-3-20"><a href="#__codelineno-3-20" id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">ip</span><span class="p">.</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">ip</span><span class="p">.</span><span class="n">status</span>
+</span></code></pre></div>
+<h2 id="graph-query-capabilities">Graph Query Capabilities<a class="headerlink" href="#graph-query-capabilities" title="Permanent link">¶</a></h2>
+<h3 id="complex-relationship-queries">Complex Relationship Queries<a class="headerlink" href="#complex-relationship-queries" title="Permanent link">¶</a></h3>
+<p><strong>Network Path Discovery</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// Find all possible paths between two devices</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'SW-ACCESS-01'</span><span class="p">})</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">5</span><span class="o">]-</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'RTR-CORE-01'</span><span class="p">})</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">ALL</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">relationships</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="o">[</span><span class="s">'CONNECTED_VIA'</span><span class="p">,</span><span class="w"> </span><span class="s">'HAS_INTERFACE'</span><span class="o">]</span><span class="p">)</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">hop_count</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">hop_count</span><span class="w"> </span><span class="k">ASC</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="k">LIMIT</span><span class="w"> </span><span class="m">5</span>
+</span></code></pre></div></p>
+<p><strong>Impact Analysis</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// Find all devices affected if a specific device fails</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">failed</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'SW-CORE-01'</span><span class="p">})</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">affected</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">3</span><span class="o">]-</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">failed</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">RETURN</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">affected</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">affected</span><span class="p">.</span><span class="n">device_type</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">       </span><span class="n">shortestPath</span><span class="p">((</span><span class="n">affected</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="o">]-</span><span class="p">(</span><span class="n">failed</span><span class="p">))</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">dependency_path</span>
+</span></code></pre></div></p>
+<p><strong>VLAN Topology Mapping</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// Complete VLAN 100 topology with device interconnections</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">VLAN</span><span class="w"> </span><span class="p">{</span><span class="n">vid</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="p">})</span><span class="o">-[</span><span class="p">:</span><span class="n">SPANS_DEVICE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MEMBER_OF</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="o">]-</span><span class="p">(</span><span class="n">i2</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">i2</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">SPANS_DEVICE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">       </span><span class="k">collect</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">vlan_devices</span><span class="p">,</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">       </span><span class="k">collect</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">           </span><span class="n">from_device</span><span class="p">:</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">           </span><span class="n">from_interface</span><span class="p">:</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">           </span><span class="n">to_device</span><span class="p">:</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">           </span><span class="n">to_interface</span><span class="p">:</span><span class="w"> </span><span class="n">i2</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">           </span><span class="n">cable</span><span class="p">:</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">       </span><span class="p">})</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">inter_device_connections</span>
+</span></code></pre></div></p>
+<h3 id="advanced-analytical-queries">Advanced Analytical Queries<a class="headerlink" href="#advanced-analytical-queries" title="Permanent link">¶</a></h3>
+<p><strong>Capacity Planning Analysis</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="c1">// Site utilization analysis with growth projections</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="n">Site</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONTAINS</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Rack</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HOUSES</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="k">WITH</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">device_count</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">u_height</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_units</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HOUSES</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="k">WITH</span><span class="w"> </span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">device_count</span><span class="p">,</span><span class="w"> </span><span class="n">total_units</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">d2</span><span class="p">.</span><span class="n">device_type</span><span class="p">.</span><span class="n">u_height</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">used_units</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="w">       </span><span class="n">count</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_racks</span><span class="p">,</span>
+</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">       </span><span class="n">sum</span><span class="p">(</span><span class="n">used_units</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_used_units</span><span class="p">,</span>
+</span><span id="__span-7-9"><a href="#__codelineno-7-9" id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">       </span><span class="n">sum</span><span class="p">(</span><span class="n">total_units</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_available_units</span><span class="p">,</span>
+</span><span id="__span-7-10"><a href="#__codelineno-7-10" id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="w">       </span><span class="n">round</span><span class="p">(</span><span class="m">100</span><span class="p">.</span><span class="m">0</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">used_units</span><span class="p">)</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">total_units</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">utilization_percent</span><span class="p">,</span>
+</span><span id="__span-7-11"><a href="#__codelineno-7-11" id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="w">       </span><span class="n">sum</span><span class="p">(</span><span class="n">total_units</span><span class="p">)</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">used_units</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">available_capacity</span>
+</span><span id="__span-7-12"><a href="#__codelineno-7-12" id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">utilization_percent</span><span class="w"> </span><span class="k">DESC</span>
+</span></code></pre></div></p>
+<p><strong>Single Point of Failure Detection</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="c1">// Find critical devices whose failure would isolate other devices</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">critical</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">EXISTS</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">    </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">isolated</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">2</span><span class="o">]-</span><span class="p">(</span><span class="n">critical</span><span class="p">)</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">isolated</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">critical</span>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">    </span><span class="n">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">EXISTS</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">        </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">isolated</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">3</span><span class="o">]-</span><span class="p">(</span><span class="n">alternate</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">2</span><span class="o">]-</span><span class="p">(</span><span class="n">target</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">critical</span><span class="w"> </span>
+</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">        </span><span class="n">AND</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">isolated</span>
+</span><span id="__span-8-10"><a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="w">        </span><span class="n">AND</span><span class="w"> </span><span class="n">alternate</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">critical</span>
+</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">        </span><span class="n">AND</span><span class="w"> </span><span class="n">alternate</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">isolated</span>
+</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-13"><a href="#__codelineno-8-13" id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="p">}</span>
+</span><span id="__span-8-14"><a href="#__codelineno-8-14" id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">critical</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">critical</span><span class="p">.</span><span class="n">device_type</span><span class="p">,</span>
+</span><span id="__span-8-15"><a href="#__codelineno-8-15" id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="w">       </span><span class="o">[</span><span class="p">(</span><span class="n">critical</span><span class="p">)</span><span class="o">-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">2</span><span class="o">]-</span><span class="p">(</span><span class="n">dependent</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">dependent</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">critical</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="n">dependent</span><span class="p">.</span><span class="n">name</span><span class="o">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">dependent_devices</span>
+</span></code></pre></div></p>
+<h2 id="synchronization-system">Synchronization System<a class="headerlink" href="#synchronization-system" title="Permanent link">¶</a></h2>
+<h3 id="real-time-updates-via-netbox-webhooks">Real-time Updates via NetBox Webhooks<a class="headerlink" href="#real-time-updates-via-netbox-webhooks" title="Permanent link">¶</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">BackgroundTasks</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">neo4j</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncGraphDatabase</span>
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-9-4"><a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">GraphSyncEngine</span><span class="p">:</span>
+</span><span id="__span-9-8"><a href="#__codelineno-9-8" id="__codelineno-9-8" name="__codelineno-9-8"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neo4j_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="__span-9-9"><a href="#__codelineno-9-9" id="__codelineno-9-9" name="__codelineno-9-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">AsyncGraphDatabase</span><span class="o">.</span><span class="n">driver</span><span class="p">(</span><span class="n">neo4j_uri</span><span class="p">)</span>
+</span><span id="__span-9-10"><a href="#__codelineno-9-10" id="__codelineno-9-10" name="__codelineno-9-10"></a>
+</span><span id="__span-9-11"><a href="#__codelineno-9-11" id="__codelineno-9-11" name="__codelineno-9-11"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_webhook_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">object_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+</span><span id="__span-9-12"><a href="#__codelineno-9-12" id="__codelineno-9-12" name="__codelineno-9-12"></a>                                 <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="__span-9-13"><a href="#__codelineno-9-13" id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-9-14"><a href="#__codelineno-9-14" id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="sd">        Process NetBox webhook events and sync to graph</span>
+</span><span id="__span-9-15"><a href="#__codelineno-9-15" id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="sd">        """</span>
+</span><span id="__span-9-16"><a href="#__codelineno-9-16" id="__codelineno-9-16" name="__codelineno-9-16"></a>        <span class="n">handler_map</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-9-17"><a href="#__codelineno-9-17" id="__codelineno-9-17" name="__codelineno-9-17"></a>            <span class="p">(</span><span class="s1">'created'</span><span class="p">,</span> <span class="s1">'device'</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_device_created</span><span class="p">,</span>
+</span><span id="__span-9-18"><a href="#__codelineno-9-18" id="__codelineno-9-18" name="__codelineno-9-18"></a>            <span class="p">(</span><span class="s1">'updated'</span><span class="p">,</span> <span class="s1">'device'</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_device_updated</span><span class="p">,</span> 
+</span><span id="__span-9-19"><a href="#__codelineno-9-19" id="__codelineno-9-19" name="__codelineno-9-19"></a>            <span class="p">(</span><span class="s1">'deleted'</span><span class="p">,</span> <span class="s1">'device'</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_device_deleted</span><span class="p">,</span>
+</span><span id="__span-9-20"><a href="#__codelineno-9-20" id="__codelineno-9-20" name="__codelineno-9-20"></a>            <span class="p">(</span><span class="s1">'created'</span><span class="p">,</span> <span class="s1">'cable'</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_cable_created</span><span class="p">,</span>
+</span><span id="__span-9-21"><a href="#__codelineno-9-21" id="__codelineno-9-21" name="__codelineno-9-21"></a>            <span class="p">(</span><span class="s1">'deleted'</span><span class="p">,</span> <span class="s1">'cable'</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_cable_deleted</span><span class="p">,</span>
+</span><span id="__span-9-22"><a href="#__codelineno-9-22" id="__codelineno-9-22" name="__codelineno-9-22"></a>        <span class="p">}</span>
+</span><span id="__span-9-23"><a href="#__codelineno-9-23" id="__codelineno-9-23" name="__codelineno-9-23"></a>
+</span><span id="__span-9-24"><a href="#__codelineno-9-24" id="__codelineno-9-24" name="__codelineno-9-24"></a>        <span class="n">handler</span> <span class="o">=</span> <span class="n">handler_map</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">event_type</span><span class="p">,</span> <span class="n">object_type</span><span class="p">))</span>
+</span><span id="__span-9-25"><a href="#__codelineno-9-25" id="__codelineno-9-25" name="__codelineno-9-25"></a>        <span class="k">if</span> <span class="n">handler</span><span class="p">:</span>
+</span><span id="__span-9-26"><a href="#__codelineno-9-26" id="__codelineno-9-26" name="__codelineno-9-26"></a>            <span class="k">await</span> <span class="n">handler</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">)</span>
+</span><span id="__span-9-27"><a href="#__codelineno-9-27" id="__codelineno-9-27" name="__codelineno-9-27"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-9-28"><a href="#__codelineno-9-28" id="__codelineno-9-28" name="__codelineno-9-28"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unhandled webhook: </span><span class="si">{</span><span class="n">event_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">object_type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-9-29"><a href="#__codelineno-9-29" id="__codelineno-9-29" name="__codelineno-9-29"></a>
+</span><span id="__span-9-30"><a href="#__codelineno-9-30" id="__codelineno-9-30" name="__codelineno-9-30"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_device_created</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="__span-9-31"><a href="#__codelineno-9-31" id="__codelineno-9-31" name="__codelineno-9-31"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-9-32"><a href="#__codelineno-9-32" id="__codelineno-9-32" name="__codelineno-9-32"></a><span class="sd">        Add new device to graph with relationships</span>
+</span><span id="__span-9-33"><a href="#__codelineno-9-33" id="__codelineno-9-33" name="__codelineno-9-33"></a><span class="sd">        """</span>
+</span><span id="__span-9-34"><a href="#__codelineno-9-34" id="__codelineno-9-34" name="__codelineno-9-34"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-9-35"><a href="#__codelineno-9-35" id="__codelineno-9-35" name="__codelineno-9-35"></a>            <span class="c1"># Create device node</span>
+</span><span id="__span-9-36"><a href="#__codelineno-9-36" id="__codelineno-9-36" name="__codelineno-9-36"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_device_node</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="__span-9-37"><a href="#__codelineno-9-37" id="__codelineno-9-37" name="__codelineno-9-37"></a>
+</span><span id="__span-9-38"><a href="#__codelineno-9-38" id="__codelineno-9-38" name="__codelineno-9-38"></a>            <span class="c1"># Create site relationship if site exists</span>
+</span><span id="__span-9-39"><a href="#__codelineno-9-39" id="__codelineno-9-39" name="__codelineno-9-39"></a>            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'site'</span><span class="p">):</span>
+</span><span id="__span-9-40"><a href="#__codelineno-9-40" id="__codelineno-9-40" name="__codelineno-9-40"></a>                <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link_device_to_site</span><span class="p">,</span> 
+</span><span id="__span-9-41"><a href="#__codelineno-9-41" id="__codelineno-9-41" name="__codelineno-9-41"></a>                                          <span class="n">data</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">'site'</span><span class="p">][</span><span class="s1">'id'</span><span class="p">])</span>
+</span><span id="__span-9-42"><a href="#__codelineno-9-42" id="__codelineno-9-42" name="__codelineno-9-42"></a>
+</span><span id="__span-9-43"><a href="#__codelineno-9-43" id="__codelineno-9-43" name="__codelineno-9-43"></a>            <span class="c1"># Create rack relationship if rack assigned</span>
+</span><span id="__span-9-44"><a href="#__codelineno-9-44" id="__codelineno-9-44" name="__codelineno-9-44"></a>            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'rack'</span><span class="p">):</span>
+</span><span id="__span-9-45"><a href="#__codelineno-9-45" id="__codelineno-9-45" name="__codelineno-9-45"></a>                <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link_device_to_rack</span><span class="p">,</span>
+</span><span id="__span-9-46"><a href="#__codelineno-9-46" id="__codelineno-9-46" name="__codelineno-9-46"></a>                                          <span class="n">data</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">'rack'</span><span class="p">][</span><span class="s1">'id'</span><span class="p">])</span>
+</span><span id="__span-9-47"><a href="#__codelineno-9-47" id="__codelineno-9-47" name="__codelineno-9-47"></a>
+</span><span id="__span-9-48"><a href="#__codelineno-9-48" id="__codelineno-9-48" name="__codelineno-9-48"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_cable_created</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="__span-9-49"><a href="#__codelineno-9-49" id="__codelineno-9-49" name="__codelineno-9-49"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-9-50"><a href="#__codelineno-9-50" id="__codelineno-9-50" name="__codelineno-9-50"></a><span class="sd">        Add cable with termination relationships</span>
+</span><span id="__span-9-51"><a href="#__codelineno-9-51" id="__codelineno-9-51" name="__codelineno-9-51"></a><span class="sd">        """</span>
+</span><span id="__span-9-52"><a href="#__codelineno-9-52" id="__codelineno-9-52" name="__codelineno-9-52"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-9-53"><a href="#__codelineno-9-53" id="__codelineno-9-53" name="__codelineno-9-53"></a>            <span class="n">cypher</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-9-54"><a href="#__codelineno-9-54" id="__codelineno-9-54" name="__codelineno-9-54"></a><span class="s2">            CREATE (c:Cable {</span>
+</span><span id="__span-9-55"><a href="#__codelineno-9-55" id="__codelineno-9-55" name="__codelineno-9-55"></a><span class="s2">                id: $cable_id,</span>
+</span><span id="__span-9-56"><a href="#__codelineno-9-56" id="__codelineno-9-56" name="__codelineno-9-56"></a><span class="s2">                label: $label,</span>
+</span><span id="__span-9-57"><a href="#__codelineno-9-57" id="__codelineno-9-57" name="__codelineno-9-57"></a><span class="s2">                type: $cable_type,</span>
+</span><span id="__span-9-58"><a href="#__codelineno-9-58" id="__codelineno-9-58" name="__codelineno-9-58"></a><span class="s2">                length: $length,</span>
+</span><span id="__span-9-59"><a href="#__codelineno-9-59" id="__codelineno-9-59" name="__codelineno-9-59"></a><span class="s2">                status: $status</span>
+</span><span id="__span-9-60"><a href="#__codelineno-9-60" id="__codelineno-9-60" name="__codelineno-9-60"></a><span class="s2">            })</span>
+</span><span id="__span-9-61"><a href="#__codelineno-9-61" id="__codelineno-9-61" name="__codelineno-9-61"></a>
+</span><span id="__span-9-62"><a href="#__codelineno-9-62" id="__codelineno-9-62" name="__codelineno-9-62"></a><span class="s2">            WITH c</span>
+</span><span id="__span-9-63"><a href="#__codelineno-9-63" id="__codelineno-9-63" name="__codelineno-9-63"></a><span class="s2">            MATCH (i1:Interface {id: $term_a_id})</span>
+</span><span id="__span-9-64"><a href="#__codelineno-9-64" id="__codelineno-9-64" name="__codelineno-9-64"></a><span class="s2">            MATCH (i2:Interface {id: $term_b_id})</span>
+</span><span id="__span-9-65"><a href="#__codelineno-9-65" id="__codelineno-9-65" name="__codelineno-9-65"></a><span class="s2">            CREATE (i1)-[:CONNECTED_VIA]-&gt;(c)&lt;-[:CONNECTED_VIA]-(i2)</span>
+</span><span id="__span-9-66"><a href="#__codelineno-9-66" id="__codelineno-9-66" name="__codelineno-9-66"></a><span class="s2">            """</span>
+</span><span id="__span-9-67"><a href="#__codelineno-9-67" id="__codelineno-9-67" name="__codelineno-9-67"></a>
+</span><span id="__span-9-68"><a href="#__codelineno-9-68" id="__codelineno-9-68" name="__codelineno-9-68"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_write</span><span class="p">(</span>
+</span><span id="__span-9-69"><a href="#__codelineno-9-69" id="__codelineno-9-69" name="__codelineno-9-69"></a>                <span class="k">lambda</span> <span class="n">tx</span><span class="p">:</span> <span class="n">tx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cypher</span><span class="p">,</span> 
+</span><span id="__span-9-70"><a href="#__codelineno-9-70" id="__codelineno-9-70" name="__codelineno-9-70"></a>                    <span class="n">cable_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span>
+</span><span id="__span-9-71"><a href="#__codelineno-9-71" id="__codelineno-9-71" name="__codelineno-9-71"></a>                    <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'label'</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span>
+</span><span id="__span-9-72"><a href="#__codelineno-9-72" id="__codelineno-9-72" name="__codelineno-9-72"></a>                    <span class="n">cable_type</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span>
+</span><span id="__span-9-73"><a href="#__codelineno-9-73" id="__codelineno-9-73" name="__codelineno-9-73"></a>                    <span class="n">length</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'length'</span><span class="p">),</span>
+</span><span id="__span-9-74"><a href="#__codelineno-9-74" id="__codelineno-9-74" name="__codelineno-9-74"></a>                    <span class="n">status</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'value'</span><span class="p">,</span> <span class="s1">''</span><span class="p">),</span>
+</span><span id="__span-9-75"><a href="#__codelineno-9-75" id="__codelineno-9-75" name="__codelineno-9-75"></a>                    <span class="n">term_a_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">'a_terminations'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'object_id'</span><span class="p">],</span>
+</span><span id="__span-9-76"><a href="#__codelineno-9-76" id="__codelineno-9-76" name="__codelineno-9-76"></a>                    <span class="n">term_b_id</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">'b_terminations'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'object_id'</span><span class="p">]</span>
+</span><span id="__span-9-77"><a href="#__codelineno-9-77" id="__codelineno-9-77" name="__codelineno-9-77"></a>                <span class="p">)</span>
+</span><span id="__span-9-78"><a href="#__codelineno-9-78" id="__codelineno-9-78" name="__codelineno-9-78"></a>            <span class="p">)</span>
+</span><span id="__span-9-79"><a href="#__codelineno-9-79" id="__codelineno-9-79" name="__codelineno-9-79"></a>
+</span><span id="__span-9-80"><a href="#__codelineno-9-80" id="__codelineno-9-80" name="__codelineno-9-80"></a><span class="n">sync_engine</span> <span class="o">=</span> <span class="n">GraphSyncEngine</span><span class="p">(</span><span class="s2">"bolt://localhost:7687"</span><span class="p">)</span>
+</span><span id="__span-9-81"><a href="#__codelineno-9-81" id="__codelineno-9-81" name="__codelineno-9-81"></a>
+</span><span id="__span-9-82"><a href="#__codelineno-9-82" id="__codelineno-9-82" name="__codelineno-9-82"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/netbox-webhook"</span><span class="p">)</span>
+</span><span id="__span-9-83"><a href="#__codelineno-9-83" id="__codelineno-9-83" name="__codelineno-9-83"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">netbox_webhook</span><span class="p">(</span><span class="n">webhook_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">background_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">):</span>
+</span><span id="__span-9-84"><a href="#__codelineno-9-84" id="__codelineno-9-84" name="__codelineno-9-84"></a><span class="w">    </span><span class="sd">"""</span>
+</span><span id="__span-9-85"><a href="#__codelineno-9-85" id="__codelineno-9-85" name="__codelineno-9-85"></a><span class="sd">    Receive NetBox webhook and queue graph sync</span>
+</span><span id="__span-9-86"><a href="#__codelineno-9-86" id="__codelineno-9-86" name="__codelineno-9-86"></a><span class="sd">    """</span>
+</span><span id="__span-9-87"><a href="#__codelineno-9-87" id="__codelineno-9-87" name="__codelineno-9-87"></a>    <span class="n">background_tasks</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+</span><span id="__span-9-88"><a href="#__codelineno-9-88" id="__codelineno-9-88" name="__codelineno-9-88"></a>        <span class="n">sync_engine</span><span class="o">.</span><span class="n">handle_webhook_event</span><span class="p">,</span>
+</span><span id="__span-9-89"><a href="#__codelineno-9-89" id="__codelineno-9-89" name="__codelineno-9-89"></a>        <span class="n">webhook_data</span><span class="p">[</span><span class="s1">'event'</span><span class="p">],</span>
+</span><span id="__span-9-90"><a href="#__codelineno-9-90" id="__codelineno-9-90" name="__codelineno-9-90"></a>        <span class="n">webhook_data</span><span class="p">[</span><span class="s1">'model'</span><span class="p">],</span>  
+</span><span id="__span-9-91"><a href="#__codelineno-9-91" id="__codelineno-9-91" name="__codelineno-9-91"></a>        <span class="n">webhook_data</span><span class="p">[</span><span class="s1">'data'</span><span class="p">],</span>
+</span><span id="__span-9-92"><a href="#__codelineno-9-92" id="__codelineno-9-92" name="__codelineno-9-92"></a>        <span class="n">webhook_data</span><span class="p">[</span><span class="s1">'snapshots'</span><span class="p">]</span>
+</span><span id="__span-9-93"><a href="#__codelineno-9-93" id="__codelineno-9-93" name="__codelineno-9-93"></a>    <span class="p">)</span>
+</span><span id="__span-9-94"><a href="#__codelineno-9-94" id="__codelineno-9-94" name="__codelineno-9-94"></a>
+</span><span id="__span-9-95"><a href="#__codelineno-9-95" id="__codelineno-9-95" name="__codelineno-9-95"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"accepted"</span><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="batch-synchronization-safety-net">Batch Synchronization Safety Net<a class="headerlink" href="#batch-synchronization-safety-net" title="Permanent link">¶</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">schedule</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">GraphConsistencyChecker</span><span class="p">:</span>
+</span><span id="__span-10-6"><a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">netbox_client</span><span class="p">,</span> <span class="n">neo4j_driver</span><span class="p">):</span>
+</span><span id="__span-10-7"><a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">netbox</span> <span class="o">=</span> <span class="n">netbox_client</span>
+</span><span id="__span-10-8"><a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">neo4j_driver</span>
+</span><span id="__span-10-9"><a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a href="#__codelineno-10-10" id="__codelineno-10-10" name="__codelineno-10-10"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">daily_consistency_check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-10-11"><a href="#__codelineno-10-11" id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="sd">        Compare NetBox and Neo4j data for inconsistencies</span>
+</span><span id="__span-10-13"><a href="#__codelineno-10-13" id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="sd">        """</span>
+</span><span id="__span-10-14"><a href="#__codelineno-10-14" id="__codelineno-10-14" name="__codelineno-10-14"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting consistency check at </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-10-15"><a href="#__codelineno-10-15" id="__codelineno-10-15" name="__codelineno-10-15"></a>
+</span><span id="__span-10-16"><a href="#__codelineno-10-16" id="__codelineno-10-16" name="__codelineno-10-16"></a>        <span class="n">inconsistencies</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-10-17"><a href="#__codelineno-10-17" id="__codelineno-10-17" name="__codelineno-10-17"></a>
+</span><span id="__span-10-18"><a href="#__codelineno-10-18" id="__codelineno-10-18" name="__codelineno-10-18"></a>        <span class="c1"># Check device count consistency</span>
+</span><span id="__span-10-19"><a href="#__codelineno-10-19" id="__codelineno-10-19" name="__codelineno-10-19"></a>        <span class="n">netbox_device_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">netbox</span><span class="o">.</span><span class="n">dcim</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</span><span id="__span-10-20"><a href="#__codelineno-10-20" id="__codelineno-10-20" name="__codelineno-10-20"></a>
+</span><span id="__span-10-21"><a href="#__codelineno-10-21" id="__codelineno-10-21" name="__codelineno-10-21"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-10-22"><a href="#__codelineno-10-22" id="__codelineno-10-22" name="__codelineno-10-22"></a>            <span class="n">neo4j_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"MATCH (d:Device) RETURN count(d) as device_count"</span><span class="p">)</span>
+</span><span id="__span-10-23"><a href="#__codelineno-10-23" id="__codelineno-10-23" name="__codelineno-10-23"></a>            <span class="n">neo4j_device_count</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">neo4j_result</span><span class="o">.</span><span class="n">single</span><span class="p">())[</span><span class="s1">'device_count'</span><span class="p">]</span>
+</span><span id="__span-10-24"><a href="#__codelineno-10-24" id="__codelineno-10-24" name="__codelineno-10-24"></a>
+</span><span id="__span-10-25"><a href="#__codelineno-10-25" id="__codelineno-10-25" name="__codelineno-10-25"></a>        <span class="k">if</span> <span class="n">netbox_device_count</span> <span class="o">!=</span> <span class="n">neo4j_device_count</span><span class="p">:</span>
+</span><span id="__span-10-26"><a href="#__codelineno-10-26" id="__codelineno-10-26" name="__codelineno-10-26"></a>            <span class="n">inconsistencies</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-10-27"><a href="#__codelineno-10-27" id="__codelineno-10-27" name="__codelineno-10-27"></a>                <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'device_count_mismatch'</span><span class="p">,</span>
+</span><span id="__span-10-28"><a href="#__codelineno-10-28" id="__codelineno-10-28" name="__codelineno-10-28"></a>                <span class="s1">'netbox_count'</span><span class="p">:</span> <span class="n">netbox_device_count</span><span class="p">,</span>
+</span><span id="__span-10-29"><a href="#__codelineno-10-29" id="__codelineno-10-29" name="__codelineno-10-29"></a>                <span class="s1">'neo4j_count'</span><span class="p">:</span> <span class="n">neo4j_device_count</span><span class="p">,</span>
+</span><span id="__span-10-30"><a href="#__codelineno-10-30" id="__codelineno-10-30" name="__codelineno-10-30"></a>                <span class="s1">'severity'</span><span class="p">:</span> <span class="s1">'high'</span>
+</span><span id="__span-10-31"><a href="#__codelineno-10-31" id="__codelineno-10-31" name="__codelineno-10-31"></a>            <span class="p">})</span>
+</span><span id="__span-10-32"><a href="#__codelineno-10-32" id="__codelineno-10-32" name="__codelineno-10-32"></a>
+</span><span id="__span-10-33"><a href="#__codelineno-10-33" id="__codelineno-10-33" name="__codelineno-10-33"></a>        <span class="c1"># Check for orphaned relationships</span>
+</span><span id="__span-10-34"><a href="#__codelineno-10-34" id="__codelineno-10-34" name="__codelineno-10-34"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-10-35"><a href="#__codelineno-10-35" id="__codelineno-10-35" name="__codelineno-10-35"></a>            <span class="n">orphaned_query</span> <span class="o">=</span> <span class="s2">"""</span>
+</span><span id="__span-10-36"><a href="#__codelineno-10-36" id="__codelineno-10-36" name="__codelineno-10-36"></a><span class="s2">            MATCH (c:Cable)-[:CONNECTED_VIA]-(i:Interface)</span>
+</span><span id="__span-10-37"><a href="#__codelineno-10-37" id="__codelineno-10-37" name="__codelineno-10-37"></a><span class="s2">            WHERE NOT EXISTS {</span>
+</span><span id="__span-10-38"><a href="#__codelineno-10-38" id="__codelineno-10-38" name="__codelineno-10-38"></a><span class="s2">                MATCH (i)&lt;-[:HAS_INTERFACE]-(:Device)</span>
+</span><span id="__span-10-39"><a href="#__codelineno-10-39" id="__codelineno-10-39" name="__codelineno-10-39"></a><span class="s2">            }</span>
+</span><span id="__span-10-40"><a href="#__codelineno-10-40" id="__codelineno-10-40" name="__codelineno-10-40"></a><span class="s2">            RETURN count(DISTINCT c) as orphaned_cables</span>
+</span><span id="__span-10-41"><a href="#__codelineno-10-41" id="__codelineno-10-41" name="__codelineno-10-41"></a><span class="s2">            """</span>
+</span><span id="__span-10-42"><a href="#__codelineno-10-42" id="__codelineno-10-42" name="__codelineno-10-42"></a>            <span class="n">orphaned_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">orphaned_query</span><span class="p">)</span>
+</span><span id="__span-10-43"><a href="#__codelineno-10-43" id="__codelineno-10-43" name="__codelineno-10-43"></a>            <span class="n">orphaned_count</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">orphaned_result</span><span class="o">.</span><span class="n">single</span><span class="p">())[</span><span class="s1">'orphaned_cables'</span><span class="p">]</span>
+</span><span id="__span-10-44"><a href="#__codelineno-10-44" id="__codelineno-10-44" name="__codelineno-10-44"></a>
+</span><span id="__span-10-45"><a href="#__codelineno-10-45" id="__codelineno-10-45" name="__codelineno-10-45"></a>        <span class="k">if</span> <span class="n">orphaned_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-10-46"><a href="#__codelineno-10-46" id="__codelineno-10-46" name="__codelineno-10-46"></a>            <span class="n">inconsistencies</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-10-47"><a href="#__codelineno-10-47" id="__codelineno-10-47" name="__codelineno-10-47"></a>                <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'orphaned_cable_relationships'</span><span class="p">,</span>
+</span><span id="__span-10-48"><a href="#__codelineno-10-48" id="__codelineno-10-48" name="__codelineno-10-48"></a>                <span class="s1">'count'</span><span class="p">:</span> <span class="n">orphaned_count</span><span class="p">,</span>
+</span><span id="__span-10-49"><a href="#__codelineno-10-49" id="__codelineno-10-49" name="__codelineno-10-49"></a>                <span class="s1">'severity'</span><span class="p">:</span> <span class="s1">'medium'</span>
+</span><span id="__span-10-50"><a href="#__codelineno-10-50" id="__codelineno-10-50" name="__codelineno-10-50"></a>            <span class="p">})</span>
+</span><span id="__span-10-51"><a href="#__codelineno-10-51" id="__codelineno-10-51" name="__codelineno-10-51"></a>
+</span><span id="__span-10-52"><a href="#__codelineno-10-52" id="__codelineno-10-52" name="__codelineno-10-52"></a>        <span class="k">if</span> <span class="n">inconsistencies</span><span class="p">:</span>
+</span><span id="__span-10-53"><a href="#__codelineno-10-53" id="__codelineno-10-53" name="__codelineno-10-53"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_inconsistencies</span><span class="p">(</span><span class="n">inconsistencies</span><span class="p">)</span>
+</span><span id="__span-10-54"><a href="#__codelineno-10-54" id="__codelineno-10-54" name="__codelineno-10-54"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-10-55"><a href="#__codelineno-10-55" id="__codelineno-10-55" name="__codelineno-10-55"></a>            <span class="nb">print</span><span class="p">(</span><span class="s2">"Graph consistency check passed"</span><span class="p">)</span>
+</span><span id="__span-10-56"><a href="#__codelineno-10-56" id="__codelineno-10-56" name="__codelineno-10-56"></a>
+</span><span id="__span-10-57"><a href="#__codelineno-10-57" id="__codelineno-10-57" name="__codelineno-10-57"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">handle_inconsistencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inconsistencies</span><span class="p">):</span>
+</span><span id="__span-10-58"><a href="#__codelineno-10-58" id="__codelineno-10-58" name="__codelineno-10-58"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-10-59"><a href="#__codelineno-10-59" id="__codelineno-10-59" name="__codelineno-10-59"></a><span class="sd">        Handle detected inconsistencies with automated repair</span>
+</span><span id="__span-10-60"><a href="#__codelineno-10-60" id="__codelineno-10-60" name="__codelineno-10-60"></a><span class="sd">        """</span>
+</span><span id="__span-10-61"><a href="#__codelineno-10-61" id="__codelineno-10-61" name="__codelineno-10-61"></a>        <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">inconsistencies</span><span class="p">:</span>
+</span><span id="__span-10-62"><a href="#__codelineno-10-62" id="__codelineno-10-62" name="__codelineno-10-62"></a>            <span class="k">if</span> <span class="n">issue</span><span class="p">[</span><span class="s1">'severity'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'high'</span><span class="p">:</span>
+</span><span id="__span-10-63"><a href="#__codelineno-10-63" id="__codelineno-10-63" name="__codelineno-10-63"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CRITICAL: </span><span class="si">{</span><span class="n">issue</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-10-64"><a href="#__codelineno-10-64" id="__codelineno-10-64" name="__codelineno-10-64"></a>                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">trigger_full_resync</span><span class="p">()</span>
+</span><span id="__span-10-65"><a href="#__codelineno-10-65" id="__codelineno-10-65" name="__codelineno-10-65"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-10-66"><a href="#__codelineno-10-66" id="__codelineno-10-66" name="__codelineno-10-66"></a>                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"WARNING: </span><span class="si">{</span><span class="n">issue</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="__span-10-67"><a href="#__codelineno-10-67" id="__codelineno-10-67" name="__codelineno-10-67"></a>                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repair_specific_issue</span><span class="p">(</span><span class="n">issue</span><span class="p">)</span>
+</span><span id="__span-10-68"><a href="#__codelineno-10-68" id="__codelineno-10-68" name="__codelineno-10-68"></a>
+</span><span id="__span-10-69"><a href="#__codelineno-10-69" id="__codelineno-10-69" name="__codelineno-10-69"></a><span class="c1"># Schedule daily consistency checks</span>
+</span><span id="__span-10-70"><a href="#__codelineno-10-70" id="__codelineno-10-70" name="__codelineno-10-70"></a><span class="n">schedule</span><span class="o">.</span><span class="n">every</span><span class="p">()</span><span class="o">.</span><span class="n">day</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"02:00"</span><span class="p">)</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+</span><span id="__span-10-71"><a href="#__codelineno-10-71" id="__codelineno-10-71" name="__codelineno-10-71"></a>    <span class="n">GraphConsistencyChecker</span><span class="p">(</span><span class="n">netbox_client</span><span class="p">,</span> <span class="n">neo4j_driver</span><span class="p">)</span><span class="o">.</span><span class="n">daily_consistency_check</span><span class="p">()</span>
+</span><span id="__span-10-72"><a href="#__codelineno-10-72" id="__codelineno-10-72" name="__codelineno-10-72"></a><span class="p">))</span>
+</span></code></pre></div>
+<h2 id="hybrid-system-integration">Hybrid System Integration<a class="headerlink" href="#hybrid-system-integration" title="Permanent link">¶</a></h2>
+<h3 id="smart-query-routing">Smart Query Routing<a class="headerlink" href="#smart-query-routing" title="Permanent link">¶</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">HybridQueryRouter</span><span class="p">:</span>
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neo4j_driver</span><span class="p">,</span> <span class="n">netbox_client</span><span class="p">):</span>
+</span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">graph_db</span> <span class="o">=</span> <span class="n">neo4j_driver</span>
+</span><span id="__span-11-4"><a href="#__codelineno-11-4" id="__codelineno-11-4" name="__codelineno-11-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">netbox</span> <span class="o">=</span> <span class="n">netbox_client</span>
+</span><span id="__span-11-5"><a href="#__codelineno-11-5" id="__codelineno-11-5" name="__codelineno-11-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">performance_tracker</span> <span class="o">=</span> <span class="n">QueryPerformanceTracker</span><span class="p">()</span>
+</span><span id="__span-11-6"><a href="#__codelineno-11-6" id="__codelineno-11-6" name="__codelineno-11-6"></a>
+</span><span id="__span-11-7"><a href="#__codelineno-11-7" id="__codelineno-11-7" name="__codelineno-11-7"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">route_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classified_intent</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ExecutionStrategy</span><span class="p">:</span>
+</span><span id="__span-11-8"><a href="#__codelineno-11-8" id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-11-9"><a href="#__codelineno-11-9" id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="sd">        Decide whether to use graph database or direct API calls</span>
+</span><span id="__span-11-10"><a href="#__codelineno-11-10" id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="sd">        """</span>
+</span><span id="__span-11-11"><a href="#__codelineno-11-11" id="__codelineno-11-11" name="__codelineno-11-11"></a>        <span class="n">query_characteristics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_query_characteristics</span><span class="p">(</span><span class="n">classified_intent</span><span class="p">)</span>
+</span><span id="__span-11-12"><a href="#__codelineno-11-12" id="__codelineno-11-12" name="__codelineno-11-12"></a>
+</span><span id="__span-11-13"><a href="#__codelineno-11-13" id="__codelineno-11-13" name="__codelineno-11-13"></a>        <span class="c1"># Graph database is optimal for:</span>
+</span><span id="__span-11-14"><a href="#__codelineno-11-14" id="__codelineno-11-14" name="__codelineno-11-14"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'relationship_depth'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">or</span>
+</span><span id="__span-11-15"><a href="#__codelineno-11-15" id="__codelineno-11-15" name="__codelineno-11-15"></a>            <span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'involves_path_finding'</span><span class="p">]</span> <span class="ow">or</span>
+</span><span id="__span-11-16"><a href="#__codelineno-11-16" id="__codelineno-11-16" name="__codelineno-11-16"></a>            <span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'requires_aggregation'</span><span class="p">]</span> <span class="ow">or</span>
+</span><span id="__span-11-17"><a href="#__codelineno-11-17" id="__codelineno-11-17" name="__codelineno-11-17"></a>            <span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'involves_multiple_object_types'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">):</span>
+</span><span id="__span-11-18"><a href="#__codelineno-11-18" id="__codelineno-11-18" name="__codelineno-11-18"></a>
+</span><span id="__span-11-19"><a href="#__codelineno-11-19" id="__codelineno-11-19" name="__codelineno-11-19"></a>            <span class="c1"># Check graph data freshness</span>
+</span><span id="__span-11-20"><a href="#__codelineno-11-20" id="__codelineno-11-20" name="__codelineno-11-20"></a>            <span class="n">graph_freshness</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_graph_freshness</span><span class="p">(</span><span class="n">classified_intent</span><span class="p">[</span><span class="s1">'target_objects'</span><span class="p">])</span>
+</span><span id="__span-11-21"><a href="#__codelineno-11-21" id="__codelineno-11-21" name="__codelineno-11-21"></a>
+</span><span id="__span-11-22"><a href="#__codelineno-11-22" id="__codelineno-11-22" name="__codelineno-11-22"></a>            <span class="k">if</span> <span class="n">graph_freshness</span><span class="p">[</span><span class="s1">'is_acceptable'</span><span class="p">]:</span>
+</span><span id="__span-11-23"><a href="#__codelineno-11-23" id="__codelineno-11-23" name="__codelineno-11-23"></a>                <span class="k">return</span> <span class="n">ExecutionStrategy</span><span class="p">(</span>
+</span><span id="__span-11-24"><a href="#__codelineno-11-24" id="__codelineno-11-24" name="__codelineno-11-24"></a>                    <span class="n">primary</span><span class="o">=</span><span class="s1">'neo4j_graph'</span><span class="p">,</span>
+</span><span id="__span-11-25"><a href="#__codelineno-11-25" id="__codelineno-11-25" name="__codelineno-11-25"></a>                    <span class="n">fallback</span><span class="o">=</span><span class="s1">'netbox_api'</span><span class="p">,</span>
+</span><span id="__span-11-26"><a href="#__codelineno-11-26" id="__codelineno-11-26" name="__codelineno-11-26"></a>                    <span class="n">estimated_performance</span><span class="o">=</span><span class="s1">'sub_second'</span>
+</span><span id="__span-11-27"><a href="#__codelineno-11-27" id="__codelineno-11-27" name="__codelineno-11-27"></a>                <span class="p">)</span>
+</span><span id="__span-11-28"><a href="#__codelineno-11-28" id="__codelineno-11-28" name="__codelineno-11-28"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-11-29"><a href="#__codelineno-11-29" id="__codelineno-11-29" name="__codelineno-11-29"></a>                <span class="k">return</span> <span class="n">ExecutionStrategy</span><span class="p">(</span>
+</span><span id="__span-11-30"><a href="#__codelineno-11-30" id="__codelineno-11-30" name="__codelineno-11-30"></a>                    <span class="n">primary</span><span class="o">=</span><span class="s1">'hybrid_refresh'</span><span class="p">,</span>
+</span><span id="__span-11-31"><a href="#__codelineno-11-31" id="__codelineno-11-31" name="__codelineno-11-31"></a>                    <span class="n">steps</span><span class="o">=</span><span class="p">[</span><span class="s1">'refresh_graph_subset'</span><span class="p">,</span> <span class="s1">'execute_graph_query'</span><span class="p">],</span>
+</span><span id="__span-11-32"><a href="#__codelineno-11-32" id="__codelineno-11-32" name="__codelineno-11-32"></a>                    <span class="n">estimated_performance</span><span class="o">=</span><span class="s1">'fast'</span>
+</span><span id="__span-11-33"><a href="#__codelineno-11-33" id="__codelineno-11-33" name="__codelineno-11-33"></a>                <span class="p">)</span>
+</span><span id="__span-11-34"><a href="#__codelineno-11-34" id="__codelineno-11-34" name="__codelineno-11-34"></a>
+</span><span id="__span-11-35"><a href="#__codelineno-11-35" id="__codelineno-11-35" name="__codelineno-11-35"></a>        <span class="c1"># Direct API is better for:</span>
+</span><span id="__span-11-36"><a href="#__codelineno-11-36" id="__codelineno-11-36" name="__codelineno-11-36"></a>        <span class="k">elif</span> <span class="p">(</span><span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'single_object_lookup'</span><span class="p">]</span> <span class="ow">or</span>
+</span><span id="__span-11-37"><a href="#__codelineno-11-37" id="__codelineno-11-37" name="__codelineno-11-37"></a>              <span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'requires_realtime_data'</span><span class="p">]</span> <span class="ow">or</span>
+</span><span id="__span-11-38"><a href="#__codelineno-11-38" id="__codelineno-11-38" name="__codelineno-11-38"></a>              <span class="n">query_characteristics</span><span class="p">[</span><span class="s1">'simple_list_query'</span><span class="p">]):</span>
+</span><span id="__span-11-39"><a href="#__codelineno-11-39" id="__codelineno-11-39" name="__codelineno-11-39"></a>
+</span><span id="__span-11-40"><a href="#__codelineno-11-40" id="__codelineno-11-40" name="__codelineno-11-40"></a>            <span class="k">return</span> <span class="n">ExecutionStrategy</span><span class="p">(</span>
+</span><span id="__span-11-41"><a href="#__codelineno-11-41" id="__codelineno-11-41" name="__codelineno-11-41"></a>                <span class="n">primary</span><span class="o">=</span><span class="s1">'netbox_api'</span><span class="p">,</span>
+</span><span id="__span-11-42"><a href="#__codelineno-11-42" id="__codelineno-11-42" name="__codelineno-11-42"></a>                <span class="n">optimization</span><span class="o">=</span><span class="s1">'use_cache'</span><span class="p">,</span>
+</span><span id="__span-11-43"><a href="#__codelineno-11-43" id="__codelineno-11-43" name="__codelineno-11-43"></a>                <span class="n">estimated_performance</span><span class="o">=</span><span class="s1">'fast'</span>
+</span><span id="__span-11-44"><a href="#__codelineno-11-44" id="__codelineno-11-44" name="__codelineno-11-44"></a>            <span class="p">)</span>
+</span><span id="__span-11-45"><a href="#__codelineno-11-45" id="__codelineno-11-45" name="__codelineno-11-45"></a>
+</span><span id="__span-11-46"><a href="#__codelineno-11-46" id="__codelineno-11-46" name="__codelineno-11-46"></a>        <span class="c1"># Hybrid approach for complex edge cases</span>
+</span><span id="__span-11-47"><a href="#__codelineno-11-47" id="__codelineno-11-47" name="__codelineno-11-47"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-11-48"><a href="#__codelineno-11-48" id="__codelineno-11-48" name="__codelineno-11-48"></a>            <span class="k">return</span> <span class="n">ExecutionStrategy</span><span class="p">(</span>
+</span><span id="__span-11-49"><a href="#__codelineno-11-49" id="__codelineno-11-49" name="__codelineno-11-49"></a>                <span class="n">primary</span><span class="o">=</span><span class="s1">'hybrid_combination'</span><span class="p">,</span>
+</span><span id="__span-11-50"><a href="#__codelineno-11-50" id="__codelineno-11-50" name="__codelineno-11-50"></a>                <span class="n">steps</span><span class="o">=</span><span class="p">[</span><span class="s1">'graph_analysis'</span><span class="p">,</span> <span class="s1">'api_enrichment'</span><span class="p">,</span> <span class="s1">'combine_results'</span><span class="p">],</span>
+</span><span id="__span-11-51"><a href="#__codelineno-11-51" id="__codelineno-11-51" name="__codelineno-11-51"></a>                <span class="n">estimated_performance</span><span class="o">=</span><span class="s1">'moderate'</span>
+</span><span id="__span-11-52"><a href="#__codelineno-11-52" id="__codelineno-11-52" name="__codelineno-11-52"></a>            <span class="p">)</span>
+</span><span id="__span-11-53"><a href="#__codelineno-11-53" id="__codelineno-11-53" name="__codelineno-11-53"></a>
+</span><span id="__span-11-54"><a href="#__codelineno-11-54" id="__codelineno-11-54" name="__codelineno-11-54"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute_graph_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cypher_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="__span-11-55"><a href="#__codelineno-11-55" id="__codelineno-11-55" name="__codelineno-11-55"></a><span class="w">        </span><span class="sd">"""</span>
+</span><span id="__span-11-56"><a href="#__codelineno-11-56" id="__codelineno-11-56" name="__codelineno-11-56"></a><span class="sd">        Execute Cypher query with performance monitoring</span>
+</span><span id="__span-11-57"><a href="#__codelineno-11-57" id="__codelineno-11-57" name="__codelineno-11-57"></a><span class="sd">        """</span>
+</span><span id="__span-11-58"><a href="#__codelineno-11-58" id="__codelineno-11-58" name="__codelineno-11-58"></a>        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span id="__span-11-59"><a href="#__codelineno-11-59" id="__codelineno-11-59" name="__codelineno-11-59"></a>
+</span><span id="__span-11-60"><a href="#__codelineno-11-60" id="__codelineno-11-60" name="__codelineno-11-60"></a>        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_db</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+</span><span id="__span-11-61"><a href="#__codelineno-11-61" id="__codelineno-11-61" name="__codelineno-11-61"></a>            <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cypher_query</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+</span><span id="__span-11-62"><a href="#__codelineno-11-62" id="__codelineno-11-62" name="__codelineno-11-62"></a>            <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">result</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+</span><span id="__span-11-63"><a href="#__codelineno-11-63" id="__codelineno-11-63" name="__codelineno-11-63"></a>
+</span><span id="__span-11-64"><a href="#__codelineno-11-64" id="__codelineno-11-64" name="__codelineno-11-64"></a>        <span class="n">execution_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+</span><span id="__span-11-65"><a href="#__codelineno-11-65" id="__codelineno-11-65" name="__codelineno-11-65"></a>
+</span><span id="__span-11-66"><a href="#__codelineno-11-66" id="__codelineno-11-66" name="__codelineno-11-66"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">performance_tracker</span><span class="o">.</span><span class="n">record_query_performance</span><span class="p">(</span>
+</span><span id="__span-11-67"><a href="#__codelineno-11-67" id="__codelineno-11-67" name="__codelineno-11-67"></a>            <span class="n">query_type</span><span class="o">=</span><span class="s1">'graph'</span><span class="p">,</span>
+</span><span id="__span-11-68"><a href="#__codelineno-11-68" id="__codelineno-11-68" name="__codelineno-11-68"></a>            <span class="n">execution_time</span><span class="o">=</span><span class="n">execution_time</span><span class="p">,</span>
+</span><span id="__span-11-69"><a href="#__codelineno-11-69" id="__codelineno-11-69" name="__codelineno-11-69"></a>            <span class="n">result_count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="__span-11-70"><a href="#__codelineno-11-70" id="__codelineno-11-70" name="__codelineno-11-70"></a>        <span class="p">)</span>
+</span><span id="__span-11-71"><a href="#__codelineno-11-71" id="__codelineno-11-71" name="__codelineno-11-71"></a>
+</span><span id="__span-11-72"><a href="#__codelineno-11-72" id="__codelineno-11-72" name="__codelineno-11-72"></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-11-73"><a href="#__codelineno-11-73" id="__codelineno-11-73" name="__codelineno-11-73"></a>            <span class="s1">'data'</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+</span><span id="__span-11-74"><a href="#__codelineno-11-74" id="__codelineno-11-74" name="__codelineno-11-74"></a>            <span class="s1">'execution_time'</span><span class="p">:</span> <span class="n">execution_time</span><span class="p">,</span>
+</span><span id="__span-11-75"><a href="#__codelineno-11-75" id="__codelineno-11-75" name="__codelineno-11-75"></a>            <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'neo4j_graph'</span><span class="p">,</span>
+</span><span id="__span-11-76"><a href="#__codelineno-11-76" id="__codelineno-11-76" name="__codelineno-11-76"></a>            <span class="s1">'cache_eligible'</span><span class="p">:</span> <span class="kc">True</span>
+</span><span id="__span-11-77"><a href="#__codelineno-11-77" id="__codelineno-11-77" name="__codelineno-11-77"></a>        <span class="p">}</span>
+</span></code></pre></div>
+<h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">¶</a></h2>
+<h3 id="query-performance-tuning">Query Performance Tuning<a class="headerlink" href="#query-performance-tuning" title="Permanent link">¶</a></h3>
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="err">--</span><span class="w"> </span><span class="k">Create</span><span class="w"> </span><span class="n">indexes</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">common</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="n">patterns</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">device_name_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">interface_device_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">device_id</span><span class="p">);</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">vlan_vid_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">VLAN</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">vid</span><span class="p">);</span>
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">cable_termination_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Cable</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">termination_a_id</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">termination_b_id</span><span class="p">);</span>
+</span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="err">--</span><span class="w"> </span><span class="n">Composite</span><span class="w"> </span><span class="n">indexes</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">complex</span><span class="w"> </span><span class="n">queries</span>
+</span><span id="__span-12-8"><a href="#__codelineno-12-8" id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">device_site_type_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Device</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">site_id</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">device_type</span><span class="p">);</span>
+</span><span id="__span-12-9"><a href="#__codelineno-12-9" id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">interface_vlan_idx</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Interface</span><span class="p">)</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="n">vlan_memberships</span><span class="p">);</span>
+</span></code></pre></div>
+<p><strong>Query Optimization Examples</strong>:
+<div class="language-cypher highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="err">--</span><span class="w"> </span><span class="n">BEFORE</span><span class="p">:</span><span class="w"> </span><span class="n">Inefficient</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">finding</span><span class="w"> </span><span class="p">(</span><span class="n">takes</span><span class="w"> </span><span class="m">30</span><span class="err">+</span><span class="w"> </span><span class="n">seconds</span><span class="p">)</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'SW-001'</span><span class="p">})</span><span class="o">-[</span><span class="p">*</span><span class="o">]-</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'RTR-001'</span><span class="p">})</span>
+</span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">path</span>
+</span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="err">--</span><span class="w"> </span><span class="n">AFTER</span><span class="p">:</span><span class="w"> </span><span class="n">Optimized</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">direction</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">relationship</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">constraints</span><span class="w"> </span><span class="p">(&lt;</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="n">second</span><span class="p">)</span>
+</span><span id="__span-13-6"><a href="#__codelineno-13-6" id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'SW-001'</span><span class="p">})</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-&gt;</span>
+</span><span id="__span-13-7"><a href="#__codelineno-13-7" id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="w">             </span><span class="p">(:</span><span class="n">Interface</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CONNECTED_VIA</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">5</span><span class="o">]-</span>
+</span><span id="__span-13-8"><a href="#__codelineno-13-8" id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="w">             </span><span class="p">(:</span><span class="n">Interface</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_INTERFACE</span><span class="o">]-</span><span class="p">(</span><span class="n">d2</span><span class="p">:</span><span class="n">Device</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">'RTR-001'</span><span class="p">})</span>
+</span><span id="__span-13-9"><a href="#__codelineno-13-9" id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="k">RETURN</span><span class="w"> </span><span class="n">path</span>
+</span><span id="__span-13-10"><a href="#__codelineno-13-10" id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="k">LIMIT</span><span class="w"> </span><span class="m">1</span>
+</span></code></pre></div></p>
+<h2 id="success-metrics">Success Metrics<a class="headerlink" href="#success-metrics" title="Permanent link">¶</a></h2>
+<h3 id="performance-targets">Performance Targets<a class="headerlink" href="#performance-targets" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Relationship queries</strong>: Complete in under 1 second using graph traversal</li>
+<li><strong>Complex infrastructure audits</strong>: Complete in under 3 seconds using optimized Cypher</li>
+<li><strong>Graph synchronization</strong>: Stay within 5 minutes of NetBox state using webhooks  </li>
+<li><strong>Query success rate</strong>: Handle previously impossible multi-hop relationship queries</li>
+</ul>
+<h3 id="technical-metrics">Technical Metrics<a class="headerlink" href="#technical-metrics" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Graph database size</strong>: Efficiently store 10K+ devices, 100K+ interfaces, 50K+ cables</li>
+<li><strong>Sync reliability</strong>: 99.9% webhook processing success rate</li>
+<li><strong>Memory usage</strong>: Graph database footprint under 4GB for typical enterprise deployment</li>
+<li><strong>Concurrent query performance</strong>: Support 50+ concurrent users without degradation</li>
+</ul>
+<h3 id="user-experience-impact">User Experience Impact<a class="headerlink" href="#user-experience-impact" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>New query capabilities</strong>: Enable questions previously impossible with relational approaches</li>
+<li><strong>Response time consistency</strong>: Eliminate variable performance based on relationship complexity</li>
+<li><strong>Visual topology</strong>: Support for graph visualization and network mapping tools</li>
+<li><strong>Predictable performance</strong>: Sub-second response times regardless of network size</li>
+</ul>
+<p>This graph integration phase transforms the system from a basic API interface into a true <strong>network topology intelligence platform</strong> capable of answering sophisticated infrastructure questions in real-time.</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,2340 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../production-considerations/" rel="prev"/>
+<link href="../../milestones/phase-5-neo4j/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>Selection Guide - RTF AI Research Portfolio</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="cyan" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#framework-selection-guide">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="RTF AI Research Portfolio" class="md-header__button md-logo" data-md-component="logo" href="../.." title="RTF AI Research Portfolio">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            RTF AI Research Portfolio
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Selection Guide
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="cyan" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="cyan" data-md-color-media="" data-md-color-primary="blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--integrated" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="RTF AI Research Portfolio" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="RTF AI Research Portfolio">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    RTF AI Research Portfolio
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 1 - TMDB Chatbox
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 1 - TMDB Chatbox
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/demos/">
+<span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-1-tmdb/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 2 - NetBox MCP
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 2 - NetBox MCP
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/performance-analysis/">
+<span class="md-ellipsis">
+    
+  
+    Performance Analysis
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/mcp-integration/">
+<span class="md-ellipsis">
+    
+  
+    MCP Integration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-2-netbox/demos/">
+<span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-3-openai-failed/demos/">
+<span class="md-ellipsis">
+    
+  
+    Interactive Demos
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 4 - Framework Comparison
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 4 - Framework Comparison
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/overview/">
+<span class="md-ellipsis">
+    
+  
+    Research Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/deepagents-architecture/">
+<span class="md-ellipsis">
+    
+  
+    Deepagents Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/claude-sdk-architecture/">
+<span class="md-ellipsis">
+    
+  
+    Claude SDK Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/comparative-analysis/">
+<span class="md-ellipsis">
+    
+  
+    Comparative Analysis
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-4-framework-comparison/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Phase 5 - Production DeepAgents
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 5 - Production DeepAgents
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/multi-model-evaluation/">
+<span class="md-ellipsis">
+    
+  
+    Multi-Model Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/observability-and-monitoring/">
+<span class="md-ellipsis">
+    
+  
+    Observability &amp; Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/evaluation-correctness/">
+<span class="md-ellipsis">
+    
+  
+    Evaluating for Correctness
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/graphql-read-path/">
+<span class="md-ellipsis">
+    
+  
+    GraphQL Read Path
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/0-7-5-upgrade/">
+<span class="md-ellipsis">
+    
+  
+    DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/langchain-ecosystem/">
+<span class="md-ellipsis">
+    
+  
+    LangChain Ecosystem vs Cloud Platform MCP
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../phases/phase-5-production-deepagents/lessons-learned/">
+<span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Framework Comparison
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Framework Comparison
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../overview/">
+<span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../architectural-patterns/">
+<span class="md-ellipsis">
+    
+  
+    Architectural Patterns
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../flexibility-vs-convenience/">
+<span class="md-ellipsis">
+    
+  
+    Flexibility vs Convenience
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../tool-orchestration/">
+<span class="md-ellipsis">
+    
+  
+    Tool Orchestration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../production-considerations/">
+<span class="md-ellipsis">
+    
+  
+    Production Considerations
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Selection Guide
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Selection Guide
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#decision-framework">
+<span class="md-ellipsis">
+      
+        Decision Framework
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quick-decision-tree">
+<span class="md-ellipsis">
+      
+        Quick Decision Tree
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#evaluation-dimensions">
+<span class="md-ellipsis">
+      
+        Evaluation Dimensions
+      
+    </span>
+</a>
+<nav aria-label="Evaluation Dimensions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-project-maturity-goals">
+<span class="md-ellipsis">
+      
+        1. Project Maturity &amp; Goals
+      
+    </span>
+</a>
+<nav aria-label="1. Project Maturity &amp; Goals" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#early-stage-proof-of-concept">
+<span class="md-ellipsis">
+      
+        Early Stage (Proof of Concept)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mid-stage-mvp-beta">
+<span class="md-ellipsis">
+      
+        Mid Stage (MVP / Beta)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#late-stage-production">
+<span class="md-ellipsis">
+      
+        Late Stage (Production)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-technical-requirements">
+<span class="md-ellipsis">
+      
+        2. Technical Requirements
+      
+    </span>
+</a>
+<nav aria-label="2. Technical Requirements" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#orchestration-complexity">
+<span class="md-ellipsis">
+      
+        Orchestration Complexity
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tool-integration-needs">
+<span class="md-ellipsis">
+      
+        Tool Integration Needs
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance-requirements">
+<span class="md-ellipsis">
+      
+        Performance Requirements
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-team-capabilities">
+<span class="md-ellipsis">
+      
+        3. Team Capabilities
+      
+    </span>
+</a>
+<nav aria-label="3. Team Capabilities" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#developer-experience-level">
+<span class="md-ellipsis">
+      
+        Developer Experience Level
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#team-size-structure">
+<span class="md-ellipsis">
+      
+        Team Size &amp; Structure
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#maintenance-capacity">
+<span class="md-ellipsis">
+      
+        Maintenance Capacity
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-business-constraints">
+<span class="md-ellipsis">
+      
+        4. Business Constraints
+      
+    </span>
+</a>
+<nav aria-label="4. Business Constraints" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#time-to-market">
+<span class="md-ellipsis">
+      
+        Time-to-Market
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#budget-considerations">
+<span class="md-ellipsis">
+      
+        Budget Considerations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compliance-security">
+<span class="md-ellipsis">
+      
+        Compliance &amp; Security
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-strategic-considerations">
+<span class="md-ellipsis">
+      
+        5. Strategic Considerations
+      
+    </span>
+</a>
+<nav aria-label="5. Strategic Considerations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vendor-lock-in-tolerance">
+<span class="md-ellipsis">
+      
+        Vendor Lock-in Tolerance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#innovation-velocity">
+<span class="md-ellipsis">
+      
+        Innovation Velocity
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scale-growth">
+<span class="md-ellipsis">
+      
+        Scale &amp; Growth
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#decision-matrices">
+<span class="md-ellipsis">
+      
+        Decision Matrices
+      
+    </span>
+</a>
+<nav aria-label="Decision Matrices" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matrix-1-by-use-case">
+<span class="md-ellipsis">
+      
+        Matrix 1: By Use Case
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matrix-2-by-industry">
+<span class="md-ellipsis">
+      
+        Matrix 2: By Industry
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hybrid-strategies">
+<span class="md-ellipsis">
+      
+        Hybrid Strategies
+      
+    </span>
+</a>
+<nav aria-label="Hybrid Strategies" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#strategy-1-start-small-expand-selectively">
+<span class="md-ellipsis">
+      
+        Strategy 1: Start Small, Expand Selectively
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#strategy-2-parallel-development">
+<span class="md-ellipsis">
+      
+        Strategy 2: Parallel Development
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#strategy-3-phased-migration">
+<span class="md-ellipsis">
+      
+        Strategy 3: Phased Migration
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#common-scenarios-recommendations">
+<span class="md-ellipsis">
+      
+        Common Scenarios &amp; Recommendations
+      
+    </span>
+</a>
+<nav aria-label="Common Scenarios &amp; Recommendations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-1-infrastructure-query-agent-our-netbox-case">
+<span class="md-ellipsis">
+      
+        Scenario 1: Infrastructure Query Agent (Our NetBox Case)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-2-multi-agent-research-system">
+<span class="md-ellipsis">
+      
+        Scenario 2: Multi-Agent Research System
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-3-customer-support-automation">
+<span class="md-ellipsis">
+      
+        Scenario 3: Customer Support Automation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-4-data-analysis-pipeline">
+<span class="md-ellipsis">
+      
+        Scenario 4: Data Analysis Pipeline
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#final-recommendation-framework">
+<span class="md-ellipsis">
+      
+        Final Recommendation Framework
+      
+    </span>
+</a>
+<nav aria-label="Final Recommendation Framework" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#score-your-project-1-5-scale">
+<span class="md-ellipsis">
+      
+        Score Your Project (1-5 scale)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#calculation">
+<span class="md-ellipsis">
+      
+        Calculation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion">
+<span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#next-steps">
+<span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Development Milestones (Planned)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Development Milestones (Planned)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../milestones/phase-5-neo4j/">
+<span class="md-ellipsis">
+    
+  
+    Phase 6 Neo4j Integration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../milestones/phase-6-rag/">
+<span class="md-ellipsis">
+    
+  
+    Phase 7 RAG Intelligence
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../milestones/phase-7-analytics/">
+<span class="md-ellipsis">
+    
+  
+    Phase 8 Analytics Platform
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Research Methods
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Methods
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/retrieval-and-planning/">
+<span class="md-ellipsis">
+    
+  
+    Retrieval &amp; Planning
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/evaluation/">
+<span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/benchmarking/">
+<span class="md-ellipsis">
+    
+  
+    Benchmarking
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/observability/">
+<span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../methods/tooling/">
+<span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--section md-nav__item--nested">
+<input class="md-nav__toggle md-toggle md-toggle--indeterminate" id="__nav_10" type="checkbox"/>
+<label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Architecture Decisions
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_10_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_10">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture Decisions
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0001-adopt-mkdocs-material/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0001 MkDocs Material
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0002-chatbox-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0002 Chatbox Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0003-diagnostic-first-debugging/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0003 Diagnostic-First Debugging
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0004-media-type-detection-enhancement/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0004 Media Type Detection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0005-entity-resolution-cache-override/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0005 Entity Resolution Cache Override
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0006-financial-constraint-parameter-mapping/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0006 Financial Constraint Mapping
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0007-dual-mode-financial-query-processing/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0007 Dual-Mode Financial Queries
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0008-progressive-parameter-injection-pipeline/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0008 Progressive Parameter Injection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0009-endpoint-aware-constraint-validation/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0009 Endpoint-Aware Constraint Validation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0010-multi-layer-pipeline-debugging/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0010 Multi-Layer Pipeline Debugging
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0011-temporal-sorting-constraint-interaction/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0011 Temporal Sorting Interaction
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0012-intent-aware-sorting-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0012 Intent-Aware Sorting
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0013-multi-agent-orchestration-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0013 Multi-Agent Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0014-openai-model-selection-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0014 OpenAI Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0015-cli-testing-infrastructure-design/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0015 CLI Testing Infrastructure
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0016-agent-communication-protocol/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0016 Agent Communication Protocol
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0017-session-management-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0017 Session Management Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0018-langgraph-stategraph-architecture/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0018 LangGraph StateGraph Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0019-limitation-handling-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0019 Limitation Handling Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0020-intelligent-caching-redis-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0020 Intelligent Caching Redis Strategy
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0021-dynamic-tool-generation-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0021 Dynamic Tool Generation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0022-interactive-cli-architecture-design/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0022 Interactive CLI Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0023-claude-api-prompt-caching-implementation/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0023 Claude API Prompt Caching
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0024-cache-performance-monitoring-strategy/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0024 Cache Performance Monitoring
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0025-project-requirements-package-framework/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0025 Project Requirements Framework
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0026-claude-sdk-project-requirements-package/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0026 Claude SDK Requirements Package
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0027-intelligent-routing-and-model-selection/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0027 Intelligent Routing &amp; Model Selection
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0028-native-local-and-cloud-models-on-deepagents/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0028 Native Local &amp; Cloud Models on DeepAgents
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0029-langsmith-observability-platform/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0029 LangSmith Observability Platform
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0030-model-matrix-evaluation-harness/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0030 Model-Matrix Evaluation Harness
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0031-deepagents-0.6-upgrade-and-harnessprofile-workaround/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0031 DeepAgents 0.6 Upgrade &amp; HarnessProfile
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0032-quickjs-ptc-deferral/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0032 QuickJS / PTC Deferral
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0033-reference-grounded-correctness-evaluator/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0033 Reference-Grounded Correctness Evaluator
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0034-read-only-graphql-complementary-read-path/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0034 Read-Only GraphQL Complementary Read Path
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0035-deepagents-0.7.5-upgrade/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0035 DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp/">
+<span class="md-ellipsis">
+    
+  
+    ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="framework-selection-guide">Framework Selection Guide<a class="headerlink" href="#framework-selection-guide" title="Permanent link">¶</a></h1>
+<h2 id="decision-framework">Decision Framework<a class="headerlink" href="#decision-framework" title="Permanent link">¶</a></h2>
+<p>This guide helps you choose between deepagents and Claude SDK based on your specific project requirements, team capabilities, and business constraints.</p>
+<h2 id="quick-decision-tree">Quick Decision Tree<a class="headerlink" href="#quick-decision-tree" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>graph TD
+    A[Start] --&gt; B{Production system?}
+    B --&gt;|Yes| C{Standard capabilities sufficient?}
+    B --&gt;|No| D{Research/Prototype?}
+
+    C --&gt;|Yes| E[Choose Claude SDK]
+    C --&gt;|No| F{Custom orchestration critical?}
+
+    D --&gt;|Yes| G{Novel agent behaviors?}
+    D --&gt;|No| H[Choose Claude SDK]
+
+    F --&gt;|Yes| I{Team has infrastructure expertise?}
+    F --&gt;|No| J[Start with Claude SDK, Custom MCP tools]
+
+    G --&gt;|Yes| K[Choose Deepagents]
+    G --&gt;|No| H
+
+    I --&gt;|Yes| L[Choose Deepagents]
+    I --&gt;|No| J
+
+    style E fill:#90EE90
+    style H fill:#90EE90
+    style K fill:#87CEEB
+    style L fill:#87CEEB
+    style J fill:#FFD700</code></pre>
+<h2 id="evaluation-dimensions">Evaluation Dimensions<a class="headerlink" href="#evaluation-dimensions" title="Permanent link">¶</a></h2>
+<h3 id="1-project-maturity-goals">1. Project Maturity &amp; Goals<a class="headerlink" href="#1-project-maturity-goals" title="Permanent link">¶</a></h3>
+<h4 id="early-stage-proof-of-concept">Early Stage (Proof of Concept)<a class="headerlink" href="#early-stage-proof-of-concept" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+✅ Need to validate feasibility quickly
+✅ Want to demo to stakeholders fast
+✅ Standard agent capabilities likely sufficient
+✅ May pivot based on feedback</p>
+<p><strong>Choose Deepagents if</strong>:
+✅ Exploring novel agent architectures
+✅ Researching new orchestration strategies
+✅ Need flexibility to experiment
+✅ PoC will inform custom production system</p>
+<h4 id="mid-stage-mvp-beta">Mid Stage (MVP / Beta)<a class="headerlink" href="#mid-stage-mvp-beta" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+✅ Moving quickly toward production
+✅ Team wants proven patterns
+✅ Time-to-market critical
+✅ Limited infrastructure resources</p>
+<p><strong>Choose Deepagents if</strong>:
+✅ MVP validates need for customization
+✅ Standard patterns insufficient
+✅ Team comfortable with complexity
+✅ Custom features are differentiators</p>
+<h4 id="late-stage-production">Late Stage (Production)<a class="headerlink" href="#late-stage-production" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+✅ Stability and reliability paramount
+✅ Maintenance minimization valued
+✅ Security/compliance requirements
+✅ Standard capabilities meet needs</p>
+<p><strong>Choose Deepagents if</strong>:
+✅ Custom orchestration provides competitive advantage
+✅ Team has mature operations practices
+✅ Ongoing customization expected
+✅ Framework independence important</p>
+<h3 id="2-technical-requirements">2. Technical Requirements<a class="headerlink" href="#2-technical-requirements" title="Permanent link">¶</a></h3>
+<h4 id="orchestration-complexity">Orchestration Complexity<a class="headerlink" href="#orchestration-complexity" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Deepagents</th>
+<th>Claude SDK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sequential tool calls</strong></td>
+<td>✅ Explicit control</td>
+<td>✅ LLM manages</td>
+</tr>
+<tr>
+<td><strong>Parallel execution</strong></td>
+<td>✅ Custom async logic</td>
+<td>⚠️ LLM may parallelize</td>
+</tr>
+<tr>
+<td><strong>Conditional branching</strong></td>
+<td>✅ Full control</td>
+<td>⚠️ LLM-dependent</td>
+</tr>
+<tr>
+<td><strong>Complex state machines</strong></td>
+<td>✅ Implement any pattern</td>
+<td>❌ Limited support</td>
+</tr>
+<tr>
+<td><strong>Deterministic workflows</strong></td>
+<td>✅ Guaranteed order</td>
+<td>❌ LLM decides</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation</strong>:
+- <strong>Claude SDK</strong>: If LLM-driven orchestration acceptable
+- <strong>Deepagents</strong>: If deterministic control required</p>
+<h4 id="tool-integration-needs">Tool Integration Needs<a class="headerlink" href="#tool-integration-needs" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Deepagents</th>
+<th>Claude SDK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standard CRUD tools</strong></td>
+<td>✅ Easy</td>
+<td>✅ MCP protocol</td>
+</tr>
+<tr>
+<td><strong>Custom Python tools</strong></td>
+<td>✅ Direct functions</td>
+<td>⚠️ Via MCP server</td>
+</tr>
+<tr>
+<td><strong>External APIs</strong></td>
+<td>✅ Direct integration</td>
+<td>⚠️ Via MCP wrapper</td>
+</tr>
+<tr>
+<td><strong>Streaming data</strong></td>
+<td>✅ Custom handling</td>
+<td>⚠️ Limited support</td>
+</tr>
+<tr>
+<td><strong>Tool composition</strong></td>
+<td>✅ Python-level</td>
+<td>❌ MCP constraints</td>
+</tr>
+<tr>
+<td><strong>100+ tools</strong></td>
+<td>⚠️ Context limits</td>
+<td>⚠️ Context limits</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation</strong>:
+- <strong>Claude SDK</strong>: If standard tool patterns fit
+- <strong>Deepagents</strong>: If complex tool coordination needed</p>
+<h4 id="performance-requirements">Performance Requirements<a class="headerlink" href="#performance-requirements" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Deepagents</th>
+<th>Claude SDK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Custom caching</strong></td>
+<td>✅ Full control</td>
+<td>⚠️ MCP server level</td>
+</tr>
+<tr>
+<td><strong>Batching</strong></td>
+<td>✅ Custom implementation</td>
+<td>⚠️ Tool-level only</td>
+</tr>
+<tr>
+<td><strong>Connection pooling</strong></td>
+<td>✅ Custom management</td>
+<td>⚠️ MCP managed</td>
+</tr>
+<tr>
+<td><strong>Query optimization</strong></td>
+<td>✅ Domain-specific</td>
+<td>❌ LLM decides</td>
+</tr>
+<tr>
+<td><strong>Response streaming</strong></td>
+<td>⚠️ Custom implementation</td>
+<td>✅ Built-in</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation</strong>:
+- <strong>Claude SDK</strong>: If standard performance adequate
+- <strong>Deepagents</strong>: If domain-specific optimization critical</p>
+<h3 id="3-team-capabilities">3. Team Capabilities<a class="headerlink" href="#3-team-capabilities" title="Permanent link">¶</a></h3>
+<h4 id="developer-experience-level">Developer Experience Level<a class="headerlink" href="#developer-experience-level" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+- Team new to LLM agents
+- Mix of junior/senior developers
+- Limited infrastructure expertise
+- Prefer standard patterns</p>
+<p><strong>Choose Deepagents if</strong>:
+- Team experienced with LLM agents
+- Strong Python infrastructure skills
+- Comfortable with complexity
+- Enjoy building custom solutions</p>
+<h4 id="team-size-structure">Team Size &amp; Structure<a class="headerlink" href="#team-size-structure" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Team Profile</th>
+<th>Recommendation</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1-2 developers</strong></td>
+<td>Claude SDK</td>
+<td>Minimize maintenance burden</td>
+</tr>
+<tr>
+<td><strong>Small team (3-5)</strong></td>
+<td>Claude SDK</td>
+<td>Focus on business logic</td>
+</tr>
+<tr>
+<td><strong>Medium team (6-15)</strong></td>
+<td>Either</td>
+<td>Depends on expertise distribution</td>
+</tr>
+<tr>
+<td><strong>Large team (15+)</strong></td>
+<td>Deepagents</td>
+<td>Can absorb maintenance costs</td>
+</tr>
+<tr>
+<td><strong>Dedicated infrastructure team</strong></td>
+<td>Deepagents</td>
+<td>Infrastructure expertise available</td>
+</tr>
+<tr>
+<td><strong>Product-focused team</strong></td>
+<td>Claude SDK</td>
+<td>Minimize infrastructure work</td>
+</tr>
+</tbody>
+</table>
+<h4 id="maintenance-capacity">Maintenance Capacity<a class="headerlink" href="#maintenance-capacity" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+- Limited ongoing maintenance capacity
+- Team stretched across projects
+- Prefer managed solutions
+- Want predictable maintenance load</p>
+<p><strong>Choose Deepagents if</strong>:
+- Capacity for ongoing customization
+- Dedicated agent platform team
+- Active agent research program
+- Maintenance cost acceptable</p>
+<h3 id="4-business-constraints">4. Business Constraints<a class="headerlink" href="#4-business-constraints" title="Permanent link">¶</a></h3>
+<h4 id="time-to-market">Time-to-Market<a class="headerlink" href="#time-to-market" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Timeline</th>
+<th>Recommendation</th>
+<th>Development Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&lt; 2 weeks</strong></td>
+<td>Claude SDK</td>
+<td>2-3 days to working agent</td>
+</tr>
+<tr>
+<td><strong>2-4 weeks</strong></td>
+<td>Claude SDK</td>
+<td>1 week to production-ready</td>
+</tr>
+<tr>
+<td><strong>1-2 months</strong></td>
+<td>Either</td>
+<td>Time for custom development</td>
+</tr>
+<tr>
+<td><strong>3+ months</strong></td>
+<td>Deepagents</td>
+<td>Justify custom investment</td>
+</tr>
+</tbody>
+</table>
+<h4 id="budget-considerations">Budget Considerations<a class="headerlink" href="#budget-considerations" title="Permanent link">¶</a></h4>
+<p><strong>Claude SDK Cost Profile</strong>:
+- Low initial development cost
+- Predictable maintenance costs
+- SDK managed (no surprise costs)
+- Anthropic API costs</p>
+<p><strong>Deepagents Cost Profile</strong>:
+- Higher initial development cost
+- Variable maintenance costs
+- Custom infrastructure costs
+- Any LLM provider costs</p>
+<p><strong>Total Cost of Ownership (First Year)</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Cost Category</th>
+<th>Deepagents</th>
+<th>Claude SDK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Development</td>
+<td>$40k-80k</td>
+<td>$10k-20k</td>
+</tr>
+<tr>
+<td>Infrastructure</td>
+<td>$5k-15k</td>
+<td>$3k-8k</td>
+</tr>
+<tr>
+<td>Maintenance</td>
+<td>$15k-30k</td>
+<td>$5k-10k</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>$10k-20k</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$70k-145k</strong></td>
+<td><strong>$18k-38k</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommendation</strong>:
+- <strong>Claude SDK</strong>: If budget constrained or unknown requirements
+- <strong>Deepagents</strong>: If customization ROI justifies cost</p>
+<h4 id="compliance-security">Compliance &amp; Security<a class="headerlink" href="#compliance-security" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+- Need audit trails out-of-box
+- Compliance requirements standard
+- Prefer managed security
+- Limited security expertise</p>
+<p><strong>Choose Deepagents if</strong>:
+- Unusual compliance requirements
+- Custom audit needs
+- Security team prefers control
+- Data residency requirements</p>
+<h3 id="5-strategic-considerations">5. Strategic Considerations<a class="headerlink" href="#5-strategic-considerations" title="Permanent link">¶</a></h3>
+<h4 id="vendor-lock-in-tolerance">Vendor Lock-in Tolerance<a class="headerlink" href="#vendor-lock-in-tolerance" title="Permanent link">¶</a></h4>
+<p><strong>Claude SDK</strong>:
+- ❌ Tied to Anthropic ecosystem
+- ❌ Migration to other LLMs difficult
+- ✅ Stable, supported platform
+- ✅ Feature improvements automatic</p>
+<p><strong>Deepagents</strong>:
+- ✅ Framework-agnostic
+- ✅ Any LLM provider
+- ❌ Must maintain abstraction layer
+- ❌ Responsible for updates</p>
+<p><strong>Recommendation</strong>:
+- <strong>Claude SDK</strong>: If Anthropic commitment acceptable
+- <strong>Deepagents</strong>: If multi-provider strategy important</p>
+<h4 id="innovation-velocity">Innovation Velocity<a class="headerlink" href="#innovation-velocity" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+- Innovation primarily in business logic
+- Standard agent capabilities sufficient
+- Fast iteration more important than flexibility</p>
+<p><strong>Choose Deepagents if</strong>:
+- Innovation in agent orchestration itself
+- Novel agent behaviors are differentiator
+- Custom agent architecture provides advantage</p>
+<h4 id="scale-growth">Scale &amp; Growth<a class="headerlink" href="#scale-growth" title="Permanent link">¶</a></h4>
+<p><strong>Choose Claude SDK if</strong>:
+- Scaling primarily about request volume
+- Stateless agent architecture
+- Standard deployment patterns</p>
+<p><strong>Choose Deepagents if</strong>:
+- Scaling requires custom optimization
+- Complex stateful workflows
+- Domain-specific scaling patterns</p>
+<h2 id="decision-matrices">Decision Matrices<a class="headerlink" href="#decision-matrices" title="Permanent link">¶</a></h2>
+<h3 id="matrix-1-by-use-case">Matrix 1: By Use Case<a class="headerlink" href="#matrix-1-by-use-case" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommended</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer support bot</strong></td>
+<td>Claude SDK</td>
+<td>Standard conversational patterns</td>
+</tr>
+<tr>
+<td><strong>Internal tooling</strong></td>
+<td>Claude SDK</td>
+<td>Rapid development priority</td>
+</tr>
+<tr>
+<td><strong>Research assistant</strong></td>
+<td>Claude SDK</td>
+<td>Natural LLM orchestration</td>
+</tr>
+<tr>
+<td><strong>Code generation</strong></td>
+<td>Claude SDK</td>
+<td>Leverages Claude Code capabilities</td>
+</tr>
+<tr>
+<td><strong>Infrastructure automation</strong></td>
+<td>Either</td>
+<td>Depends on complexity</td>
+</tr>
+<tr>
+<td><strong>Data analysis</strong></td>
+<td>Deepagents</td>
+<td>Custom orchestration valuable</td>
+</tr>
+<tr>
+<td><strong>Novel agent research</strong></td>
+<td>Deepagents</td>
+<td>Need experimental flexibility</td>
+</tr>
+<tr>
+<td><strong>Multi-step workflows</strong></td>
+<td>Deepagents</td>
+<td>Deterministic control valuable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="matrix-2-by-industry">Matrix 2: By Industry<a class="headerlink" href="#matrix-2-by-industry" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Industry</th>
+<th>Typical Choice</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Startups</strong></td>
+<td>Claude SDK</td>
+<td>Fast time-to-market</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>Claude SDK</td>
+<td>Compliance, support, stability</td>
+</tr>
+<tr>
+<td><strong>Research institutions</strong></td>
+<td>Deepagents</td>
+<td>Need flexibility, customization</td>
+</tr>
+<tr>
+<td><strong>Tech companies</strong></td>
+<td>Either</td>
+<td>Depends on team capabilities</td>
+</tr>
+<tr>
+<td><strong>Finance</strong></td>
+<td>Claude SDK</td>
+<td>Compliance, audit trails</td>
+</tr>
+<tr>
+<td><strong>Healthcare</strong></td>
+<td>Claude SDK</td>
+<td>Regulatory requirements</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hybrid-strategies">Hybrid Strategies<a class="headerlink" href="#hybrid-strategies" title="Permanent link">¶</a></h2>
+<h3 id="strategy-1-start-small-expand-selectively">Strategy 1: Start Small, Expand Selectively<a class="headerlink" href="#strategy-1-start-small-expand-selectively" title="Permanent link">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>Phase 1: Claude SDK for core functionality
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>  ↓
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>Phase 2: Identify limitations through usage
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>  ↓
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>Phase 3: Build custom tools as MCP servers
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>  ↓
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>Phase 4: Migrate to Deepagents only if necessary
+</span></code></pre></div>
+<p><strong>Best for</strong>: Uncertain requirements, risk-averse teams</p>
+<h3 id="strategy-2-parallel-development">Strategy 2: Parallel Development<a class="headerlink" href="#strategy-2-parallel-development" title="Permanent link">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>Production: Claude SDK (stable, reliable)
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>    +
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>R&amp;D: Deepagents (experiments, innovations)
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    ↓
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>Successful experiments → MCP tools → Production
+</span></code></pre></div>
+<p><strong>Best for</strong>: Large teams with R&amp;D capacity</p>
+<h3 id="strategy-3-phased-migration">Strategy 3: Phased Migration<a class="headerlink" href="#strategy-3-phased-migration" title="Permanent link">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>Phase 1: Prototype with Deepagents
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>  ↓
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>Phase 2: Extract stable patterns
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>  ↓
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>Phase 3: Implement as MCP servers
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>  ↓
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>Phase 4: Deploy with Claude SDK
+</span></code></pre></div>
+<p><strong>Best for</strong>: Novel requirements needing validation</p>
+<h2 id="common-scenarios-recommendations">Common Scenarios &amp; Recommendations<a class="headerlink" href="#common-scenarios-recommendations" title="Permanent link">¶</a></h2>
+<h3 id="scenario-1-infrastructure-query-agent-our-netbox-case">Scenario 1: Infrastructure Query Agent (Our NetBox Case)<a class="headerlink" href="#scenario-1-infrastructure-query-agent-our-netbox-case" title="Permanent link">¶</a></h3>
+<p><strong>Requirements</strong>:
+- Natural language infrastructure queries
+- Multi-step tool coordination
+- Read-heavy operations
+- Production deployment</p>
+<p><strong>Recommendation</strong>: <strong>Both frameworks successful</strong>
+- Claude SDK: Faster development, production-ready
+- Deepagents: More control, custom optimization</p>
+<p><strong>Actual Choice</strong>: Both implemented for comparison study</p>
+<h3 id="scenario-2-multi-agent-research-system">Scenario 2: Multi-Agent Research System<a class="headerlink" href="#scenario-2-multi-agent-research-system" title="Permanent link">¶</a></h3>
+<p><strong>Requirements</strong>:
+- Sub-agent spawning
+- Novel orchestration patterns
+- Experimental workflows
+- Research focus</p>
+<p><strong>Recommendation</strong>: <strong>Deepagents</strong>
+- Flexibility for experimentation
+- Custom sub-agent patterns
+- Framework independence</p>
+<h3 id="scenario-3-customer-support-automation">Scenario 3: Customer Support Automation<a class="headerlink" href="#scenario-3-customer-support-automation" title="Permanent link">¶</a></h3>
+<p><strong>Requirements</strong>:
+- Conversational interface
+- Standard tool integration (CRM, ticketing)
+- Compliance &amp; audit trails
+- Fast deployment</p>
+<p><strong>Recommendation</strong>: <strong>Claude SDK</strong>
+- Natural conversational flow
+- Built-in safety controls
+- MCP servers for integrations
+- Production-ready quickly</p>
+<h3 id="scenario-4-data-analysis-pipeline">Scenario 4: Data Analysis Pipeline<a class="headerlink" href="#scenario-4-data-analysis-pipeline" title="Permanent link">¶</a></h3>
+<p><strong>Requirements</strong>:
+- Complex multi-step workflows
+- Custom data transformations
+- Deterministic execution
+- Performance critical</p>
+<p><strong>Recommendation</strong>: <strong>Deepagents</strong>
+- Explicit workflow control
+- Custom optimization
+- Domain-specific patterns
+- Guaranteed execution order</p>
+<h2 id="final-recommendation-framework">Final Recommendation Framework<a class="headerlink" href="#final-recommendation-framework" title="Permanent link">¶</a></h2>
+<h3 id="score-your-project-1-5-scale">Score Your Project (1-5 scale)<a class="headerlink" href="#score-your-project-1-5-scale" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Need for customization</td>
+<td>__</td>
+<td>3x</td>
+</tr>
+<tr>
+<td>Team infrastructure expertise</td>
+<td>__</td>
+<td>2x</td>
+</tr>
+<tr>
+<td>Time-to-market pressure</td>
+<td>__</td>
+<td>2x</td>
+</tr>
+<tr>
+<td>Budget constraints</td>
+<td>__</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>Maintenance capacity</td>
+<td>__</td>
+<td>2x</td>
+</tr>
+<tr>
+<td>Compliance requirements</td>
+<td>__</td>
+<td>1x</td>
+</tr>
+</tbody>
+</table>
+<h3 id="calculation">Calculation<a class="headerlink" href="#calculation" title="Permanent link">¶</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>Claude SDK Score =
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>  (5 - customization_need) * 3 +
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>  (5 - team_expertise) * 2 +
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>  time_pressure * 2 +
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>  budget_constraints * 1 +
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a>  (5 - maintenance_capacity) * 2 +
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a>  (5 - compliance_complexity) * 1
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a>Deepagents Score =
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a>  customization_need * 3 +
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>  team_expertise * 2 +
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a>  (5 - time_pressure) * 2 +
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a>  (5 - budget_constraints) * 1 +
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a>  maintenance_capacity * 2 +
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a>  compliance_complexity * 1
+</span></code></pre></div>
+<p><strong>Interpretation</strong>:
+- <strong>Claude SDK Score &gt; Deepagents Score + 10</strong>: Strongly favor Claude SDK
+- <strong>Scores within 10 points</strong>: Either framework viable
+- <strong>Deepagents Score &gt; Claude SDK Score + 10</strong>: Strongly favor Deepagents</p>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">¶</a></h2>
+<p><strong>For most production LLM agent applications</strong>: <strong>Choose Claude SDK</strong></p>
+<p>Reasons:
+- Faster time-to-market
+- Lower total cost of ownership
+- Production-ready out-of-box
+- Managed complexity
+- Standard patterns</p>
+<p><strong>Choose Deepagents when</strong>:
+- Custom orchestration provides competitive advantage
+- Team has infrastructure expertise
+- Novel agent behaviors required
+- Framework independence critical
+- Customization ROI clearly justified</p>
+<p><strong>Remember</strong>: You can start with one framework and migrate later if requirements change. The best choice depends on your specific context.</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<p>After making your decision:</p>
+<ol>
+<li><strong>If choosing Claude SDK</strong>: Review <a href="../../phases/phase-4-framework-comparison/claude-sdk-architecture/">Claude SDK Architecture</a></li>
+<li><strong>If choosing Deepagents</strong>: Review <a href="../../phases/phase-4-framework-comparison/deepagents-architecture/">Deepagents Architecture</a></li>
+<li><strong>If unsure</strong>: Review <a href="../../phases/phase-4-framework-comparison/comparative-analysis/">Comparative Analysis</a></li>
+</ol>
+<p>For detailed implementation examples, see the <a href="../../phases/phase-4-framework-comparison/overview/">Phase 4 framework comparison case studies</a>.</p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+</body>
+</html>
