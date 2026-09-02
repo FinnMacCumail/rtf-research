@@ -2,7 +2,11 @@
 
 ## Status
 
-**Accepted** — Adopted as a complementary path; not the default (July 2026)
+**Accepted** — Adopted as a complementary path; not the default (July 2026).
+**Confirmed & merged to mainline (PR #1, September 2026)** — the two open caveats at adoption (the
+~2× tool-call cost and the simple-lookup over-routing) were both resolved: the cost vanished on the
+[deepagents 0.7.5 upgrade](0035-deepagents-0.7.5-upgrade.md) and the over-routing was fixed by the
+anchor-object routing rule, with the win 3×-replicated (see updated Evidence).
 **Repository**: [https://github.com/FinnMacCumail/ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) (`src/tools/netbox_graphql.py`, `src/skills/netbox-graphql/`)
 
 ## Context
@@ -45,16 +49,23 @@ absent from the dataset): the agent answered via a pure introspect-then-query pa
 fallback — confirming the skill teaches a method, not a memorised schema.
 
 **A/B** (GraphQL-enabled vs MCP-only; same models; corrected `netbox-benchmark-v4`; reference-grounded
-correctness judge from ADR-0033):
+correctness judge from ADR-0033). The result was measured in three rounds; each removed a caveat:
 
-| Model | correctness (MCP → GraphQL) | tool calls |
-|---|---|---|
-| deepseek-v4-pro | 0.65 → **0.883** | 10.5 → 19.5 |
-| deepseek-v4-flash | 0.75 → 0.75 | 15.7 → 27.0 |
+| Round | Combined correctness | Tool-call cost | Over-routing | Runs |
+|---|---|---|---|---|
+| 1. deepagents 0.6.10 | 0.667 → 0.75 | ~2× more | present | 1 |
+| 2. re-measured on 0.7.5 | 0.667 → 0.75 | **cost-neutral / cheaper** | present | 1 |
+| 3. + anchor-object routing, replicated | **→ ≈0.82** | cost-neutral | **fixed** | **3** |
 
-The site-comparison IP-allocation query — which hallucinated a different fabricated utilization % on
-every MCP-only run — scored **0.5 → 1.0 correctness on both models** with GraphQL: the server-side
-join plus prefix-membership reasoning avoids the misattribution the MCP decomposition kept making.
+- The site-comparison IP-allocation query — which hallucinated a different fabricated utilization % on
+  every MCP-only run (7.7 / 17.6 / 100 / 23.2%) — scored **0.5 → 1.0 correctness on both models** with
+  GraphQL (server-side join + prefix-membership reasoning avoids the misattribution); this held on
+  every one of the 3 replication runs.
+- The **~2× tool-call cost was a 0.6.10 artifact**: on 0.7.5 the leaner default prompts made the agent
+  cost-neutral (flash 18.5 → 12.8 tool calls with GraphQL).
+- The **over-routing was fixed** by reframing routing around the anchor-object rule ("one named object
+  → MCP, even across models"); device-detail recovered (flash 3/3 runs = 1.0, pro 2/3 and MCP-routed;
+  the one run that slipped to GraphQL scored 0.5 — proving the mechanism).
 
 ## Consequences
 
@@ -64,12 +75,16 @@ join plus prefix-membership reasoning avoids the misattribution the MCP decompos
 - Generalizes to any NetBox object via runtime introspection; does not overfit the benchmark.
 - One high-value tool replaces the intent of "~100 tools" for the read use case.
 
-### Negative / limitations
-- **~2× tool calls** — GraphQL trades round-trips (and a schema-discovery tax) for a correct join.
-- **Soft routing**: the model sometimes over-applies GraphQL to simple lookups (flash regressed a
-  single-object query 1.0 → 0.5), cancelling its aggregate gain. Fixable by tightening the routing
-  skill, not by dropping the tool.
-- Aggregate figures need ≥3 runs per arm (single-run variance); the per-question win is robust.
+### Negative / limitations (status at Sept-2026 confirmation)
+- ~~**~2× tool calls**~~ — **RESOLVED.** This was a deepagents 0.6.10 artifact; on 0.7.5 the
+  GraphQL path is cost-neutral (sometimes cheaper). See ADR-0035.
+- ~~**Soft routing over-applies GraphQL to simple lookups**~~ — **RESOLVED** by the anchor-object
+  routing rule (device-detail recovered to 1.0, MCP-routed). Residual: pro's routing is 2/3
+  deterministic — the mechanical `LLMToolSelectorMiddleware` gate is the escalation if airtight
+  routing is ever required, not needed at 2/3.
+- ~~**Aggregate needs ≥3 runs (single-run variance)**~~ — **SATISFIED**; 3× replicated, combined ≈0.82.
+- Remaining (unrelated to GraphQL routing): `tenant-site-summary` is a persistent model-accuracy weak
+  spot (pro ~0.47) — a separate investigation, not a routing issue.
 
 ## Relationship to ADR-0032
 
@@ -84,6 +99,7 @@ request**, needing neither a sandbox nor a ≥10-tool surface. Where PTC was "no
 - [Phase 5 → GraphQL Read Path](../phases/phase-5-production-deepagents/graphql-read-path.md)
 - [Phase 5 → Evaluating for Correctness](../phases/phase-5-production-deepagents/evaluation-correctness.md)
 - [ADR-0033 — Reference-Grounded Correctness Evaluator](0033-reference-grounded-correctness-evaluator.md)
+- [ADR-0035 — DeepAgents 0.7.5 Upgrade](0035-deepagents-0.7.5-upgrade.md) (dissolved the ~2× cost)
 - [ADR-0032 — QuickJS / PTC Deferral](0032-quickjs-ptc-deferral.md)
 - Repository: `src/tools/netbox_graphql.py`, `src/skills/netbox-graphql/`, `PRPs/`,
-  `docs/traces/2026-07-21_netbox-benchmark-v4_graphql.md`
+  `docs/traces/2026-07-21_...`, `2026-08-22_...`, `2026-08-25_..._tightened-replication-3x.md`

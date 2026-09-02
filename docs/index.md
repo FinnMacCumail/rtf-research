@@ -10,7 +10,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2 – NetBox MCP Server**: Official NetBoxLabs MCP server with 3 generic tools (get_objects, get_object_by_id, get_changelogs) providing shared infrastructure for agent frameworks
 - **Phase 3 – OpenAI Orchestration (FAILED)**: Multi-agent orchestration attempt with 0% success rate - see ADR-0013 for failure analysis
 - **Phase 4 – Agent Framework Comparison**: Empirical comparison of Deepagents (LangChain) vs Claude SDK approaches to building production NetBox agents
-- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended (July 2026) with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a read-only GraphQL cross-domain read path (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads)
+- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents **0.7.5** with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a **read-only GraphQL cross-domain read path** (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads) — measured, 3×-replicated, and merged to mainline
 
 ## Research Highlights
 
@@ -28,7 +28,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2**: [NetBoxLabs MCP Server](https://github.com/netboxlabs/netbox-mcp-server) - Official NetBox MCP server infrastructure
 - **Phase 4A**: [Deepagents Implementation](https://github.com/FinnMacCumail/deepagents) - LangChain-based flexible framework *(superseded by Phase 5)*
 - **Phase 4B**: [Claude SDK Implementation](https://github.com/FinnMacCumail/claude-agentic-netbox) - Anthropic SDK production framework
-- **Phase 5**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) - Production DeepAgents 0.6.10 with dual local/cloud models, model-matrix evaluation, and observability
+- **Phase 5**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) - Production DeepAgents 0.7.5 with dual local/cloud models, model-matrix + reference-grounded-correctness evaluation, observability, and a read-only GraphQL cross-domain read path
 
 ## Research Timeline
 ```mermaid
@@ -45,7 +45,8 @@ timeline
     2025-12 : ADR-0027 : Claude SDK model selection : Local/LiteLLM attempt reverted
     2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
     2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
-    2026-07+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
+    2026-08–09 : Phase 5 Consolidated : DeepAgents 0.7.5 upgrade : GraphQL routing tightened & 3×-replicated : Merged to mainline : LangChain-ecosystem appraisal
+    2026-09+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 
 ## Core Architecture

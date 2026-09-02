@@ -97,10 +97,23 @@ detection half of the [observability loop](observability.md).
 **Worked A/B example**: the read-only GraphQL routing change was validated exactly this way — the
 *same* models on the *same* `v4` dataset, once with the GraphQL tool available (`graphql` variant)
 and once without (`baseline`), yielding distinct comparable experiments. The correctness axis showed
-the win landing on the cross-domain query class (0.5 → 1.0 on the IP-allocation trap) at a
-tool-call cost — see [GraphQL Read Path](../phases/phase-5-production-deepagents/graphql-read-path.md).
+the win landing on the cross-domain query class (0.5 → 1.0 on the IP-allocation trap) — see
+[GraphQL Read Path](../phases/phase-5-production-deepagents/graphql-read-path.md).
+
+**The same harness gated a framework upgrade.** Re-running the identical A/B after the DeepAgents
+0.7.5 bump ([0.7.5 Upgrade](../phases/phase-5-production-deepagents/0-7-5-upgrade.md)) showed the
+GraphQL path's earlier ~2× tool-call cost had *vanished* — demonstrating that a measured "cost" can be
+an artifact of the layer around the model, exposed only by running the *same* eval before and after.
+
+**Replication is part of the method, not an afterthought.** Single runs on a 6-question set are noisy
+(±0.15–0.25; two queries swing 0.0/0.5/1.0 with no code change). A single-run A/B with an open caveat
+is a *hypothesis*: the GraphQL result only became quotable after **3× replication** (per-arm), which
+averaged out the noisy queries, confirmed the routing fix held (device-detail 3/3 on one model, 2/3
+on the other, trajectory-verified as MCP-routed), and stabilized the aggregate (≈0.82). Rule of thumb:
+**per-question wins that repeat every run are trustworthy on one run; an aggregate ranking needs ≥3.**
 
 **See also**: [Evaluation](evaluation.md) · [Observability](observability.md) ·
 [Phase 5 → Evaluating for Correctness](../phases/phase-5-production-deepagents/evaluation-correctness.md) ·
+[Phase 5 → GraphQL Read Path](../phases/phase-5-production-deepagents/graphql-read-path.md) ·
 [ADR-0030 — Model-Matrix Evaluation Harness](../adr/0030-model-matrix-evaluation-harness.md) ·
 [ADR-0033 — Reference-Grounded Correctness Evaluator](../adr/0033-reference-grounded-correctness-evaluator.md)

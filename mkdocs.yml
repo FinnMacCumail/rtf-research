@@ -74,6 +74,8 @@ nav:
       - Observability & Monitoring: phases/phase-5-production-deepagents/observability-and-monitoring.md
       - Evaluating for Correctness: phases/phase-5-production-deepagents/evaluation-correctness.md
       - GraphQL Read Path: phases/phase-5-production-deepagents/graphql-read-path.md
+      - DeepAgents 0.7.5 Upgrade: phases/phase-5-production-deepagents/0-7-5-upgrade.md
+      - LangChain Ecosystem vs Cloud Platform MCP: phases/phase-5-production-deepagents/langchain-ecosystem.md
       - Lessons Learned: phases/phase-5-production-deepagents/lessons-learned.md
   - Framework Comparison:
       - Overview: framework-comparison/overview.md
@@ -127,6 +129,8 @@ nav:
       - ADR-0032 QuickJS / PTC Deferral: adr/0032-quickjs-ptc-deferral.md
       - ADR-0033 Reference-Grounded Correctness Evaluator: adr/0033-reference-grounded-correctness-evaluator.md
       - ADR-0034 Read-Only GraphQL Complementary Read Path: adr/0034-read-only-graphql-complementary-read-path.md
+      - ADR-0035 DeepAgents 0.7.5 Upgrade: adr/0035-deepagents-0.7.5-upgrade.md
+      - ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP: adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp.md
 
 plugins:
   - search

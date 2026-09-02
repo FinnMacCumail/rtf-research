@@ -13,8 +13,9 @@ reproduce — and does it actually help?
 leaves the question that matters for a query agent: can the agent do **cross-domain / nested reads**
 — the one thing the community MCP server structurally cannot?
 
-**Finding (short version)**: Yes, with one added tool and a routing skill — and it is a **measured
-correctness win** on exactly the queries that were hallucinating, at a tool-call cost.
+**Finding (short version)**: Yes, with one added tool and a routing skill — a **measured,
+3×-replicated correctness win** on exactly the queries that were hallucinating, at **no tool-call
+cost** once the framework and routing were tuned. Now **merged to mainline** (PR #1).
 
 **Repository**: [https://github.com/FinnMacCumail/ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents)
 (`src/tools/netbox_graphql.py`, `src/skills/netbox-graphql/`)
@@ -77,43 +78,62 @@ query path with zero MCP fallback. The skill generalizes; it does not overfit.
 ## The A/B result
 
 GraphQL-enabled vs MCP-only, same models, same corrected `netbox-benchmark-v4`, same
-reference-grounded correctness judge (see [Evaluating for Correctness](evaluation-correctness.md)):
+reference-grounded correctness judge (see [Evaluating for Correctness](evaluation-correctness.md)).
+The result evolved across three measurement rounds — each round removed a caveat from the last, and
+this arc is itself the finding:
 
-| Model | correctness (MCP → GraphQL) | tool calls (MCP → GraphQL) |
-|---|---|---|
-| deepseek-v4-pro | 0.65 → **0.883** (+0.23) | 10.5 → 19.5 |
-| deepseek-v4-flash | 0.75 → 0.75 (flat) | 15.7 → 27.0 |
+| Round | Combined correctness | Tool-call cost | Over-routing | Confidence |
+|---|---|---|---|---|
+| **1. First A/B (deepagents 0.6.10, 1 run)** | 0.667 → 0.75 | **~2× more** (flash 15.7 → 27.0) | present (flash device-detail 1.0 → 0.0) | single run |
+| **2. Re-measured on 0.7.5 (1 run)** | 0.667 → 0.75 | **vanished** — cost-neutral / cheaper (flash 18.5 → 12.8) | still present | single run |
+| **3. + routing tightening, 3× replicated** | **→ ≈0.82** | cost-neutral | **fixed** (device-detail flash 3/3 = 1.0, pro 2/3) | **3 runs** |
 
-The signal is per-question, and it lands on the trap:
+Three things happened between the first A/B and the shipped result:
 
-- **The site-comparison IP-allocation query — which hallucinated a different fabricated utilization %
-  on every MCP-only run — scored 0.5 → 1.0 correctness on BOTH models with GraphQL.** The
-  server-side join plus prefix-membership reasoning avoids the "180 global IPs misattributed
-  per-site" error that the MCP decomposition kept making. This reproduces, in the harness, a win
-  first seen in an interactive trace.
-- **Cost: ~2× tool calls.** GraphQL trades round-trips for a correct join (including a schema-
-  discovery tax).
-- **Over-routing side-effect**: flash applied GraphQL to a *simple* single-object lookup that MCP
-  handled fine and got a field wrong (1.0 → 0.5), cancelling its site-comparison gain and leaving
-  its aggregate flat. Routing is *soft* guidance, not a hard switch.
+- **The cost objection dissolved on the framework upgrade.** Under [deepagents 0.7.5](0-7-5-upgrade.md)
+  its leaner default prompts made the agent far more efficient with the GraphQL path — the ~2×
+  tool-call penalty seen on 0.6.10 did not recur (it became cost-neutral, sometimes cheaper). The
+  "trades round-trips for correctness" tradeoff was a 0.6.10 artifact, not intrinsic to GraphQL.
+- **The one regression was diagnosed and fixed.** GraphQL over-routed *simple single-object*
+  lookups (e.g. "show device X's location, IPs, tenant") — a query that *looks* cross-model but is
+  anchored on one object. Root cause: the routing guidance keyed on "nested/related data → GraphQL,"
+  and one object's site+IPs+tenant *is* nested data, so the model followed the miscalibrated rule
+  into the wrong tool. The fix reframed all routing guidance around the **anchor-object rule**:
+  *count the anchor objects, not the models the answer touches — one named object → MCP, even across
+  models.* Trajectory-verified: device-detail now routes to `netbox_get_objects`, and the two MCP-only
+  runs scored 1.0 while the one run that slipped to GraphQL scored 0.5 (MCP→right, GraphQL→wrong on a
+  single object — the mechanism proven, not inferred).
+- **The win was replicated 3×.** The per-question signal that always held: the site-comparison
+  IP-allocation trap — which hallucinated a *different fabricated utilization %* on every MCP-only run
+  (7.7 / 17.6 / 100 / 23.2%) — scored 0.5 → 1.0 correctness on both models with GraphQL, because the
+  server-side join plus prefix-membership reasoning avoids the "180 global IPs misattributed per-site"
+  error. Across 3× replication the cross-domain queries kept routing to GraphQL every run; the
+  stabilized combined correctness settled at **≈0.82** (MCP-only 0.667 → GraphQL 0.75 →
+  GraphQL + tightened ≈0.82 — the best configuration measured).
 
 ## Verdict
 
-Keep GraphQL as a **complementary read path** for cross-domain / aggregation queries; keep simple
-single-object lookups on the MCP tools; do **not** make GraphQL the default. The costs (tool calls,
-occasional over-routing) are addressable by tightening the routing skill, not by dropping the tool —
-and the correctness gain lands precisely on the query class that most needed it. As with the QuickJS
-deferral and the local-model finding, the deliverable is the **measured** verdict, not adoption for
-its own sake. A publishable aggregate needs ≥3 runs per arm (single-run variance caveat from the
-[correctness work](evaluation-correctness.md) applies); the per-question correctness win is robust.
+GraphQL is a **complementary read path** for cross-domain / aggregation queries — a **confirmed
+correctness win at no tool-call cost** under 0.7.5, with simple single-object lookups kept on the MCP
+tools by the anchor-object routing rule. **Merged to mainline (PR #1).** As with the QuickJS deferral
+and the local-model finding, the deliverable is the **measured** verdict — and here the three-round
+arc (cost objection dissolved on upgrade → regression diagnosed and fixed → win replicated) is the
+lesson: a single-run A/B with an open caveat is a *hypothesis*, not a result. Two honest residuals,
+neither a routing bug: pro's device-detail routing is 2/3 deterministic (the mechanical
+`LLMToolSelectorMiddleware` gate is the escalation if airtight routing is ever required — not needed
+at 2/3), and `tenant-site-summary` is a persistent model-accuracy weak spot unrelated to GraphQL.
 
 The strategic point: this capability is reproducible **on-prem, read-only, and private** — the
 Cloud product's cross-domain reads without shipping infrastructure data to a managed service, which
 the project's privacy mandate forbids.
 
 **See also**: [Evaluating for Correctness](evaluation-correctness.md) ·
+[DeepAgents 0.7.5 Upgrade](0-7-5-upgrade.md) ·
+[LangChain Ecosystem vs Cloud Platform MCP](langchain-ecosystem.md) ·
 [Multi-Model Evaluation](multi-model-evaluation.md) ·
 [Lessons Learned](lessons-learned.md) ·
 [Research Methods → Benchmarking](../../methods/benchmarking.md) ·
 [ADR-0034](../../adr/0034-read-only-graphql-complementary-read-path.md) ·
+[ADR-0035](../../adr/0035-deepagents-0.7.5-upgrade.md) ·
+[ADR-0036](../../adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp.md) ·
 [ADR-0032](../../adr/0032-quickjs-ptc-deferral.md)
