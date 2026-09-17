@@ -112,8 +112,74 @@ averaged out the noisy queries, confirmed the routing fix held (device-detail 3/
 on the other, trajectory-verified as MCP-routed), and stabilized the aggregate (≈0.82). Rule of thumb:
 **per-question wins that repeat every run are trustworthy on one run; an aggregate ranking needs ≥3.**
 
+## Dataset scale, stratification, and saturation
+
+A six-question set can validate a per-question A/B; it cannot rank models. At n=6 the 95% CI on a
+pass rate is ≈**±0.32–0.40**. Scaling to **90 questions stratified on four axes** (difficulty tier ×
+answer type × domain × data partition) produced the reusable rules below — and one result worth
+recording in its own right.
+
+**Define difficulty by mechanism, never by topic.** simple = one object, one filter; medium = one
+join or one aggregation; advanced = ≥2 hops or absence reasoning. If "advanced" means "questions
+about circuits", the benchmark measures topic familiarity and calls it difficulty.
+
+**Every group must appear in every tier.** If one tenant (or customer, or partition) appears only in
+the hard tier, its *name* becomes a proxy for difficulty and any routing signal is an artefact. Check
+the cross-tabulation explicitly rather than assuming.
+
+**Budget tool calls per tier.** A single global efficiency threshold penalises the hard tier by
+construction, since it has a higher floor by design. Calibrate budgets from measured percentiles —
+ours were revised twice from data (simple ≤2→3, medium ≤4→7).
+
+### Saturation is the number that matters
+
+Headline means hid the real finding. Across three model families the aggregates sat in a 2.7pp band
+(0.906 / 0.911 / 0.933) with **every paired CI including zero** — but the diagnostic statistic was
+that **69 of 90 items were solved by all three models, and only 3 defeated all three.**
+
+**A saturated item carries no information.** Report solved-by-all and failed-by-all counts alongside
+the leaderboard: they tell you whether the set can still discriminate, and a mean cannot. When a set
+saturates, the remedy is *harder items*, not more models — further runs are uninformative by
+construction.
+
+**Use paired analysis on identical questions**, reporting the pairwise difference with its CI rather
+than two independent means: roughly a third less variance from the same data.
+
+### Authoring rules that survived contact with data
+
+- **Every expected entity must be a literal substring of its own reference answer.** An audit of an
+  existing set found **four of six examples violated this** — a *perfect* answer could not score 1.0,
+  one self-scoring 0.500 — meaning some previously-quoted coverage numbers reflected an authoring bug,
+  not model behaviour. This is a three-line check; run it before scoring anything.
+- **Self-match is necessary, not sufficient.** It proves a perfect *reference* scores 1.0; it never
+  proves a correct *answer* does. A `"<number> <noun>"` entity breaks when a correct answer inserts a
+  qualifier ("13 sites" misses "13 **Dunder-Mifflin** sites"). Prefer identifiers — names, serials,
+  addresses — over synthesised counts.
+- **Absence items cannot carry entities at all.** The same model phrased the same "none" answer two
+  incompatible ways across two runs. An entity on an absence item measures phrasing luck; score those
+  with the reference-grounded judge alone.
+- **Pin the scope, or the item is unanswerable.** Where a plausible second reading changes the answer,
+  author *both* as a contrast pair differing only in the filter — the sharpest test of whether the
+  agent applied it.
+- **No bare superlatives without a verified unique maximum** (ours turned out to be a tie).
+
+### A metric caveat: coverage is confounded with verbosity
+
+`entity_coverage` rewards saying more. The **most correct** model in the sweep scored **lowest** on it
+(0.831 vs 0.885) while writing answers **71% the length** of its rival's. It stays useful *within* a
+model and is misleading *across* models — a caution that applies to any substring-coverage metric.
+
+### What survives when correctness saturates
+
+Efficiency. Tool calls separated the same three models cleanly (4.93 / 5.76 / 6.27 mean; 76/69/66 of
+90 within budget) where correctness could not. For routing decisions, **cost per query is the signal
+that survives a ceiling** — see
+[ADR-0037](../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md).
+
 **See also**: [Evaluation](evaluation.md) · [Observability](observability.md) ·
 [Phase 5 → Evaluating for Correctness](../phases/phase-5-production-deepagents/evaluation-correctness.md) ·
 [Phase 5 → GraphQL Read Path](../phases/phase-5-production-deepagents/graphql-read-path.md) ·
+[Phase 5 → Stratified Benchmark v5](../phases/phase-5-production-deepagents/stratified-benchmark-v5.md) ·
 [ADR-0030 — Model-Matrix Evaluation Harness](../adr/0030-model-matrix-evaluation-harness.md) ·
-[ADR-0033 — Reference-Grounded Correctness Evaluator](../adr/0033-reference-grounded-correctness-evaluator.md)
+[ADR-0033 — Reference-Grounded Correctness Evaluator](../adr/0033-reference-grounded-correctness-evaluator.md) ·
+[ADR-0037 — Stratified v5 Benchmark](../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md)

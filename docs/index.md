@@ -10,7 +10,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2 – NetBox MCP Server**: Official NetBoxLabs MCP server with 3 generic tools (get_objects, get_object_by_id, get_changelogs) providing shared infrastructure for agent frameworks
 - **Phase 3 – OpenAI Orchestration (FAILED)**: Multi-agent orchestration attempt with 0% success rate - see ADR-0013 for failure analysis
 - **Phase 4 – Agent Framework Comparison**: Empirical comparison of Deepagents (LangChain) vs Claude SDK approaches to building production NetBox agents
-- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents **0.7.5** with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a **read-only GraphQL cross-domain read path** (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads) — measured, 3×-replicated, and merged to mainline
+- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents **0.7.5** with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a **read-only GraphQL cross-domain read path** (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads) — measured, 3×-replicated, and merged to mainline. Finally scaled the evaluation dataset from 6 to **90 stratified questions** to test whether difficulty predicts model choice; the honest answer was **no** — the set measures difficulty and efficiency but ceilings on capability (ADR-0037)
 
 ## Research Highlights
 
@@ -20,6 +20,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 4 Completion**: Empirical framework comparison validating context-dependent framework selection
 - **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality while small local models remain insufficient
 - **Anti-Hallucination in Evaluation**: a reference-grounded correctness evaluator catches confident fabrications a completeness metric certifies as complete (a hallucinated "7.7% utilization" vs a verified 0% scored 0.9 on completeness, 0.0 on correctness) — reordering the model leaderboard toward the more *truthful* model
+- **Knowing When a Benchmark Has Stopped Measuring**: scaling the eval set to 90 stratified questions showed three unrelated model families landing inside a 2.7pp band with every paired CI including zero — the diagnostic was not the means but **saturation** (69 of 90 items solved by all three, only 3 defeating all three). A saturated item carries no information; the set measures difficulty and *efficiency*, and efficiency is what survives a correctness ceiling (ADR-0037)
 - **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
 
 ## Implementation Repositories
@@ -46,6 +47,7 @@ timeline
     2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
     2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
     2026-08–09 : Phase 5 Consolidated : DeepAgents 0.7.5 upgrade : GraphQL routing tightened & 3×-replicated : Merged to mainline : LangChain-ecosystem appraisal
+    2026-09 : Stratified Benchmark v5 : 90 questions across 3 difficulty tiers : 3 model families, 270 runs : Ceiling found — difficulty & efficiency, not capability
     2026-09+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 
