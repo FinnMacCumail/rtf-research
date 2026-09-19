@@ -20,7 +20,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 4 Completion**: Empirical framework comparison validating context-dependent framework selection
 - **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality while small local models remain insufficient
 - **Anti-Hallucination in Evaluation**: a reference-grounded correctness evaluator catches confident fabrications a completeness metric certifies as complete (a hallucinated "7.7% utilization" vs a verified 0% scored 0.9 on completeness, 0.0 on correctness) — reordering the model leaderboard toward the more *truthful* model
-- **Knowing When a Benchmark Has Stopped Measuring**: scaling the eval set to 90 stratified questions showed three unrelated model families landing inside a 2.7pp band with every paired CI including zero — the diagnostic was not the means but **saturation** (69 of 90 items solved by all three, only 3 defeating all three). A saturated item carries no information; the set measures difficulty and *efficiency*, and efficiency is what survives a correctness ceiling (ADR-0037)
+- **Saturation Is a Property of the Models You Test, Not the Questions**: three unrelated model families landed inside a 2.7pp band on a 90-question set, and the apparent conclusion was a ceiling — 69 of 90 items solved by all three. A fourth, more distant family **overturned it**: saturation fell to 59/90, ten inert questions became discriminating, and two comparisons reached significance (pro − qwen +0.117 [+0.038, +0.196]). The set resolves ~9pp gaps and cannot resolve ~3pp ones — a sample-size limit, not a ceiling. The original negative conclusion is preserved and corrected in place (ADR-0037)
 - **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
 
 ## Implementation Repositories
@@ -47,7 +47,7 @@ timeline
     2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
     2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
     2026-08–09 : Phase 5 Consolidated : DeepAgents 0.7.5 upgrade : GraphQL routing tightened & 3×-replicated : Merged to mainline : LangChain-ecosystem appraisal
-    2026-09 : Stratified Benchmark v5 : 90 questions across 3 difficulty tiers : 3 model families, 270 runs : Ceiling found — difficulty & efficiency, not capability
+    2026-09 : Stratified Benchmark v5 : 90 questions across 3 difficulty tiers : 4 model families, 360 runs : Saturation shown to depend on model spread, not questions
     2026-09+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 

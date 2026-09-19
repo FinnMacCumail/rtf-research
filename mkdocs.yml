@@ -132,7 +132,7 @@ nav:
       - ADR-0034 Read-Only GraphQL Complementary Read Path: adr/0034-read-only-graphql-complementary-read-path.md
       - ADR-0035 DeepAgents 0.7.5 Upgrade: adr/0035-deepagents-0.7.5-upgrade.md
       - ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP: adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp.md
-      - ADR-0037 Stratified v5 Benchmark — Difficulty, Not Capability: adr/0037-stratified-benchmark-v5-difficulty-not-capability.md
+      - ADR-0037 Stratified v5 Benchmark — Discriminating Power & Its Limits: adr/0037-stratified-benchmark-v5-difficulty-not-capability.md
 
 plugins:
   - search

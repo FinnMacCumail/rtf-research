@@ -131,16 +131,27 @@ the cross-tabulation explicitly rather than assuming.
 construction, since it has a higher floor by design. Calibrate budgets from measured percentiles —
 ours were revised twice from data (simple ≤2→3, medium ≤4→7).
 
-### Saturation is the number that matters
+### Saturation is the number that matters — and it is not a property of the questions
 
 Headline means hid the real finding. Across three model families the aggregates sat in a 2.7pp band
-(0.906 / 0.911 / 0.933) with **every paired CI including zero** — but the diagnostic statistic was
-that **69 of 90 items were solved by all three models, and only 3 defeated all three.**
+(0.906 / 0.911 / 0.933) with **every paired CI including zero**, and **69 of 90 items were solved by
+all three**. The conclusion drawn was that the set had saturated.
 
-**A saturated item carries no information.** Report solved-by-all and failed-by-all counts alongside
-the leaderboard: they tell you whether the set can still discriminate, and a mean cannot. When a set
-saturates, the remedy is *harder items*, not more models — further runs are uninformative by
-construction.
+**That conclusion was wrong, and the correction is the more useful lesson.** A fourth, more distant
+family moved saturation to **59/90** and produced two significant differences. Ten items that looked
+inert across three similar models were discriminating all along — the measurement lacked the model
+spread to reveal it.
+
+**A saturated item carries no information *against the models you happened to test*.** Report
+solved-by-all and failed-by-all counts alongside the leaderboard — a mean cannot tell you whether a
+set still discriminates. But read a high saturation figure as a statement about **your model
+sample**, not about your questions, and test that reading with a model unlike the others before
+concluding the set is exhausted.
+
+The two levers are distinct: **a wider model spread** exposes discrimination that already exists;
+**harder items** raise the ceiling for models that are genuinely close. Predicting that further runs
+would be "uninformative by construction" was a forecast made from three closely-matched models, and
+the next run falsified it.
 
 **Use paired analysis on identical questions**, reporting the pairwise difference with its CI rather
 than two independent means: roughly a third less variance from the same data.

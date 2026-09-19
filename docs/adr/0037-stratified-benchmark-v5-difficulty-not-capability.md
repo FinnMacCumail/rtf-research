@@ -1,12 +1,51 @@
-# ADR-0037 — Stratified 90-Question Benchmark (v5): Measures Difficulty and Efficiency, Not Capability
+# ADR-0037 — Stratified 90-Question Benchmark (v5): Discriminating Power and Its Limits
 
 ## Status
 
-**Accepted** — built and measured (September 2026). Recorded as a **negative result**: the
-capability-discrimination goal was not met, and the reason is now known.
+**Accepted, then REVISED (September 2026).** The original conclusion — that the set measures
+difficulty and efficiency but *not* capability — was drawn from three models and is **wrong as
+stated**. A fourth, more distant model family overturned it. The original reasoning is preserved
+below so the record shows what was believed and on what evidence; the correction follows
+immediately.
 **Repository**: [https://github.com/FinnMacCumail/ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents)
 **Extends**: [ADR-0030](0030-model-matrix-evaluation-harness.md) (model-matrix harness),
 [ADR-0033](0033-reference-grounded-correctness-evaluator.md) (correctness evaluator)
+
+## Correction (supersedes the conclusion below)
+
+A fourth run — **qwen3.5:397b-cloud**, a family distant from both deepseek and kimi — produced the
+**first statistically significant results the benchmark has generated**:
+
+| tier | flash | pro | kimi | **qwen3.5:397b** |
+|---|---|---|---|---|
+| simple | 0.967 | 0.983 | 0.933 | **0.900** |
+| medium | 0.950 | 0.967 | 0.900 | **0.883** |
+| advanced | 0.800 | 0.850 | 0.900 | **0.667** |
+| **overall** | 0.906 | 0.933 | 0.911 | **0.817** |
+
+Paired on identical questions: **pro − qwen +0.117 [+0.038, +0.196] SIGNIFICANT**;
+**kimi − qwen +0.094 [+0.016, +0.173] SIGNIFICANT**; flash − qwen +0.089 [−0.007, +0.185], just
+short. The three mutual comparisons between flash, pro and kimi remain non-significant.
+
+**Saturation is a property of the models tested, not only of the questions.** Adding one unrelated
+family moved it from **69/90 (77%) to 59/90 (66%)**, and the items defeating every model from 3 to 2.
+Ten items that carried no information across three similar models became discriminating the moment a
+genuinely different one was tested: `vcpu-aggregation`, `ip-mask-mismatch`, `orphaned-cable`,
+`prefixes-without-vlan`, `tenant-group-size`, `vms-without-primary-ip`, `device-update-share`,
+`empty-cloud-clusters`, `no-primary-ip-active`, `tenants-without-sites`.
+
+**The corrected claim:** the set resolves capability differences of roughly **9pp and above** on 90
+paired items. It cannot resolve the ~3pp separating flash, pro and kimi. The original "ceiling" was
+an artefact of testing three closely-matched models — not a limit of the questions.
+
+**Two process errors worth recording**, since both are reusable lessons:
+1. Generalising "cannot discriminate" from **n=3 models**, all of comparable strength.
+2. Asserting that further runs were *"uninformative by construction."* That prediction was stated
+   with unwarranted confidence and was falsified by the very next run.
+
+The reference fixes ([three wording defects](../methods/benchmarking.md)) **strengthen** this result
+rather than explaining it away: correcting them raised the other three models (flash 0.911, kimi
+0.928, pro 0.944) while qwen was judged against the corrected wording throughout, widening the gap.
 
 ## Context
 
@@ -39,7 +78,7 @@ produces even if negative.**
   effect once the dataset existed), and the results reader could return before the primary
   correctness score landed.
 
-## Evidence
+## Evidence *(as originally recorded — see the Correction above)*
 
 Three model families, **270 runs across three complete 90-item experiments, zero errors**:
 
@@ -77,8 +116,12 @@ Efficiency, by contrast, separates cleanly: pro 4.93 tool calls (76/90 within bu
   feedback-count fix that had been able to drop the primary metric.
 
 ### Negative / limitations
-- **The set ceilings at ~0.91–0.93.** Further model runs against it are known in advance to be
-  uninformative; raising the ceiling requires *harder items*, not more models.
+- ~~**The set ceilings at ~0.91–0.93.** Further model runs against it are known in advance to be
+  uninformative; raising the ceiling requires *harder items*, not more models.~~
+  **WITHDRAWN.** The fourth model run falsified this directly (see the Correction above). The set
+  resolves ~9pp gaps; it could not resolve the ~3pp between three closely-matched models. What
+  raises discriminating power is **a wider spread of models**, and harder items *in addition* —
+  not instead.
 - **`entity_coverage` is confounded with verbosity** — the most correct model scored *lowest* on it
   while writing answers 71% the length of its rival's. Useful within a model, misleading across
   models.

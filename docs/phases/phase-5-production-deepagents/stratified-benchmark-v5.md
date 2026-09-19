@@ -100,9 +100,40 @@ Paired on identical questions (roughly a third less variance than two independen
 
 **Every pairwise difference includes zero.** Three unrelated model families land inside a 2.7pp band.
 
-The decisive number is not the means but the **saturation**: **69 of 90 items are solved by all three
-models, and only 3 defeat all three.** A set that is ~77% saturated cannot discriminate capability —
-the solved items carry no information.
+At that point the conclusion drawn was: the set is ~77% saturated (69 of 90 items solved by all
+three) and therefore cannot discriminate capability. **That conclusion was wrong, and a fourth model
+disproved it.**
+
+## The fourth model — and the correction
+
+**qwen3.5:397b-cloud**, a family distant from both deepseek and kimi, produced the **first
+significant results the benchmark has generated**:
+
+| tier | flash | pro | kimi | **qwen3.5:397b** |
+|---|---|---|---|---|
+| simple | 0.967 | 0.983 | 0.933 | **0.900** |
+| medium | 0.950 | 0.967 | 0.900 | **0.883** |
+| advanced | 0.800 | 0.850 | 0.900 | **0.667** |
+| **overall** | 0.906 | 0.933 | 0.911 | **0.817** |
+
+| pair | difference | 95% CI | |
+|---|---|---|---|
+| **pro − qwen** | **+0.117** | [+0.038, +0.196] | **SIGNIFICANT** |
+| **kimi − qwen** | **+0.094** | [+0.016, +0.173] | **SIGNIFICANT** |
+| flash − qwen | +0.089 | [−0.007, +0.185] | just short |
+
+**Saturation turned out to be a property of the models tested, not of the questions.** One additional
+family moved it from **69/90 (77%) to 59/90 (66%)**, and the items defeating everything from 3 to 2.
+Ten questions that looked inert across three similar models became discriminating immediately:
+`vcpu-aggregation`, `ip-mask-mismatch`, `orphaned-cable`, `prefixes-without-vlan`,
+`tenant-group-size`, `vms-without-primary-ip` and four more.
+
+**The corrected claim:** the set resolves capability gaps of roughly **9pp and above** on 90 paired
+items, and cannot resolve the ~3pp separating flash, pro and kimi. That is a benchmark behaving
+correctly at its sample size — not a ceiling.
+
+The reference corrections make this *stronger*: they lifted the other three models (flash 0.911,
+kimi 0.928, pro 0.944) while qwen was judged against the corrected wording throughout.
 
 ## What the set does measure
 
@@ -144,9 +175,21 @@ saying more, not being right. It remains useful within a model, and misleading a
 
 ## Where this goes next
 
-Raising the ceiling means **harder items, not more models**. The three survivors show the shape that
-works: multi-hop aggregation where the API offers no direct path. Further model runs against the
-current set are known in advance to be uninformative.
+**An earlier version of this page said "harder items, not more models" and that further runs were
+"uninformative by construction." The fourth model disproved both.** Testing a wider spread of models
+is what revealed the discriminating power the set already had — ten items' worth.
+
+Both levers are real, and they do different jobs:
+
+- **A wider model spread** exposes discrimination that already exists. The marginal value of a fifth
+  model is highest if it is *unlike* the four already run.
+- **Harder items** raise the ceiling for models that are genuinely close. The two survivors that
+  defeat every family — `tenantless-instance-wide` and `deletion-cascade` — show the shape that
+  works: multi-hop aggregation and cascade reasoning where the API offers no direct path.
+
+The measurable limit is sample size, not the questions: at 90 paired items the set resolves about
+**9pp**, so separating models 3pp apart would need roughly an order of magnitude more questions —
+which is a poor trade against simply testing more varied models.
 
 **See also**: [Model-Matrix Benchmarking](../../methods/benchmarking.md) ·
 [Evaluating for Correctness](evaluation-correctness.md) ·
