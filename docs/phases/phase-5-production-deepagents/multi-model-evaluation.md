@@ -93,7 +93,7 @@ Two side-findings emerged from running the matrix as a controlled experiment rat
 |---|---|
 | Production default | `deepseek-v4-flash:cloud` — Claude-class quality, lowest latency in its family |
 | Strong secondary | `glm-5:cloud` — fastest, tightest tool use |
-| Local viability | Frontier-only for the hardest queries; 14–32B local models remain insufficient |
+| Local viability | Frontier-only for the hardest queries; 14–32B local models remain insufficient — but a **176B** open-weight model later answered all three tiers correctly on the same hardware, making cost rather than capability the local constraint ([ADR-0038](../../adr/0038-local-frontier-model-viable-cost-not-capability.md)) |
 | ADR-0027 status | Superseded by **ADR-0028** — local+cloud works on DeepAgents via a native backend |
 
 **See also**: [Observability & Monitoring](observability-and-monitoring.md) ·

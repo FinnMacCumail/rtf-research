@@ -18,7 +18,8 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Performance Optimization**: Field filtering and generic tool patterns for token efficiency
 - **Architecture Pattern**: Extraction → Retrieval → Planning → Execution → Validation → Formatting
 - **Phase 4 Completion**: Empirical framework comparison validating context-dependent framework selection
-- **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality while small local models remain insufficient
+- **Phase 5 Completion**: Production DeepAgents with multi-model evaluation and observability; a frontier cloud model matches Claude-class quality, and while *small* local models (7B–32B) remain insufficient, a 176B open-weight model later ran locally and answered all three difficulty tiers correctly (ADR-0038)
+- **A Frontier-Class Model on Two Used GPUs**: Qwen3.8-Flash-Next (125B MoE + a 51B n-gram *lookup table*) ran on 2× RTX 2080 Ti and 376 GB RAM, scoring **3/3** across simple/medium/advanced NetBox questions including a two-hop power trace. Correctness did not separate the tiers — **cost did, by 10×** (2 tool calls vs 20). The constraint on local agents is throughput and cost, not capability; `--numa isolate` alone was worth +56% decode, more than a 2362-commit llama.cpp upgrade (ADR-0038)
 - **Anti-Hallucination in Evaluation**: a reference-grounded correctness evaluator catches confident fabrications a completeness metric certifies as complete (a hallucinated "7.7% utilization" vs a verified 0% scored 0.9 on completeness, 0.0 on correctness) — reordering the model leaderboard toward the more *truthful* model
 - **Saturation Is a Property of the Models You Test, Not the Questions**: three unrelated model families landed inside a 2.7pp band on a 90-question set, and the apparent conclusion was a ceiling — 69 of 90 items solved by all three. A fourth, more distant family **overturned it**: saturation fell to 59/90, ten inert questions became discriminating, and two comparisons reached significance (pro − qwen +0.117 [+0.038, +0.196]). The set resolves ~9pp gaps and cannot resolve ~3pp ones — a sample-size limit, not a ceiling. The original negative conclusion is preserved and corrected in place (ADR-0037)
 - **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
@@ -48,6 +49,7 @@ timeline
     2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
     2026-08–09 : Phase 5 Consolidated : DeepAgents 0.7.5 upgrade : GraphQL routing tightened & 3×-replicated : Merged to mainline : LangChain-ecosystem appraisal
     2026-09 : Stratified Benchmark v5 : 90 questions across 3 difficulty tiers : 4 model families, 360 runs : Saturation shown to depend on model spread, not questions
+    2026-09 : Local Frontier Inference : 176B open-weight model on 2× RTX 2080 Ti : 3/3 tiers correct : Cost, not capability, is the local constraint
     2026-09+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 

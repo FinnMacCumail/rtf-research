@@ -142,6 +142,7 @@ failure modes**, not in aggregate correctness.
 ## References
 
 - [Phase 5 → Stratified Benchmark v5](../phases/phase-5-production-deepagents/stratified-benchmark-v5.md)
+- [ADR-0038 — Local Frontier Model: Cost, Not Capability](0038-local-frontier-model-viable-cost-not-capability.md) — the first local evidence bearing on the model-handoff routing premise named in *Context* above
 - [Research Methods → Benchmarking](../methods/benchmarking.md)
 - [ADR-0030 — Model-Matrix Evaluation Harness](0030-model-matrix-evaluation-harness.md)
 - [ADR-0033 — Reference-Grounded Correctness Evaluator](0033-reference-grounded-correctness-evaluator.md)
