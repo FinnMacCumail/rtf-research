@@ -76,7 +76,7 @@ nav:
       - GraphQL Read Path: phases/phase-5-production-deepagents/graphql-read-path.md
       - DeepAgents 0.7.5 Upgrade: phases/phase-5-production-deepagents/0-7-5-upgrade.md
       - LangChain Ecosystem vs Cloud Platform MCP: phases/phase-5-production-deepagents/langchain-ecosystem.md
-      - Stratified Benchmark v5 & the Ceiling: phases/phase-5-production-deepagents/stratified-benchmark-v5.md
+      - Stratified Benchmark v5 — Discriminating Power: phases/phase-5-production-deepagents/stratified-benchmark-v5.md
       - Lessons Learned: phases/phase-5-production-deepagents/lessons-learned.md
   - Framework Comparison:
       - Overview: framework-comparison/overview.md

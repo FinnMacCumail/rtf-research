@@ -1,11 +1,12 @@
-# Stratified Benchmark v5 — and the Ceiling It Found
+# Stratified Benchmark v5 — Discriminating Power and Its Limits
 
 The Phase 5 evaluation harness had been running on a **six-question** dataset (`netbox-benchmark-v4`).
 Six questions is enough to catch a hallucination class or validate an A/B on a per-question basis, but
 not enough to answer the question Phase 5 was building toward: **does query difficulty predict which
 model should handle a query** — the empirical basis for model-handoff routing.
 
-This page covers building a 90-question stratified replacement, and the negative result it produced.
+This page covers building a 90-question stratified replacement, the negative result it appeared to
+produce across three similar models, and the fourth model that overturned that reading.
 
 ## Why six questions was not enough
 
