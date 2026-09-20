@@ -2,14 +2,57 @@
 
 ## Status
 
-**Accepted (September 2026).** Evidence is an **n=1-per-tier existence proof**, not a benchmark
-score. It is recorded as an ADR because it bears directly on a decision the whole phase has been
-building toward — model-handoff routing — and because it **partly reverses the premise** that local
-models are not capable enough for this agent.
+**Accepted, then CORRECTED (September 2026).** The original evidence was an **n=1-per-tier existence
+proof**, not a benchmark score. It is recorded as an ADR because it bears directly on a decision the
+whole phase has been building toward — model-handoff routing — and because it **partly reverses the
+premise** that local models are not capable enough for this agent. A subsequent 12-question run
+**overturned the context limitation** recorded below; the original reasoning is preserved and the
+withdrawn claim struck in place, with the correction immediately following.
 **Repository**: [https://github.com/FinnMacCumail/ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents)
 **Bears on**: [ADR-0037](0037-stratified-benchmark-v5-difficulty-not-capability.md) (v5 benchmark),
 [ADR-0028](0028-native-local-and-cloud-models-on-deepagents.md) (local & cloud models),
 [ADR-0035](0035-deepagents-0.7.5-upgrade.md) (upgrade taken partly to unblock routing)
+
+## Correction — the context requirement was understated (September 2026)
+
+A **12-question stratified run** (4 per tier, 6/6 across both data islands, scored with the full
+evaluator set) replaced the n=1-per-tier existence proof below. It overturned the `≥32k` limitation
+recorded in *Negative / limitations*:
+
+| | baseline, `-c 32768` | **`-c 131072 --no-kv-offload`** |
+|---|---|---|
+| correct | 8 / 12 | **11 / 12** |
+| wrong | 1 | 1 |
+| **lost to context** | **3** | **0** |
+| overflows / truncations | 2 / 1 | **0 / 0** |
+| peak context reached | ceiling 32,768 | 44,295 |
+| tool calls | 60 | 88 |
+| wall time | 82 min | 155 min (**1.9×**) |
+
+**32k was not enough — it was the binding constraint.** All three questions lost to context at 32k
+recovered *and scored correct* at 128k: point-to-point circuits (15 calls), branch-site firewalls
+(13 calls), changelog deletions (6 calls). A fourth flipped wrong → correct.
+
+**The fix uses the resource this box has in surplus.** `--no-kv-offload` moves the KV cache into
+system RAM — **376 GB, against 21 GB of VRAM** — buying 4× context for ~37% of decode speed
+(11.2 → 7.0 tok/s). It loaded in **20 seconds**.
+
+**A process error worth recording.** Before testing the window, a per-tool-result size cap was built
+into the MCP wrapper on the theory that oversized payloads were the problem. It cost two ~87-minute
+runs and was reverted:
+
+1. **Inert.** `langchain_mcp_adapters` declares `response_format="content_and_artifact"`, so tool
+   coroutines return a `(content, artifact)` **tuple**. The guard measured only `str`/`list` and
+   skipped every MCP result — 3 oversized results, 0 cap firings. The unit test fed it a bare
+   string, so it validated an assumption about the adapter rather than the adapter's contract.
+   *A test written from the same misunderstanding as the code cannot catch that misunderstanding.*
+2. **Mis-sized.** At 60,000 chars (~15,000 tokens) a single permitted result consumed ~63% of the
+   23,768-token working budget: still allowed a truncation, while turning a question the baseline
+   answered in **3 calls / 141 s** into a **65-minute retry loop**. A per-result cap must be sized
+   as *context budget ÷ expected call count*, and even then it treats the symptom.
+
+The correct move was to test the cheap hypothesis first: raising the window took 20 seconds to
+verify and made the cap unnecessary.
 
 ## Context
 
@@ -91,12 +134,17 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   stops, no truncation. But at the reported ~0.7%-per-turn rate, **24 tool calls yields ~0.17
   expected failures**. Observing zero is consistent with the problem being real. The claim that
   fragility *disqualifies* this model was stated too strongly and is withdrawn; it is not refuted.
-- **≥32k context is required.** The first advanced attempt died at `18181 tokens exceeds the
+- ~~**≥32k context is required.** The first advanced attempt died at `18181 tokens exceeds the
   available context size (16384)` — a configuration limit chosen because quantized KV could not be
   confirmed safe on this hybrid GDN architecture. At 32k it ran to 28,106 tokens and succeeded. The
-  failure was the harness operator's, not the model's.
-- **Throughput makes the full v5 harness impractical.** Extrapolating the observed per-tier times to
-  30/30/30 gives **~12 hours per run**, and ~36 hours at the established 3× replication standard.
+  failure was the harness operator's, not the model's.~~
+  **WITHDRAWN — understated.** A 12-question run lost **3 of 12** questions to context *at 32k*
+  (2 hard overflows, 1 silent truncation), with peak context reaching 44,295 tokens once the
+  ceiling was lifted. The measured requirement is **≥128k**, obtained via `--no-kv-offload`.
+  See the Correction above.
+- **Throughput makes the full v5 harness impractical**, and the working configuration makes it more
+  so. At 32k the 12-question run averaged 412 s/question (**~10.3 h** extrapolated to 90); at 128k
+  it averaged 775 s/question (**~18.6 h**, or ~2.3 days at the 3× replication standard).
 - **Ollama cannot serve this architecture** on this host: the installed version (0.13.3, Dec 2025)
   predates `qwen4exp` by nine months, and local GGUF import for the architecture is reported broken.
   `llama-server` is the only working path.

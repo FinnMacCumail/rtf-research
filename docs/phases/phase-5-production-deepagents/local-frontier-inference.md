@@ -117,8 +117,58 @@ realistic ~9k agent prompts. Prefix caching matters enormously in a tool loop �
 question costs 3–4 minutes cold, subsequent turns ~23–33 s, because the system prompt and tool
 schemas are reused.
 
-Extrapolated to the full v5 set (30/30/30): **~12 hours per run**, ~36 hours at the 3× replication
-standard this project uses for aggregate rankings.
+Extrapolated to the full v5 set (30/30/30) from these three questions: ~12 hours per run. ***That
+estimate is superseded.*** Measured later across 12 questions: 412 s/question at 32k (~10.3 h, but
+that configuration loses 1 question in 4 to context) and **775 s/question at `-c 131072
+--no-kv-offload` — ~18.6 h per run**, ~2.3 days at the 3× replication standard. See the next section.
+
+## The context window was the binding constraint
+
+The three-question proof above ran at `-c 32768`. Scaling to **12 questions** (4 per tier, 6/6 across
+both data islands, full evaluator set) showed that window was not merely a floor to clear — it was
+the thing limiting the result:
+
+| | `-c 32768` | **`-c 131072 --no-kv-offload`** |
+|---|---|---|
+| correct | 8 / 12 | **11 / 12** |
+| wrong | 1 | 1 |
+| **lost to context** | **3** | **0** |
+| overflows / truncations | 2 / 1 | **0 / 0** |
+| peak context | ceiling 32,768 | 44,295 |
+| tool calls | 60 | 88 |
+| wall time | 82 min | 155 min (**1.9×**) |
+
+All three context-lost questions recovered **and scored correct**: point-to-point circuits (15 calls,
+1564 s), branch-site firewalls (13 calls, 1862 s), changelog deletions (6 calls, 819 s). A fourth
+flipped wrong → correct. The single regression — a changelog count that went correct → wrong using
+*fewer* calls (4 → 2), finding 3 records where the baseline found 4 — is the model under-searching at
+n=1, not a context effect.
+
+**The fix uses the resource this box has in surplus.** `--no-kv-offload` puts the KV cache in system
+RAM — **376 GB against 21 GB of VRAM** — buying 4× context for ~37% of decode speed (11.2 → 7.0
+tok/s). It loaded in **20 seconds**.
+
+### The detour: a tool-result cap, built at the wrong layer
+
+Before testing the window, a per-result size cap was added to the MCP wrapper on the theory that
+oversized payloads were the problem. It cost two ~87-minute runs and was reverted.
+
+**First it was inert.** `langchain_mcp_adapters` declares `response_format="content_and_artifact"`,
+so tool coroutines return a `(content, artifact)` **tuple**; the guard measured only `str`/`list` and
+silently skipped every MCP result — three oversized results, zero cap firings. The unit test fed it a
+bare string, validating an assumption about the adapter instead of the adapter's contract. *A test
+written from the same misunderstanding as the code cannot catch that misunderstanding.*
+
+**Then it was mis-sized.** At 60,000 chars (~15,000 tokens) one permitted result consumed ~63% of the
+23,768-token working budget — still allowing a truncation, while turning a question the baseline had
+answered in **3 calls / 141 s** into a **65-minute retry loop**. The model behaved correctly
+throughout: it never reissued an identical call until the fourth firing, decomposed the changelog by
+action type, and discovered that `limit` belongs *inside* `filters`. The guidance was the problem.
+
+The reusable lesson is about ordering, not about caps: **test the cheap hypothesis first.** Raising
+the context window took 20 seconds to verify and made the entire cap exercise unnecessary. A
+per-result cap, if ever needed, must be sized as *context budget ÷ expected call count* — and even
+then it treats the symptom.
 
 ## Two things recorded because they were wrong
 
@@ -126,7 +176,9 @@ standard this project uses for aggregate rankings.
 `request (18181 tokens) exceeds the available context size (16384 tokens)`. The 16k limit was chosen
 deliberately — quantized KV could not be confirmed safe on this hybrid Gated-DeltaNet architecture,
 so f16 KV and a smaller window were the conservative choice. At `-c 32768` the same question ran to
-28,106 tokens and answered correctly. **≥32k is a requirement for advanced items**, not a preference.
+28,106 tokens and answered correctly. ~~**≥32k is a requirement for advanced items**, not a
+preference.~~ **WITHDRAWN — understated:** 32k still lost 3 of 12 questions to context. The measured
+requirement is **≥128k** via `--no-kv-offload` (see above).
 
 **The predicted tool-calling fragility did not appear — and this test could not have detected it.**
 Third-party reports describe repetition loops, malformed `<tool_call>` emission and spurious
@@ -141,8 +193,16 @@ The premise has moved. It is no longer "local models cannot do this" — this on
 hard item. It is now a cost question with a measurable shape:
 
 - **Cheap locally**: single-anchor lookups, 2 tool calls, ~3–4 minutes.
-- **Expensive locally**: multi-hop traces, 20 tool calls, ~17 minutes.
-- **Impractical locally**: the full 90-question harness at ~12 hours per run.
+- **Expensive locally**: multi-hop traces, 13–20 tool calls, 17–31 minutes.
+- **Impractical locally**: the full 90-question harness — **~18.6 h per run** at the configuration
+  that actually completes it (`-c 131072 --no-kv-offload`), or ~10.3 h at 32k where 1 question in 4
+  dies of context. The honest figure is the first one: the cheaper configuration does not finish the
+  work.
+
+Note the direction of that trade. Fixing the context ceiling made the agent **slower and more
+expensive** — 60 → 88 tool calls, 82 → 155 minutes — precisely because it stopped hitting a wall and
+started doing the work. A cost measured on a configuration that silently drops a quarter of its
+questions is not a cost worth quoting.
 
 That maps cleanly onto the anchor-count rule already used for GraphQL-vs-MCP routing: *count the
 anchor objects.* A handoff policy keyed on the same axis — local for one named object, escalate for
