@@ -170,6 +170,60 @@ the context window took 20 seconds to verify and made the entire cap exercise un
 per-result cap, if ever needed, must be sized as *context budget ÷ expected call count* — and even
 then it treats the symptom.
 
+## Tuning: one flag worth 3.8×, and one that actively hurts
+
+With the context ceiling gone, the remaining question was whether latency could be improved at all.
+Four configurations, measured on a 9,093-token agent-shaped prompt (NetBox records followed by a
+request to tabulate them), one server at a time, baseline re-measured in the same session:
+
+| config | prefill tok/s | decode tok/s | wall | drafts accepted |
+|---|---|---|---|---|
+| baseline | 34.0 | 5.0 | 318.7 s | — |
+| **`-b 2048 -ub 2048`** | **129.7** | 5.9 | **113.7 s** | — |
+| `--spec-type ngram-simple` | 36.9 | 3.8 | 314.4 s | **0 / 163** |
+| both | 101.4 | 3.7 | 159.7 s | 0 / 147 |
+
+**`-ub 2048` is worth 3.8× on prefill and 2.8× on wall clock.** llama.cpp only copies CPU-resident
+expert weights to the GPU once a microbatch is large enough to amortise the PCIe transfer. The
+default `-ub 512` never reaches that threshold, so every microbatch pays full freight. With 112 GB
+of experts in system RAM, that single threshold dominates prefill — and prefill is where this agent
+lives: **187,272 prompt tokens against 21,825 generated** in the 12-question run.
+
+Modelled effect on that run: prefill 68 → 18 min, total ~155 → ~105 min, full v5 18.6 h → ~12.6 h.
+*Modelled, not measured* — the projection accounts for ~100% of observed wall time, which is too
+neat to be a validated model, so the real saving is probably smaller.
+
+### The n-gram dead end, recorded so nobody repeats it
+
+`--spec-type ngram-simple` looks made for this workload. The agent constantly echoes device names,
+IDs and JSON keys straight back out of tool results, and n-gram drafting is exactly the technique
+for repetitive output. It needs no draft model and costs no VRAM.
+
+It produced **163 drafts and accepted zero**, costing 24% of decode because the model pays
+verification for drafts it always rejects. Combined with `-ub 2048` it degrades *both* axes
+(prefill 129.7 → 101.4, decode 5.9 → 3.7).
+
+The reason is mechanical: `ngram-simple` needs an exactly-repeating 12-token run to predict the next
+48, and a table of *distinct* device names has almost none. A 0% acceptance rate is not a tuning
+problem — no `--spec-ngram-*-size-n` value fixes it. Draft-model speculation is separately
+impossible: `common/speculative.cpp` throws on vocab mismatch and no qwen4exp-vocab draft model
+exists (the MTP head PRs are still unmerged).
+
+### Two negatives worth as much as the win
+
+**Prompt caching was already doing its job.** The obvious hypothesis — that a ~9k system prompt plus
+tool schemas was being re-read every turn — is false. Median LCP similarity **0.956** across 75 slot
+selections, 75 of 76 requests served warm, mean context 16,405 tokens of which only **2,432** were
+actually prefilled. **~85% of every prompt came from cache.** The remaining prefill is genuinely new
+tool-result text, which no caching strategy can remove. That lever was spent before it was pulled.
+
+**MoE CPU decode runs at ~19% of memory bandwidth and there is no available fix.** Measured 19–20
+GB/s effective against a 101.5 GB/s STREAM triad. The matched remedy is NUMA weight mirroring —
+duplicate weights per node, which 376 GB comfortably holds — and `GGML_NUMA_STRATEGY_MIRROR` exists
+in ggml's enum **and nowhere else in the source**: reserved, unimplemented, unreachable. Switching
+runtime does not help either: KTransformers requires Ampere+ and its headline numbers need AMX this
+Cascade Lake host lacks; vLLM and SGLang cannot host 112 GB on 21 GiB of VRAM at all.
+
 ## Two things recorded because they were wrong
 
 **The context failure was the operator's, not the model's.** The advanced question first died with
@@ -194,10 +248,11 @@ hard item. It is now a cost question with a measurable shape:
 
 - **Cheap locally**: single-anchor lookups, 2 tool calls, ~3–4 minutes.
 - **Expensive locally**: multi-hop traces, 13–20 tool calls, 17–31 minutes.
-- **Impractical locally**: the full 90-question harness — **~18.6 h per run** at the configuration
-  that actually completes it (`-c 131072 --no-kv-offload`), or ~10.3 h at 32k where 1 question in 4
-  dies of context. The honest figure is the first one: the cheaper configuration does not finish the
-  work.
+- **Impractical locally**: the full 90-question harness — ~18.6 h per run at `-c 131072
+  --no-kv-offload`, or ~10.3 h at 32k where 1 question in 4 dies of context. The cheaper
+  configuration does not finish the work, so only the first figure is honest. Adding
+  **`-b 2048 -ub 2048`** models that down to **~12.6 h** — *modelled, not measured*, and still a
+  long way from interactive.
 
 Note the direction of that trade. Fixing the context ceiling made the agent **slower and more
 expensive** — 60 → 88 tool calls, 82 → 155 minutes — precisely because it stopped hitting a wall and

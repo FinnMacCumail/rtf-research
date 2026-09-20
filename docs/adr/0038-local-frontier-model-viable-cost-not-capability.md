@@ -124,6 +124,11 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   supported this path; `run_matrix.py` already takes `backend:model` tuples.
 - **A reusable hardware lever** (`--numa isolate -t 10`) that applies to every local model on this
   box, not just this one.
+- **A second, larger lever: `-b 2048 -ub 2048` is worth 3.8× on prefill** (34.0 → 129.7 tok/s on a
+  9,093-token prompt; 2.8× wall clock on the same request). llama.cpp only copies CPU-resident
+  expert weights to the GPU once a microbatch is big enough to amortise the PCIe transfer, and the
+  default `-ub 512` never reaches that threshold. This matters disproportionately because prefill is
+  where an agent lives — **187,272 prompt tokens against 21,825 generated** across 12 questions.
 
 ### Negative / limitations
 - **n=1 per tier. This is not a score.** One advanced question that happened to need 20 calls may not
@@ -144,7 +149,25 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   See the Correction above.
 - **Throughput makes the full v5 harness impractical**, and the working configuration makes it more
   so. At 32k the 12-question run averaged 412 s/question (**~10.3 h** extrapolated to 90); at 128k
-  it averaged 775 s/question (**~18.6 h**, or ~2.3 days at the 3× replication standard).
+  it averaged 775 s/question (**~18.6 h**, or ~2.3 days at the 3× replication standard). Adding
+  `-ub 2048` models this down to **~12.6 h** — *modelled, not measured*: the projection accounts for
+  ~100% of observed wall time, which is too neat to be a validated model.
+- **Speculative decoding is unavailable in every form.** `--spec-type ngram-simple` needs no draft
+  model and looked well matched to an agent that echoes tool-result strings, but measured **163
+  drafts and zero accepted**, costing 24% of decode; combined with `-ub 2048` it degraded both axes.
+  A 0% acceptance rate is mechanical, not a tuning failure — it needs an exactly-repeating 12-token
+  run and a table of distinct device names has none. Draft-model speculation is separately
+  impossible: `common/speculative.cpp` throws on vocab mismatch and no qwen4exp-vocab draft model
+  exists; the MTP head PRs (#27836, #28243) remain unmerged.
+- **Prompt caching is not a remaining lever — it already works.** Median LCP similarity **0.956**
+  across 75 slot selections, 75 of 76 requests warm, and only 2,432 of a mean 16,405-token context
+  actually prefilled: **~85% served from cache**. The residual prefill is genuinely new tool-result
+  text.
+- **MoE CPU decode achieves only ~19% of memory bandwidth (19–20 GB/s against a 101.5 GB/s STREAM
+  triad) and no remedy is available.** NUMA weight mirroring is the matched fix and
+  `GGML_NUMA_STRATEGY_MIRROR` exists in ggml's enum *and nowhere else in the source*. Alternative
+  runtimes do not help: KTransformers requires Ampere+ and AMX this host lacks; vLLM and SGLang
+  cannot host 112 GB on 21 GiB of VRAM.
 - **Ollama cannot serve this architecture** on this host: the installed version (0.13.3, Dec 2025)
   predates `qwen4exp` by nine months, and local GGUF import for the architecture is reported broken.
   `llama-server` is the only working path.
