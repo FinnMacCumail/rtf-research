@@ -120,7 +120,7 @@ schemas are reused.
 Extrapolated to the full v5 set (30/30/30) from these three questions: ~12 hours per run. ***That
 estimate is superseded.*** Measured later across 12 questions: 412 s/question at 32k (~10.3 h, but
 that configuration loses 1 question in 4 to context) and **775 s/question at `-c 131072
---no-kv-offload` — ~18.6 h per run**, ~2.3 days at the 3× replication standard. See the next section.
+--no-kv-offload` — ~19.4 h per run**, ~2.4 days at the 3× replication standard. See the next section.
 
 ## The context window was the binding constraint
 
@@ -189,9 +189,16 @@ default `-ub 512` never reaches that threshold, so every microbatch pays full fr
 of experts in system RAM, that single threshold dominates prefill — and prefill is where this agent
 lives: **187,272 prompt tokens against 21,825 generated** in the 12-question run.
 
-Modelled effect on that run: prefill 68 → 18 min, total ~155 → ~105 min, full v5 18.6 h → ~12.6 h.
-*Modelled, not measured* — the projection accounts for ~100% of observed wall time, which is too
-neat to be a validated model, so the real saving is probably smaller.
+**Measured on a second full 12-question run**, not modelled: **155.1 → 126.3 min (1.23×)**, at
+identical correctness (11/12, zero context failures) and 77 tool calls against 88. Extrapolated to
+the full v5 set: **19.4 h → ~15.8 h**.
+
+The first projection said ~105 min and ~12.6 h. It was **optimistic by about 20%**, and the reason
+is instructive: it applied the flag's isolated 3.8× prefill gain to *all* 187,272 prompt tokens,
+when ~85% of those were already served from the prefix cache (see below). Only the genuinely-new
+remainder and each question's cold first turn get faster. A 3.8× gain on an isolated measurement
+became **1.23× end to end** — and decode, which this flag does not touch, now accounts for roughly
+two thirds of what is left.
 
 ### The n-gram dead end, recorded so nobody repeats it
 
@@ -248,11 +255,11 @@ hard item. It is now a cost question with a measurable shape:
 
 - **Cheap locally**: single-anchor lookups, 2 tool calls, ~3–4 minutes.
 - **Expensive locally**: multi-hop traces, 13–20 tool calls, 17–31 minutes.
-- **Impractical locally**: the full 90-question harness — ~18.6 h per run at `-c 131072
+- **Impractical locally**: the full 90-question harness — **~19.4 h** per run at `-c 131072
   --no-kv-offload`, or ~10.3 h at 32k where 1 question in 4 dies of context. The cheaper
   configuration does not finish the work, so only the first figure is honest. Adding
-  **`-b 2048 -ub 2048`** models that down to **~12.6 h** — *modelled, not measured*, and still a
-  long way from interactive.
+  **`-b 2048 -ub 2048`** brings it to **~15.8 h, measured** — worth having, and still a long way
+  from interactive.
 
 Note the direction of that trade. Fixing the context ceiling made the agent **slower and more
 expensive** — 60 → 88 tool calls, 82 → 155 minutes — precisely because it stopped hitting a wall and

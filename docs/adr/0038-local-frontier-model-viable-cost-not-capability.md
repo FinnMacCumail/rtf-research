@@ -149,9 +149,14 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   See the Correction above.
 - **Throughput makes the full v5 harness impractical**, and the working configuration makes it more
   so. At 32k the 12-question run averaged 412 s/question (**~10.3 h** extrapolated to 90); at 128k
-  it averaged 775 s/question (**~18.6 h**, or ~2.3 days at the 3× replication standard). Adding
-  `-ub 2048` models this down to **~12.6 h** — *modelled, not measured*: the projection accounts for
-  ~100% of observed wall time, which is too neat to be a validated model.
+  it averaged 775 s/question (**~19.4 h**, or ~2.4 days at the 3× replication standard). Adding
+  `-ub 2048` brings this to **~15.8 h — now measured, not modelled.** A second 12-question run with
+  the flag took **126.3 min against the baseline's 155.1 (1.23×)** at identical correctness (11/12,
+  zero context failures) and 77 tool calls against 88. The earlier projection of ~105 min / ~12.6 h
+  was **optimistic by ~20%**: it credited the flag's isolated 3.8× prefill gain against *all* prompt
+  tokens, when ~85% of them were already served from the prefix cache. Only the genuinely-new
+  remainder and each question's cold first turn are accelerated — and decode, which is untouched,
+  now accounts for roughly two thirds of the remaining wall time.
 - **Speculative decoding is unavailable in every form.** `--spec-type ngram-simple` needs no draft
   model and looked well matched to an agent that echoes tool-result strings, but measured **163
   drafts and zero accepted**, costing 24% of decode; combined with `-ub 2048` it degraded both axes.
