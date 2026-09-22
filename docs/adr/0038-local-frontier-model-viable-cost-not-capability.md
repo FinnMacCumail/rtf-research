@@ -66,6 +66,32 @@ Correctness unchanged; zero truncations. A 1.24× *regression* on the first ques
 a cold-cache artefact — that turn paid a full 8,743-token prefill in one 81.8 s call — and is
 excluded; only warm turns compare.
 
+**Replicated independently**, on a second run of the same three questions launched from the
+committed `serve_qwen4exp.sh` rather than a hand-typed command line — so what was validated is the
+artefact people actually use. Again 3/3 correct, one accumulating thread, peak context 9.5k / 10.9k
+/ 19.1k:
+
+| | KV in system RAM | first VRAM run | replication |
+|---|---|---|---|
+| Q2 (warm, 2 LLM calls both runs) | 171.2 s | 91.6 s | **76.9 s — 2.23×** |
+| Q3 | 665.3 s | 329.4 s | 413.9 s — 1.61× |
+| Q1 (cold first turn) | 101.6 s | 126.1 s | 155.9 s — *excluded* |
+
+**Q2 is the load-bearing comparison** — warm cache, identical call count — and the replication beat
+the first VRAM run.
+
+**The cold-turn artefact is now demonstrated rather than argued.** Within Q1, per-call timings were
+**108.6 s** (8,743 prompt tokens), then **20.4 s** (8,958) and **23.7 s** (9,534). *More* tokens at
+one-fifth the time once the prefix cache fills; 152.7 s of the 155.9 s wall was server-side. Any
+benchmark whose first question follows a restart is measuring cache warm-up, not configuration.
+
+**Per-question call-count variance is large, and worth more caution than the timings.** The same Q3,
+same configuration, took **9 LLM calls in one run and 14 in the other**. Tool execution accounted for
+just **5.4 s of 413.9 s** — the cost is LLM round-trips, not tools. Both runs made **four
+`netbox_graphql_schema` introspections**, re-learning the schema mid-query: independent evidence for
+the GraphQL routing-tightening work, and a reason not to read much into any single advanced-tier
+timing.
+
 **The flag was correct when set.** The failure it addressed was `-c 32768` losing 3 of 12 questions.
 Raising the window fixed that, and nobody re-checked whether the offload was still needed. It was
 not, and it cost roughly half the throughput for two months of measurements.

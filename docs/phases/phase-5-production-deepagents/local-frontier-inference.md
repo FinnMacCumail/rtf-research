@@ -173,10 +173,45 @@ questions, one of them silently. Raising the window solved that, and nobody went
 the offload was still earning its cost. *A workaround outlives the problem it was built for unless
 something forces the re-check.*
 
-> **Every runtime figure below this point — 775 s/question, ~19.4 h, ~15.8 h, and the 82 → 155 min
-> comparison — was measured with KV offloaded.** They are not withdrawn, but they are lower bounds on
-> speed. The 12-question benchmark has **not** been re-run in the new configuration, so no corrected
-> figure is quoted here rather than a modelled one.
+> **Every runtime figure on this page — 775 s/question, ~19.4 h, ~15.8 h, and the 82 → 155 min
+> comparison, wherever they appear above or below — was measured with KV offloaded.** They are not
+> withdrawn, but they are lower bounds on speed. The 12-question benchmark has **not** been re-run in
+> the new configuration, so no corrected figure is quoted here rather than a modelled one.
+
+### Replicated, and the cold first turn proven
+
+A second run of the same three questions — launched from the committed `serve_qwen4exp.sh` rather
+than a hand-typed command line, so it validates the artefact actually in use — reproduced the result.
+3/3 correct again, one accumulating thread, peak context 9.5k / 10.9k / 19.1k, all traces correctly
+labelled `qwen3.8-flash-next-UD-Q4_K_XL`:
+
+| | KV in system RAM | first VRAM run | replication |
+|---|---|---|---|
+| Q2 (warm, 2 LLM calls both runs) | 171.2 s | 91.6 s | **76.9 s — 2.23×** |
+| Q3 | 665.3 s | 329.4 s | 413.9 s — 1.61× |
+| Q1 (cold first turn) | 101.6 s | 126.1 s | 155.9 s — *excluded* |
+
+Q2 is the comparison that carries weight: warm cache, same call count in both runs, and the
+replication came in **faster than the first**.
+
+**The cold first turn is now a measurement, not an excuse.** Per-call timings inside Q1:
+
+```
+call 1  108.6 s   8,743 prompt tokens
+call 2   20.4 s   8,958 prompt tokens
+call 3   23.7 s   9,534 prompt tokens
+```
+
+More tokens, one-fifth the time, as soon as the prefix cache fills — and 152.7 s of the 155.9 s wall
+was server-side, so this is not harness overhead. **A benchmark whose first question follows a server
+restart is measuring cache warm-up.** Both VRAM runs show it; it is reproducible, and it should be
+discarded rather than averaged in.
+
+**The larger caution is variance, not speed.** The same Q3, same configuration, took **9 LLM calls in
+one run and 14 in the other** — and tool execution was only **5.4 s of 413.9 s**, so the difference
+is round-trips, not tools. Both runs issued **four `netbox_graphql_schema` introspections**, the model
+re-learning the schema mid-query. That is independent evidence for the anchor-count routing work, and
+a reason to treat any single advanced-tier timing as one sample rather than a figure.
 
 ### The detour: a tool-result cap, built at the wrong layer
 
