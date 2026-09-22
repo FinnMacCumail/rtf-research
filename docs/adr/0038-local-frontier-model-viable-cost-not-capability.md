@@ -33,9 +33,9 @@ recorded in *Negative / limitations*:
 recovered *and scored correct* at 128k: point-to-point circuits (15 calls), branch-site firewalls
 (13 calls), changelog deletions (6 calls). A fourth flipped wrong → correct.
 
-~~**The fix uses the resource this box has in surplus.** `--no-kv-offload` moves the KV cache into
+<del>**The fix uses the resource this box has in surplus.** `--no-kv-offload` moves the KV cache into
 system RAM — **376 GB, against 21 GB of VRAM** — buying 4× context for ~37% of decode speed
-(11.2 → 7.0 tok/s).~~ It loaded in **20 seconds**.
+(11.2 → 7.0 tok/s).</del> It loaded in **20 seconds**.
 
 **WITHDRAWN — the trade-off was a false choice (September 2026).** `--no-kv-offload` has been
 removed. The 128k window did **not** require it: this is a hybrid model, and only **12 of 48 layers
@@ -172,13 +172,13 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   stops, no truncation. But at the reported ~0.7%-per-turn rate, **24 tool calls yields ~0.17
   expected failures**. Observing zero is consistent with the problem being real. The claim that
   fragility *disqualifies* this model was stated too strongly and is withdrawn; it is not refuted.
-- ~~**≥32k context is required.** The first advanced attempt died at `18181 tokens exceeds the
+- <del>**≥32k context is required.** The first advanced attempt died at `18181 tokens exceeds the
   available context size (16384)` — a configuration limit chosen because quantized KV could not be
   confirmed safe on this hybrid GDN architecture. At 32k it ran to 28,106 tokens and succeeded. The
-  failure was the harness operator's, not the model's.~~
+  failure was the harness operator's, not the model's.</del>
   **WITHDRAWN — understated.** A 12-question run lost **3 of 12** questions to context *at 32k*
   (2 hard overflows, 1 silent truncation), with peak context reaching 44,295 tokens once the
-  ceiling was lifted. The measured requirement is **≥128k**. ~~obtained via `--no-kv-offload`~~ —
+  ceiling was lifted. The measured requirement is **≥128k**. <del>obtained via `--no-kv-offload`</del> —
   the window needs no offload at all: 131k of KV costs only **3.00 GiB** on this hybrid
   architecture and fits in VRAM. See the Correction above.
 - **Throughput makes the full v5 harness impractical**, and the working configuration makes it more

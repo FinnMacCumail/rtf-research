@@ -116,8 +116,8 @@ Efficiency, by contrast, separates cleanly: pro 4.93 tool calls (76/90 within bu
   feedback-count fix that had been able to drop the primary metric.
 
 ### Negative / limitations
-- ~~**The set ceilings at ~0.91–0.93.** Further model runs against it are known in advance to be
-  uninformative; raising the ceiling requires *harder items*, not more models.~~
+- <del>**The set ceilings at ~0.91–0.93.** Further model runs against it are known in advance to be
+  uninformative; raising the ceiling requires *harder items*, not more models.</del>
   **WITHDRAWN.** The fourth model run falsified this directly (see the Correction above). The set
   resolves ~9pp gaps; it could not resolve the ~3pp between three closely-matched models. What
   raises discriminating power is **a wider spread of models**, and harder items *in addition* —

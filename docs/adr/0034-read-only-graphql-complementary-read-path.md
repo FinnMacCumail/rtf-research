@@ -76,13 +76,13 @@ correctness judge from ADR-0033). The result was measured in three rounds; each 
 - One high-value tool replaces the intent of "~100 tools" for the read use case.
 
 ### Negative / limitations (status at Sept-2026 confirmation)
-- ~~**~2× tool calls**~~ — **RESOLVED.** This was a deepagents 0.6.10 artifact; on 0.7.5 the
+- <del>**~2× tool calls**</del> — **RESOLVED.** This was a deepagents 0.6.10 artifact; on 0.7.5 the
   GraphQL path is cost-neutral (sometimes cheaper). See ADR-0035.
-- ~~**Soft routing over-applies GraphQL to simple lookups**~~ — **RESOLVED** by the anchor-object
+- <del>**Soft routing over-applies GraphQL to simple lookups**</del> — **RESOLVED** by the anchor-object
   routing rule (device-detail recovered to 1.0, MCP-routed). Residual: pro's routing is 2/3
   deterministic — the mechanical `LLMToolSelectorMiddleware` gate is the escalation if airtight
   routing is ever required, not needed at 2/3.
-- ~~**Aggregate needs ≥3 runs (single-run variance)**~~ — **SATISFIED**; 3× replicated, combined ≈0.82.
+- <del>**Aggregate needs ≥3 runs (single-run variance)**</del> — **SATISFIED**; 3× replicated, combined ≈0.82.
 - Remaining (unrelated to GraphQL routing): `tenant-site-summary` is a persistent model-accuracy weak
   spot (pro ~0.47) — a separate investigation, not a routing issue.
 

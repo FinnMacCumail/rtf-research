@@ -144,9 +144,9 @@ flipped wrong → correct. The single regression — a changelog count that went
 *fewer* calls (4 → 2), finding 3 records where the baseline found 4 — is the model under-searching at
 n=1, not a context effect.
 
-~~**The fix uses the resource this box has in surplus.** `--no-kv-offload` puts the KV cache in system
+<del>**The fix uses the resource this box has in surplus.** `--no-kv-offload` puts the KV cache in system
 RAM — **376 GB against 21 GB of VRAM** — buying 4× context for ~37% of decode speed (11.2 → 7.0
-tok/s).~~ It loaded in **20 seconds**.
+tok/s).</del> It loaded in **20 seconds**.
 
 **WITHDRAWN — that trade-off was a false choice, and it cost ~half the throughput for nothing.**
 The 128k window never needed the offload. Only **12 of 48 layers are full attention** (indices
@@ -267,9 +267,9 @@ Cascade Lake host lacks; vLLM and SGLang cannot host 112 GB on 21 GiB of VRAM at
 `request (18181 tokens) exceeds the available context size (16384 tokens)`. The 16k limit was chosen
 deliberately — quantized KV could not be confirmed safe on this hybrid Gated-DeltaNet architecture,
 so f16 KV and a smaller window were the conservative choice. At `-c 32768` the same question ran to
-28,106 tokens and answered correctly. ~~**≥32k is a requirement for advanced items**, not a
-preference.~~ **WITHDRAWN — understated:** 32k still lost 3 of 12 questions to context. The measured
-requirement is **≥128k** ~~via `--no-kv-offload`~~ — and it needs no offload: 131k of KV is only
+28,106 tokens and answered correctly. <del>**≥32k is a requirement for advanced items**, not a
+preference.</del> **WITHDRAWN — understated:** 32k still lost 3 of 12 questions to context. The measured
+requirement is **≥128k** <del>via `--no-kv-offload`</del> — and it needs no offload: 131k of KV is only
 **3.00 GiB** on this hybrid architecture and lives in VRAM (see above).
 
 **The predicted tool-calling fragility did not appear — and this test could not have detected it.**
