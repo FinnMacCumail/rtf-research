@@ -33,9 +33,42 @@ recorded in *Negative / limitations*:
 recovered *and scored correct* at 128k: point-to-point circuits (15 calls), branch-site firewalls
 (13 calls), changelog deletions (6 calls). A fourth flipped wrong → correct.
 
-**The fix uses the resource this box has in surplus.** `--no-kv-offload` moves the KV cache into
+~~**The fix uses the resource this box has in surplus.** `--no-kv-offload` moves the KV cache into
 system RAM — **376 GB, against 21 GB of VRAM** — buying 4× context for ~37% of decode speed
-(11.2 → 7.0 tok/s). It loaded in **20 seconds**.
+(11.2 → 7.0 tok/s).~~ It loaded in **20 seconds**.
+
+**WITHDRAWN — the trade-off was a false choice (September 2026).** `--no-kv-offload` has been
+removed. The 128k window did **not** require it: this is a hybrid model, and only **12 of 48 layers
+are full attention** (indices 3, 7, 11 … 47). The other 36 are Gated DeltaNet, whose recurrent state
+is sized by *sequences*, not tokens, so it does not grow with context. Those 12 layers use just
+**2 KV heads** (GQA) at 256 key/value length:
+
+```
+12 layers × 2 heads × (256+256) × 2 B = 24 KiB per token
+-c 131072                             = 3.00 GiB attention KV  (+ ~0.46 GiB recurrent)
+```
+
+Confirmed by VRAM subtraction — resident went **14.7 → 17.4 GiB**, ~3.1 GiB for both caches, leaving
+~3.3 GiB headroom on 21 GiB, no OOM. Geometry read from the GGUF; `kv_unified=true` means the four
+slots share one pool rather than each claiming `-c` (`llama-context.cpp:290`).
+
+Removing the flag is a **~2× win on every axis**, measured on three NetBox questions in one
+accumulating thread:
+
+| | KV in system RAM | KV in VRAM | |
+|---|---|---|---|
+| prefill (matched ~8.7k prompt) | 89.86 tok/s | **126.42 tok/s** | 1.41× |
+| decode | 5.1–7.5 tok/s | **~10.8 tok/s** | ~2× |
+| Q2 wall clock | 171.2 s | **91.6 s** | 1.87× |
+| Q3 wall clock | 665.3 s | **329.4 s** | 2.02× |
+
+Correctness unchanged; zero truncations. A 1.24× *regression* on the first question after restart is
+a cold-cache artefact — that turn paid a full 8,743-token prefill in one 81.8 s call — and is
+excluded; only warm turns compare.
+
+**The flag was correct when set.** The failure it addressed was `-c 32768` losing 3 of 12 questions.
+Raising the window fixed that, and nobody re-checked whether the offload was still needed. It was
+not, and it cost roughly half the throughput for two months of measurements.
 
 **A process error worth recording.** Before testing the window, a per-tool-result size cap was built
 into the MCP wrapper on the theory that oversized payloads were the problem. It cost two ~87-minute
@@ -145,8 +178,9 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   failure was the harness operator's, not the model's.~~
   **WITHDRAWN — understated.** A 12-question run lost **3 of 12** questions to context *at 32k*
   (2 hard overflows, 1 silent truncation), with peak context reaching 44,295 tokens once the
-  ceiling was lifted. The measured requirement is **≥128k**, obtained via `--no-kv-offload`.
-  See the Correction above.
+  ceiling was lifted. The measured requirement is **≥128k**. ~~obtained via `--no-kv-offload`~~ —
+  the window needs no offload at all: 131k of KV costs only **3.00 GiB** on this hybrid
+  architecture and fits in VRAM. See the Correction above.
 - **Throughput makes the full v5 harness impractical**, and the working configuration makes it more
   so. At 32k the 12-question run averaged 412 s/question (**~10.3 h** extrapolated to 90); at 128k
   it averaged 775 s/question (**~19.4 h**, or ~2.4 days at the 3× replication standard). Adding

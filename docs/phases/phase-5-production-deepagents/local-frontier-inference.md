@@ -144,9 +144,39 @@ flipped wrong → correct. The single regression — a changelog count that went
 *fewer* calls (4 → 2), finding 3 records where the baseline found 4 — is the model under-searching at
 n=1, not a context effect.
 
-**The fix uses the resource this box has in surplus.** `--no-kv-offload` puts the KV cache in system
+~~**The fix uses the resource this box has in surplus.** `--no-kv-offload` puts the KV cache in system
 RAM — **376 GB against 21 GB of VRAM** — buying 4× context for ~37% of decode speed (11.2 → 7.0
-tok/s). It loaded in **20 seconds**.
+tok/s).~~ It loaded in **20 seconds**.
+
+**WITHDRAWN — that trade-off was a false choice, and it cost ~half the throughput for nothing.**
+The 128k window never needed the offload. Only **12 of 48 layers are full attention** (indices
+3, 7, 11 … 47); the other 36 are Gated DeltaNet, whose recurrent state is sized by *sequences* rather
+than tokens and so does not grow with context. Those 12 layers use **2 KV heads** at 256 key/value
+length — **24 KiB per token**, so `-c 131072` is **3.00 GiB** of attention KV plus ~0.46 GiB of
+recurrent state. Measured by VRAM subtraction: resident 14.7 → 17.4 GiB, ~3.1 GiB for both caches,
+~3.3 GiB headroom left, no OOM.
+
+| | KV in system RAM | KV in VRAM | |
+|---|---|---|---|
+| prefill (matched ~8.7k prompt) | 89.86 tok/s | **126.42 tok/s** | 1.41× |
+| decode | 5.1–7.5 tok/s | **~10.8 tok/s** | ~2× |
+| Q2 wall clock | 171.2 s | **91.6 s** | 1.87× |
+| Q3 wall clock | 665.3 s | **329.4 s** | 2.02× |
+
+Correctness held — the advanced question still named `sea-dc1-esx05` PSU0 → `sea-dc1-pdu03` Outlet 1
+and still declined to invent a PDU→feed→panel hop the data does not contain. Zero truncations. The
+first question after restart shows a 1.24× regression and is excluded: it paid a full 8,743-token
+prefill on a cold cache, 81.8 s in a single call, against a baseline whose server was already warm.
+
+**The flag was correct when it was set** — the failure it fixed was `-c 32768` losing 3 of 12
+questions, one of them silently. Raising the window solved that, and nobody went back to ask whether
+the offload was still earning its cost. *A workaround outlives the problem it was built for unless
+something forces the re-check.*
+
+> **Every runtime figure below this point — 775 s/question, ~19.4 h, ~15.8 h, and the 82 → 155 min
+> comparison — was measured with KV offloaded.** They are not withdrawn, but they are lower bounds on
+> speed. The 12-question benchmark has **not** been re-run in the new configuration, so no corrected
+> figure is quoted here rather than a modelled one.
 
 ### The detour: a tool-result cap, built at the wrong layer
 
@@ -239,7 +269,8 @@ deliberately — quantized KV could not be confirmed safe on this hybrid Gated-D
 so f16 KV and a smaller window were the conservative choice. At `-c 32768` the same question ran to
 28,106 tokens and answered correctly. ~~**≥32k is a requirement for advanced items**, not a
 preference.~~ **WITHDRAWN — understated:** 32k still lost 3 of 12 questions to context. The measured
-requirement is **≥128k** via `--no-kv-offload` (see above).
+requirement is **≥128k** ~~via `--no-kv-offload`~~ — and it needs no offload: 131k of KV is only
+**3.00 GiB** on this hybrid architecture and lives in VRAM (see above).
 
 **The predicted tool-calling fragility did not appear — and this test could not have detected it.**
 Third-party reports describe repetition loops, malformed `<tool_call>` emission and spurious
