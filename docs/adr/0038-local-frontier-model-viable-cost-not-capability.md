@@ -190,9 +190,26 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   where an agent lives — **187,272 prompt tokens against 21,825 generated** across 12 questions.
 
 ### Negative / limitations
-- **n=1 per tier. This is not a score.** One advanced question that happened to need 20 calls may not
+- <del>**n=1 per tier. This is not a score.** One advanced question that happened to need 20 calls may not
   be representative; the same caution that produced the ADR-0037 correction applies with more force
-  here, not less.
+  here, not less.</del>
+  **SUPERSEDED — the full 90-question set has now been run locally.** corr **0.906** (simple 0.917 /
+  medium 0.933 / advanced 0.867), 0 errors. Against the **re-scored** cloud figures on the same
+  items — flash 0.911, kimi 0.928, pro 0.944, qwen3.5:397b 0.817 — the local model is **0.5pp below
+  deepseek-v4-flash**. ADR-0037 records that this set resolves gaps of ~9pp and above and cannot
+  resolve the ~3pp between closely-matched models, so the honest claim is **indistinguishable from
+  flash on this benchmark**, not "matches" and certainly not "beats". It does sit **8.9pp above
+  qwen3.5:397b-cloud**, which is a gap the set *can* resolve.
+  Note the comparison must use the re-scored cloud numbers: three reference-wording fixes raised
+  flash 0.906 → 0.911, kimi 0.911 → 0.928, pro 0.933 → 0.944. The local run came after those fixes,
+  so comparing it against the pre-fix set would credit it with corrections it did not earn.
+- **Three of seven failures are one retrieval defect, not seven reasoning failures.** On three
+  questions the agent searched for "Halvorsen Logistics" as a circuits *provider*, found nothing,
+  and answered **"Halvorsen Logistics was not found in NetBox"** — confidently, after 2–5 real tool
+  calls, about the seeded tenant that 57 of the 90 questions depend on. The other 87 questions found
+  it. This is a scoping failure that produces an authoritative denial rather than an error, which is
+  the same dangerous shape as the silent truncation this ADR records elsewhere. Counting it as three
+  independent capability misses would overstate the model's weakness and hide a fixable routing bug.
 - **The reported tool-call fragility did not reproduce — and this test could not have detected it.**
   Across 17 logged turns there were no repetition loops, no malformed `<tool_call>`, no premature
   stops, no truncation. But at the reported ~0.7%-per-turn rate, **24 tool calls yields ~0.17
@@ -207,10 +224,25 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   ceiling was lifted. The measured requirement is **≥128k**. <del>obtained via `--no-kv-offload`</del> —
   the window needs no offload at all: 131k of KV costs only **3.00 GiB** on this hybrid
   architecture and fits in VRAM. See the Correction above.
-- **Throughput makes the full v5 harness impractical**, and the working configuration makes it more
+- **Throughput: the full harness has now been RUN, not extrapolated — 6.78 h.** Ninety questions,
+  one model, serial: **6 h 47 m at 271.6 s/question**, corr **0.906**, comp 0.944, entity_cov 0.866,
+  5.52 tool calls, **0 errors**, zero truncations, zero overflows, peak context 75,571 of 131,072.
+  Per tier: simple 0.917 / medium 0.933 / advanced 0.867. Decode held at a 13.47 t/s median across
+  507 requests, falling only to 10.25 at peak context. That supersedes every extrapolation below —
+  but **attribute it to the configuration, not to one flag**: this run differs from the ~15.8 h
+  figure in four ways (KV in VRAM, `reasoning_effort="low"`, `max_tokens` 8192, model `profile`
+  set). The clean per-flag number for removing `--no-kv-offload` remains the 1.87×/2.02× measured
+  in the three-question A/B, where nothing else changed.
+  **The projection was wrong again, and the reason generalises.** A 12-question sample predicted
+  3.2–4.5 h; the real figure is 6.78 h, optimistic by **1.5–2.1×**. The sample peaked at 22,532
+  tokens of context where the full set reached **75,571** — stratified sampling caught the tiers but
+  not the expensive tail. *A subset that is representative of difficulty is not thereby
+  representative of cost.*
+- <del>**Throughput makes the full v5 harness impractical**, and the working configuration makes it more
   so. At 32k the 12-question run averaged 412 s/question (**~10.3 h** extrapolated to 90); at 128k
   it averaged 775 s/question (**~19.4 h**, or ~2.4 days at the 3× replication standard). Adding
-  `-ub 2048` brings this to **~15.8 h — now measured, not modelled.** A second 12-question run with
+  `-ub 2048` brings this to **~15.8 h — now measured, not modelled.**</del> (Superseded by the measured
+  6.78 h above; retained because the 1.23× `-ub 2048` comparison below is still valid.) A second 12-question run with
   the flag took **126.3 min against the baseline's 155.1 (1.23×)** at identical correctness (11/12,
   zero context failures) and 77 tool calls against 88. The earlier projection of ~105 min / ~12.6 h
   was **optimistic by ~20%**: it credited the flag's isolated 3.8× prefill gain against *all* prompt

@@ -120,7 +120,11 @@ schemas are reused.
 Extrapolated to the full v5 set (30/30/30) from these three questions: ~12 hours per run. ***That
 estimate is superseded.*** Measured later across 12 questions: 412 s/question at 32k (~10.3 h, but
 that configuration loses 1 question in 4 to context) and **775 s/question at `-c 131072
---no-kv-offload` — ~19.4 h per run**, ~2.4 days at the 3× replication standard. See the next section.
+--no-kv-offload` — ~19.4 h per run**, ~2.4 days at the 3× replication standard.
+
+**All of that is now superseded by an actual run.** The full 90-question set has been executed
+locally end to end: **6 h 47 m, 271.6 s/question**, corr **0.906**, 0 errors. See
+[The full harness, finally run](#the-full-harness-finally-run) below.
 
 ## The context window was the binding constraint
 
@@ -174,9 +178,11 @@ the offload was still earning its cost. *A workaround outlives the problem it wa
 something forces the re-check.*
 
 > **Every runtime figure on this page — 775 s/question, ~19.4 h, ~15.8 h, and the 82 → 155 min
-> comparison, wherever they appear above or below — was measured with KV offloaded.** They are not
-> withdrawn, but they are lower bounds on speed. The 12-question benchmark has **not** been re-run in
-> the new configuration, so no corrected figure is quoted here rather than a modelled one.
+> comparison, wherever they appear above or below — was measured with KV offloaded**, and is now
+> superseded. The 12-question benchmark *and* the full 90 have since been re-run: **6 h 47 m for the
+> full set, 271.6 s/question, corr 0.906**. Those older figures are kept because the comparisons
+> built on them (the 1.23× `-ub 2048` result, the 82 → 155 min context trade) remain valid against
+> their own baselines.
 
 ### Replicated, and the cold first turn proven
 
@@ -321,13 +327,11 @@ hard item. It is now a cost question with a measurable shape:
 
 - **Cheap locally**: single-anchor lookups, 2 tool calls, ~3–4 minutes.
 - **Expensive locally**: multi-hop traces, 13–20 tool calls, 17–31 minutes.
-- **Impractical locally**: the full 90-question harness — **~19.4 h** per run at `-c 131072
-  --no-kv-offload`, or ~10.3 h at 32k where 1 question in 4 dies of context. The cheaper
-  configuration does not finish the work, so only the first figure is honest. Adding
-  **`-b 2048 -ub 2048`** brings it to **~15.8 h, measured** — worth having, and still a long way
-  from interactive.
+- **Slow but no longer impractical**: the full 90-question harness ran locally in **6 h 47 m**
+  (271.6 s/question) at corr **0.906** with zero errors — an overnight job rather than a two-day
+  one. The earlier ~19.4 h and ~15.8 h figures were measured with KV offloaded and are superseded.
 
-Note the direction of that trade. Fixing the context ceiling made the agent **slower and more
+Note the direction of the earlier trade. Fixing the context ceiling made the agent **slower and more
 expensive** — 60 → 88 tool calls, 82 → 155 minutes — precisely because it stopped hitting a wall and
 started doing the work. A cost measured on a configuration that silently drops a quarter of its
 questions is not a cost worth quoting.
@@ -335,6 +339,54 @@ questions is not a cost worth quoting.
 That maps cleanly onto the anchor-count rule already used for GraphQL-vs-MCP routing: *count the
 anchor objects.* A handoff policy keyed on the same axis — local for one named object, escalate for
 set-anchored multi-hop work — now has direct supporting evidence rather than an untested premise.
+
+## The full harness, finally run
+
+Every runtime number on this page before this section was an extrapolation from 3 or 12 questions.
+The full set has now been executed: **90 questions, one model, serial, 6 h 47 m.**
+
+| | |
+|---|---|
+| wall clock | **6 h 47 m** (271.6 s/question) |
+| correctness | **0.906** — simple 0.917 / medium 0.933 / advanced 0.867 |
+| completeness | 0.944 · entity coverage 0.866 · tool calls 5.52 |
+| errors | **0** · truncations **0** · overflows **0** |
+| peak context | 75,571 of 131,072 |
+| decode | 13.47 t/s median across 507 requests; 10.25 at peak context |
+
+**Where that sits against the cloud models**, on the same 90 items and using the **re-scored**
+figures (three reference-wording fixes raised the cloud numbers after their runs):
+
+| model | correctness |
+|---|---|
+| deepseek-v4-pro | 0.944 |
+| kimi-k2.6 | 0.928 |
+| deepseek-v4-flash | 0.911 |
+| **local qwen3.8-flash-next (Q4_K_XL)** | **0.906** |
+| qwen3.5:397b-cloud | 0.817 |
+
+**0.5pp below flash — which this benchmark cannot resolve.** ADR-0037 established that the set
+discriminates gaps of ~9pp and above and cannot separate the ~3pp between closely-matched models.
+So the defensible claim is *indistinguishable from deepseek-v4-flash here*, not "matches" and not
+"beats". The 8.9pp gap over qwen3.5:397b-cloud **is** within the set's resolution.
+
+**My projection was wrong again, and the reason is worth more than the number.** From the
+12-question sample I predicted 3.2–4.5 h; the answer was 6.78 h — optimistic by 1.5–2.1×. That
+sample peaked at 22,532 tokens of context; the full set reached **75,571**. The sample was
+stratified across tiers and still missed the expensive tail. *A subset representative of difficulty
+is not thereby representative of cost.*
+
+**Three of the seven failures are one bug wearing three hats.** On three questions the agent looked
+for "Halvorsen Logistics" as a circuits **provider**, found nothing, and replied *"Halvorsen
+Logistics was not found in NetBox"* — after 2–5 genuine tool calls, about the seeded tenant that 57
+of the 90 questions rely on. Every other question found it. That is a scoping failure that yields a
+confident denial rather than an error: the same shape as the silent truncation recorded above, and
+a fixable routing bug rather than three separate capability misses.
+
+**Attribution caveat.** This run differs from the ~15.8 h figure in four ways — KV in VRAM,
+`reasoning_effort="low"`, `max_tokens` 8192, and a declared model `profile`. The 2.33× improvement
+belongs to the configuration as a whole. The clean per-flag figure for removing `--no-kv-offload`
+is still the 1.87×/2.02× from the three-question A/B, where nothing else varied.
 
 **See also**: [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
 [ADR-0037 — Stratified v5 Benchmark](../../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md) ·
