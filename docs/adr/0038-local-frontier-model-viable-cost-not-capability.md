@@ -88,9 +88,19 @@ benchmark whose first question follows a restart is measuring cache warm-up, not
 **Per-question call-count variance is large, and worth more caution than the timings.** The same Q3,
 same configuration, took **9 LLM calls in one run and 14 in the other**. Tool execution accounted for
 just **5.4 s of 413.9 s** — the cost is LLM round-trips, not tools. Both runs made **four
-`netbox_graphql_schema` introspections**, re-learning the schema mid-query: independent evidence for
-the GraphQL routing-tightening work, and a reason not to read much into any single advanced-tier
-timing.
+`netbox_graphql_schema` introspections**, and a reason not to read much into any single
+advanced-tier timing.
+
+**Correction — those introspections were mischaracterised here as waste.** This entry originally
+read "re-learning the schema mid-query", implying the model was flailing. It was not: the
+`netbox-graphql` skill *mandates* discovery — *"for any type or field you are not 100% sure of,
+call `netbox_graphql_schema` FIRST — never guess"* — as step 2 of a five-step workflow. The tool
+also caches the built schema per process (`netbox_graphql.py:58`), so only the first call is an
+HTTP round-trip and the rest are local lookups. Across the full 90-question run it is **44
+introspections against 65 queries**, costing ~5.3 s of marginal round-trip each — about **0.95% of
+the 6 h 47 m run**. On the clearest case a single introspection bought a **19-call** saving. The
+fair criticism is not that discovery happens but that it is **per-question reasoning, never
+amortised**: the model rediscovers the same handful of types across questions.
 
 **The flag was correct when set.** The failure it addressed was `-c 32768` losing 3 of 12 questions.
 Raising the window fixed that, and nobody re-checked whether the offload was still needed. It was

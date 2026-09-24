@@ -215,9 +215,25 @@ discarded rather than averaged in.
 
 **The larger caution is variance, not speed.** The same Q3, same configuration, took **9 LLM calls in
 one run and 14 in the other** — and tool execution was only **5.4 s of 413.9 s**, so the difference
-is round-trips, not tools. Both runs issued **four `netbox_graphql_schema` introspections**, the model
-re-learning the schema mid-query. That is independent evidence for the anchor-count routing work, and
-a reason to treat any single advanced-tier timing as one sample rather than a figure.
+is round-trips, not tools. Both runs issued **four `netbox_graphql_schema` introspections**, and that
+is a reason to treat any single advanced-tier timing as one sample rather than a figure.
+
+**Correction — I called those introspections "re-learning the schema mid-query". That was wrong.**
+The `netbox-graphql` skill *requires* them: *"for any type or field you are not 100% sure of, call
+`netbox_graphql_schema` FIRST — never guess"*, as step 2 of its Route → Discover → Write → Execute
+workflow. And the tool caches the built schema per process, so after the first call they are local
+dictionary lookups, not network round-trips.
+
+Measured across the full 90-question run: **44 introspections against 65 queries**. At the marginal
+cost of a tool call (~5.3 s, from the A/B where 42 extra calls cost 3.7 min) that is **~3.9 min of a
+6 h 47 m run — 0.95%**. On the clearest single case, one introspection replaced 19 MCP calls.
+
+What survives of the criticism: discovery is **per-question reasoning and never amortised**. The
+schema is cached in the tool, but the *model* re-derives which type it needs on every question. The
+obvious fix — inlining common types into the skill — was costed and rejected: twelve types is
+roughly 4,500 tokens on *every* request, paid by all 90 questions to save ~1% on the 22 that use
+GraphQL, and it would undercut the skill's deliberate "grammar + runtime discovery, not a fixed
+schema" design.
 
 ### The detour: a tool-result cap, built at the wrong layer
 
