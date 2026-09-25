@@ -1,0 +1,3633 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../0037-stratified-benchmark-v5-difficulty-not-capability/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>ADR-0038 Local Frontier Model — Cost, Not Capability - RTF AI Research Portfolio</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-0038-a-frontier-class-model-runs-locally-the-constraint-is-cost-not-capability" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RTF AI Research Portfolio" class="md-header__button md-logo" aria-label="RTF AI Research Portfolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RTF AI Research Portfolio
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR-0038 Local Frontier Model — Cost, Not Capability
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RTF AI Research Portfolio" class="md-nav__button md-logo" aria-label="RTF AI Research Portfolio" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RTF AI Research Portfolio
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 1 - TMDB Chatbox
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 1 - TMDB Chatbox
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-1-tmdb/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-1-tmdb/implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-1-tmdb/demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-1-tmdb/lessons-learned/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 2 - NetBox MCP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 2 - NetBox MCP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-2-netbox/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-2-netbox/performance-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-2-netbox/mcp-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-2-netbox/demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo Scenarios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 3 - OpenAI Orchestration (FAILED)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-3-openai-failed/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-3-openai-failed/implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implementation Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-3-openai-failed/demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 4 - Framework Comparison
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 4 - Framework Comparison
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-4-framework-comparison/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-4-framework-comparison/deepagents-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deepagents Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-4-framework-comparison/claude-sdk-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude SDK Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-4-framework-comparison/comparative-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comparative Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-4-framework-comparison/lessons-learned/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 5 - Production DeepAgents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 5 - Production DeepAgents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/multi-model-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multi-Model Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/observability-and-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability & Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/evaluation-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating for Correctness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/graphql-read-path/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Read Path
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/0-7-5-upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/langchain-ecosystem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LangChain Ecosystem vs Cloud Platform MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/stratified-benchmark-v5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stratified Benchmark v5 — Discriminating Power
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/local-frontier-inference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local Frontier Inference — 176B on Two 2080 Tis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../phases/phase-5-production-deepagents/lessons-learned/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Framework Comparison
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Framework Comparison
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/architectural-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architectural Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/flexibility-vs-convenience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flexibility vs Convenience
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/tool-orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Orchestration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/production-considerations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Considerations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../framework-comparison/selection-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selection Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Milestones (Planned)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development Milestones (Planned)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../milestones/phase-5-neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 6 Neo4j Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../milestones/phase-6-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 7 RAG Intelligence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../milestones/phase-7-analytics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 8 Analytics Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Methods
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research Methods
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methods/retrieval-and-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Retrieval & Planning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methods/evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methods/benchmarking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methods/observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../methods/tooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture Decisions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture Decisions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0001-adopt-mkdocs-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0001 MkDocs Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0002-chatbox-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0002 Chatbox Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0003-diagnostic-first-debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0003 Diagnostic-First Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0004-media-type-detection-enhancement/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0004 Media Type Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0005-entity-resolution-cache-override/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0005 Entity Resolution Cache Override
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0006-financial-constraint-parameter-mapping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0006 Financial Constraint Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0007-dual-mode-financial-query-processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0007 Dual-Mode Financial Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0008-progressive-parameter-injection-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0008 Progressive Parameter Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0009-endpoint-aware-constraint-validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0009 Endpoint-Aware Constraint Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0010-multi-layer-pipeline-debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0010 Multi-Layer Pipeline Debugging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0011-temporal-sorting-constraint-interaction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0011 Temporal Sorting Interaction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0012-intent-aware-sorting-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0012 Intent-Aware Sorting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0013-multi-agent-orchestration-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0013 Multi-Agent Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0014-openai-model-selection-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0014 OpenAI Model Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0015-cli-testing-infrastructure-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0015 CLI Testing Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0016-agent-communication-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0016 Agent Communication Protocol
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0017-session-management-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 Session Management Strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0018-langgraph-stategraph-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0018 LangGraph StateGraph Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0019-limitation-handling-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0019 Limitation Handling Strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0020-intelligent-caching-redis-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0020 Intelligent Caching Redis Strategy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0021-dynamic-tool-generation-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0021 Dynamic Tool Generation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0022-interactive-cli-architecture-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0022 Interactive CLI Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0023-claude-api-prompt-caching-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0023 Claude API Prompt Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0024-cache-performance-monitoring-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0024 Cache Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0025-project-requirements-package-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0025 Project Requirements Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0026-claude-sdk-project-requirements-package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0026 Claude SDK Requirements Package
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0027-intelligent-routing-and-model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0027 Intelligent Routing & Model Selection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0028-native-local-and-cloud-models-on-deepagents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0028 Native Local & Cloud Models on DeepAgents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0029-langsmith-observability-platform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0029 LangSmith Observability Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0030-model-matrix-evaluation-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0030 Model-Matrix Evaluation Harness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0031-deepagents-0.6-upgrade-and-harnessprofile-workaround/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0031 DeepAgents 0.6 Upgrade & HarnessProfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0032-quickjs-ptc-deferral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0032 QuickJS / PTC Deferral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0033-reference-grounded-correctness-evaluator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0033 Reference-Grounded Correctness Evaluator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0034-read-only-graphql-complementary-read-path/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0034 Read-Only GraphQL Complementary Read Path
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0035-deepagents-0.7.5-upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0035 DeepAgents 0.7.5 Upgrade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0036-langchain-ecosystem-reproduces-cloud-platform-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0037-stratified-benchmark-v5-difficulty-not-capability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0037 Stratified v5 Benchmark — Discriminating Power & Its Limits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0038 Local Frontier Model — Cost, Not Capability
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0038 Local Frontier Model — Cost, Not Capability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correction-the-context-requirement-was-understated-september-2026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correction — the context requirement was understated (September 2026)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negative / limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-adr-0037" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationship to ADR-0037
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="adr-0038-a-frontier-class-model-runs-locally-the-constraint-is-cost-not-capability">ADR-0038 — A Frontier-Class Model Runs Locally: the Constraint Is Cost, Not Capability<a class="headerlink" href="#adr-0038-a-frontier-class-model-runs-locally-the-constraint-is-cost-not-capability" title="Permanent link">&para;</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p><strong>Accepted, then CORRECTED (September 2026).</strong> The original evidence was an <strong>n=1-per-tier existence
+proof</strong>, not a benchmark score. It is recorded as an ADR because it bears directly on a decision the
+whole phase has been building toward — model-handoff routing — and because it <strong>partly reverses the
+premise</strong> that local models are not capable enough for this agent. A subsequent 12-question run
+<strong>overturned the context limitation</strong> recorded below; the original reasoning is preserved and the
+withdrawn claim struck in place, with the correction immediately following.
+<strong>Repository</strong>: <a href="https://github.com/FinnMacCumail/ollamaDeepAgents">https://github.com/FinnMacCumail/ollamaDeepAgents</a>
+<strong>Bears on</strong>: <a href="../0037-stratified-benchmark-v5-difficulty-not-capability/">ADR-0037</a> (v5 benchmark),
+<a href="../0028-native-local-and-cloud-models-on-deepagents/">ADR-0028</a> (local &amp; cloud models),
+<a href="../0035-deepagents-0.7.5-upgrade/">ADR-0035</a> (upgrade taken partly to unblock routing)</p>
+<h2 id="correction-the-context-requirement-was-understated-september-2026">Correction — the context requirement was understated (September 2026)<a class="headerlink" href="#correction-the-context-requirement-was-understated-september-2026" title="Permanent link">&para;</a></h2>
+<p>A <strong>12-question stratified run</strong> (4 per tier, 6/6 across both data islands, scored with the full
+evaluator set) replaced the n=1-per-tier existence proof below. It overturned the <code>≥32k</code> limitation
+recorded in <em>Negative / limitations</em>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>baseline, <code>-c 32768</code></th>
+<th><strong><code>-c 131072 --no-kv-offload</code></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>correct</td>
+<td>8 / 12</td>
+<td><strong>11 / 12</strong></td>
+</tr>
+<tr>
+<td>wrong</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>lost to context</strong></td>
+<td><strong>3</strong></td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>overflows / truncations</td>
+<td>2 / 1</td>
+<td><strong>0 / 0</strong></td>
+</tr>
+<tr>
+<td>peak context reached</td>
+<td>ceiling 32,768</td>
+<td>44,295</td>
+</tr>
+<tr>
+<td>tool calls</td>
+<td>60</td>
+<td>88</td>
+</tr>
+<tr>
+<td>wall time</td>
+<td>82 min</td>
+<td>155 min (<strong>1.9×</strong>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>32k was not enough — it was the binding constraint.</strong> All three questions lost to context at 32k
+recovered <em>and scored correct</em> at 128k: point-to-point circuits (15 calls), branch-site firewalls
+(13 calls), changelog deletions (6 calls). A fourth flipped wrong → correct.</p>
+<p><del><strong>The fix uses the resource this box has in surplus.</strong> <code>--no-kv-offload</code> moves the KV cache into
+system RAM — <strong>376 GB, against 21 GB of VRAM</strong> — buying 4× context for ~37% of decode speed
+(11.2 → 7.0 tok/s).</del> It loaded in <strong>20 seconds</strong>.</p>
+<p><strong>WITHDRAWN — the trade-off was a false choice (September 2026).</strong> <code>--no-kv-offload</code> has been
+removed. The 128k window did <strong>not</strong> require it: this is a hybrid model, and only <strong>12 of 48 layers
+are full attention</strong> (indices 3, 7, 11 … 47). The other 36 are Gated DeltaNet, whose recurrent state
+is sized by <em>sequences</em>, not tokens, so it does not grow with context. Those 12 layers use just
+<strong>2 KV heads</strong> (GQA) at 256 key/value length:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>12 layers × 2 heads × (256+256) × 2 B = 24 KiB per token
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>-c 131072                             = 3.00 GiB attention KV  (+ ~0.46 GiB recurrent)
+</span></code></pre></div>
+<p>Confirmed by VRAM subtraction — resident went <strong>14.7 → 17.4 GiB</strong>, ~3.1 GiB for both caches, leaving
+~3.3 GiB headroom on 21 GiB, no OOM. Geometry read from the GGUF; <code>kv_unified=true</code> means the four
+slots share one pool rather than each claiming <code>-c</code> (<code>llama-context.cpp:290</code>).</p>
+<p>Removing the flag is a <strong>~2× win on every axis</strong>, measured on three NetBox questions in one
+accumulating thread:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>KV in system RAM</th>
+<th>KV in VRAM</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefill (matched ~8.7k prompt)</td>
+<td>89.86 tok/s</td>
+<td><strong>126.42 tok/s</strong></td>
+<td>1.41×</td>
+</tr>
+<tr>
+<td>decode</td>
+<td>5.1–7.5 tok/s</td>
+<td><strong>~10.8 tok/s</strong></td>
+<td>~2×</td>
+</tr>
+<tr>
+<td>Q2 wall clock</td>
+<td>171.2 s</td>
+<td><strong>91.6 s</strong></td>
+<td>1.87×</td>
+</tr>
+<tr>
+<td>Q3 wall clock</td>
+<td>665.3 s</td>
+<td><strong>329.4 s</strong></td>
+<td>2.02×</td>
+</tr>
+</tbody>
+</table>
+<p>Correctness unchanged; zero truncations. A 1.24× <em>regression</em> on the first question after restart is
+a cold-cache artefact — that turn paid a full 8,743-token prefill in one 81.8 s call — and is
+excluded; only warm turns compare.</p>
+<p><strong>Replicated independently</strong>, on a second run of the same three questions launched from the
+committed <code>serve_qwen4exp.sh</code> rather than a hand-typed command line — so what was validated is the
+artefact people actually use. Again 3/3 correct, one accumulating thread, peak context 9.5k / 10.9k
+/ 19.1k:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>KV in system RAM</th>
+<th>first VRAM run</th>
+<th>replication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q2 (warm, 2 LLM calls both runs)</td>
+<td>171.2 s</td>
+<td>91.6 s</td>
+<td><strong>76.9 s — 2.23×</strong></td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>665.3 s</td>
+<td>329.4 s</td>
+<td>413.9 s — 1.61×</td>
+</tr>
+<tr>
+<td>Q1 (cold first turn)</td>
+<td>101.6 s</td>
+<td>126.1 s</td>
+<td>155.9 s — <em>excluded</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Q2 is the load-bearing comparison</strong> — warm cache, identical call count — and the replication beat
+the first VRAM run.</p>
+<p><strong>The cold-turn artefact is now demonstrated rather than argued.</strong> Within Q1, per-call timings were
+<strong>108.6 s</strong> (8,743 prompt tokens), then <strong>20.4 s</strong> (8,958) and <strong>23.7 s</strong> (9,534). <em>More</em> tokens at
+one-fifth the time once the prefix cache fills; 152.7 s of the 155.9 s wall was server-side. Any
+benchmark whose first question follows a restart is measuring cache warm-up, not configuration.</p>
+<p><strong>Per-question call-count variance is large, and worth more caution than the timings.</strong> The same Q3,
+same configuration, took <strong>9 LLM calls in one run and 14 in the other</strong>. Tool execution accounted for
+just <strong>5.4 s of 413.9 s</strong> — the cost is LLM round-trips, not tools. Both runs made <strong>four
+<code>netbox_graphql_schema</code> introspections</strong>, and a reason not to read much into any single
+advanced-tier timing.</p>
+<p><strong>Correction — those introspections were mischaracterised here as waste.</strong> This entry originally
+read "re-learning the schema mid-query", implying the model was flailing. It was not: the
+<code>netbox-graphql</code> skill <em>mandates</em> discovery — <em>"for any type or field you are not 100% sure of,
+call <code>netbox_graphql_schema</code> FIRST — never guess"</em> — as step 2 of a five-step workflow. The tool
+also caches the built schema per process (<code>netbox_graphql.py:58</code>), so only the first call is an
+HTTP round-trip and the rest are local lookups. Across the full 90-question run it is <strong>44
+introspections against 65 queries</strong>, costing ~5.3 s of marginal round-trip each — about <strong>0.95% of
+the 6 h 47 m run</strong>. On the clearest case a single introspection bought a <strong>19-call</strong> saving. The
+fair criticism is not that discovery happens but that it is <strong>per-question reasoning, never
+amortised</strong>: the model rediscovers the same handful of types across questions.</p>
+<p><strong>The flag was correct when set.</strong> The failure it addressed was <code>-c 32768</code> losing 3 of 12 questions.
+Raising the window fixed that, and nobody re-checked whether the offload was still needed. It was
+not, and it cost roughly half the throughput for two months of measurements.</p>
+<p><strong>A process error worth recording.</strong> Before testing the window, a per-tool-result size cap was built
+into the MCP wrapper on the theory that oversized payloads were the problem. It cost two ~87-minute
+runs and was reverted:</p>
+<ol>
+<li><strong>Inert.</strong> <code>langchain_mcp_adapters</code> declares <code>response_format="content_and_artifact"</code>, so tool
+   coroutines return a <code>(content, artifact)</code> <strong>tuple</strong>. The guard measured only <code>str</code>/<code>list</code> and
+   skipped every MCP result — 3 oversized results, 0 cap firings. The unit test fed it a bare
+   string, so it validated an assumption about the adapter rather than the adapter's contract.
+   <em>A test written from the same misunderstanding as the code cannot catch that misunderstanding.</em></li>
+<li><strong>Mis-sized.</strong> At 60,000 chars (~15,000 tokens) a single permitted result consumed ~63% of the
+   23,768-token working budget: still allowed a truncation, while turning a question the baseline
+   answered in <strong>3 calls / 141 s</strong> into a <strong>65-minute retry loop</strong>. A per-result cap must be sized
+   as <em>context budget ÷ expected call count</em>, and even then it treats the symptom.</li>
+</ol>
+<p>The correct move was to test the cheap hypothesis first: raising the window took 20 seconds to
+verify and made the cap unnecessary.</p>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p><a href="../0037-stratified-benchmark-v5-difficulty-not-capability/">ADR-0037</a> names <strong>model-handoff
+routing</strong> as the next step: route simple queries to a cheap model, hard ones to a strong one. Every
+earlier local-model attempt had failed the premise from the wrong end — the local candidates tried
+(a 32B, a 7–8B, and others) failed on the <strong>simple</strong> tier, so there was nothing to hand off <em>from</em>.
+The working assumption was that local models lacked the capability.</p>
+<p><strong>Qwen3.8-Flash-Next</strong> (<code>config.json</code> model type <code>qwen4_exp</code>, an open-weight preview of the Qwen 4
+architecture) changes the premise. It is a <strong>125B MoE with ~6B active per token</strong> (512 experts, 10
+routed + 1 shared) plus a <strong>51B n-gram embedding lookup table</strong> — ~176B total. The lookup table is a
+table, not a network: it costs memory, not computation. That shape is what makes a frontier-class
+model tractable on commodity hardware.</p>
+<p>Published third-party reports warned of <strong>tool-calling fragility</strong> in long multi-turn loops with
+thinking enabled — repetition loops, malformed <code>&lt;tool_call&gt;</code> emission, and spurious mid-task
+termination (one production report: ~15 premature stops across 2,176 tool turns, ≈0.7%). That is
+precisely this agent's workload, and it was the stated reason to expect failure.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p><strong>Run the real agent against the real model on the real hardware — three questions, one per
+difficulty tier — and treat the result as an existence proof rather than a measurement.</strong></p>
+<p>Three questions cannot produce a score. ADR-0037 established that even <strong>90 paired items resolve
+only ~9pp</strong>; three resolve nothing. The question asked here is narrower and answerable at n=1:
+<em>can this model, on this hardware, complete a multi-turn MCP tool loop and get the right answer?</em></p>
+<p>Hardware: 2× RTX 2080 Ti (21.1 GiB VRAM, compute 7.5), 2× Xeon Silver 4210 (20 physical cores,
+2 NUMA nodes), 376 GB DDR4. Quant: unsloth <code>UD-Q4_K_XL</code>, 105 GiB, served by <code>llama-server</code> through
+the existing <code>LLM_BACKEND=llamacpp</code> path — <strong>no application code changed</strong>.</p>
+<h2 id="evidence">Evidence<a class="headerlink" href="#evidence" title="Permanent link">&para;</a></h2>
+<p>Three v5 questions, one per tier, scored by the harness's own <code>expected_entities</code> coverage:</p>
+<table>
+<thead>
+<tr>
+<th>tier</th>
+<th>question</th>
+<th>time</th>
+<th>tool calls</th>
+<th>budget</th>
+<th>coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>simple</td>
+<td>device count at a site (all statuses)</td>
+<td>241.9 s</td>
+<td><strong>2</strong></td>
+<td>3</td>
+<td><strong>1.0</strong></td>
+</tr>
+<tr>
+<td>medium</td>
+<td>which rack holds the most devices</td>
+<td>198.1 s</td>
+<td><strong>2</strong></td>
+<td>7</td>
+<td><strong>1.0</strong></td>
+</tr>
+<tr>
+<td>advanced</td>
+<td>which hypervisor has exactly one PSU cabled, and to which outlet</td>
+<td>998.7 s</td>
+<td><strong>20</strong></td>
+<td>12 ✗</td>
+<td><strong>1.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>3/3 correct.</strong> The advanced answer named <code>sea-dc1-esx05</code> / <code>sea-dc1-pdu03</code> Outlet 1 and correctly
+classified every decoy the reference lists (<code>esx01</code>/<code>esx02</code> as 2-of-2; <code>esx03</code>/<code>esx09</code> as 0-of-2).
+It went beyond the reference: it quoted the cable label <em>"single supply - D10"</em> as evidence the
+single feed is intentional rather than a data gap, and flagged the six unconnected hosts as a
+records-audit item.</p>
+<p>Throughput measured on this hardware: <strong>decode 11.2 tok/s</strong>, <strong>prefill 64.4 tok/s</strong> at 1.5k tokens,
+<strong>~48 tok/s</strong> on realistic ~9k agent prompts.</p>
+<p><strong>The tuning finding that generalises</strong>: llama.cpp defaults <code>--numa</code> to <em>disabled</em>, so threads
+straddle both sockets. <code>--numa isolate -t 10</code> was worth <strong>+47%</strong> CPU-only and <strong>+56%</strong> hybrid decode
+on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. See
+<a href="../../phases/phase-5-production-deepagents/local-frontier-inference/">Local Frontier Inference</a>.</p>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>The capability premise is reversed.</strong> Every previous local candidate failed the <em>simple</em> tier;
+  this one went 3/3 including a two-hop power trace. Local handling of a NetBox agent is no longer
+  ruled out by capability.</li>
+<li><strong>Cost asymmetry is the real signal, and it is sharp.</strong> Simple and medium cost <strong>2 tool calls
+  each</strong>; advanced cost <strong>20</strong> — 167% over budget, 16.6 minutes. That is a 10× jump precisely at the
+  tier where help is most wanted, and it is exactly the shape a handoff policy would exploit: keep
+  single-anchor lookups local, escalate multi-hop traces.</li>
+<li><strong>No application changes were required.</strong> <code>llamacpp_config.py</code> and the <code>LLM_BACKEND</code> branch already
+  supported this path; <code>run_matrix.py</code> already takes <code>backend:model</code> tuples.</li>
+<li><strong>A reusable hardware lever</strong> (<code>--numa isolate -t 10</code>) that applies to every local model on this
+  box, not just this one.</li>
+<li><strong>A second, larger lever: <code>-b 2048 -ub 2048</code> is worth 3.8× on prefill</strong> (34.0 → 129.7 tok/s on a
+  9,093-token prompt; 2.8× wall clock on the same request). llama.cpp only copies CPU-resident
+  expert weights to the GPU once a microbatch is big enough to amortise the PCIe transfer, and the
+  default <code>-ub 512</code> never reaches that threshold. This matters disproportionately because prefill is
+  where an agent lives — <strong>187,272 prompt tokens against 21,825 generated</strong> across 12 questions.</li>
+</ul>
+<h3 id="negative-limitations">Negative / limitations<a class="headerlink" href="#negative-limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><del><strong>n=1 per tier. This is not a score.</strong> One advanced question that happened to need 20 calls may not
+  be representative; the same caution that produced the ADR-0037 correction applies with more force
+  here, not less.</del>
+  <strong>SUPERSEDED — the full 90-question set has now been run locally.</strong> corr <strong>0.906</strong> (simple 0.917 /
+  medium 0.933 / advanced 0.867), 0 errors. Against the <strong>re-scored</strong> cloud figures on the same
+  items — flash 0.911, kimi 0.928, pro 0.944, qwen3.5:397b 0.817 — the local model is <strong>0.5pp below
+  deepseek-v4-flash</strong>. ADR-0037 records that this set resolves gaps of ~9pp and above and cannot
+  resolve the ~3pp between closely-matched models, so the honest claim is <strong>indistinguishable from
+  flash on this benchmark</strong>, not "matches" and certainly not "beats". It does sit <strong>8.9pp above
+  qwen3.5:397b-cloud</strong>, which is a gap the set <em>can</em> resolve.
+  Note the comparison must use the re-scored cloud numbers: three reference-wording fixes raised
+  flash 0.906 → 0.911, kimi 0.911 → 0.928, pro 0.933 → 0.944. The local run came after those fixes,
+  so comparing it against the pre-fix set would credit it with corrections it did not earn.</li>
+<li><strong>Three of seven failures are one retrieval defect, not seven reasoning failures.</strong> On three
+  questions the agent searched for "Halvorsen Logistics" as a circuits <em>provider</em>, found nothing,
+  and answered <strong>"Halvorsen Logistics was not found in NetBox"</strong> — confidently, after 2–5 real tool
+  calls, about the seeded tenant that 57 of the 90 questions depend on. The other 87 questions found
+  it. This is a scoping failure that produces an authoritative denial rather than an error, which is
+  the same dangerous shape as the silent truncation this ADR records elsewhere. Counting it as three
+  independent capability misses would overstate the model's weakness and hide a fixable routing bug.</li>
+<li><strong>This benchmark cannot see multi-turn contamination, and that is where the same defect costs
+  four answers instead of one.</strong> Every v5 question starts cold, so nothing that goes wrong <em>because</em>
+  turns share a conversation is detectable here. A session harness (11 turns, one accumulating
+  thread, v5-verbatim questions) scored <strong>0.750</strong> where the same questions score 1.0 cold. Three
+  turns degraded from a single origin: earlier turns were scoped to site <code>HVL-SEA-DC1</code>, one of them
+  fetching every device at <code>site_id: 25</code>; the next turn asked a <strong>tenant</strong>-scoped question and
+  answered <em>"there are 6 PDUs at the site"</em> from that inherited list without ever issuing a tenant
+  query — 6 PDUs / 48 outlets against a true 12 / 96 — and later turns inherited the wrong
+  denominator. Reordering the identical questions so the tenant question comes first recovers it to
+  <strong>0.950</strong> at the same tool cost (38 calls against 39), with the origin turn now resolving the
+  tenant and calling <code>netbox_get_objects(dcim.device, tenant_id=14)</code>. That turn scores 0.0 in v5 —
+  with the same <em>"not found in NetBox"</em> denial as the defect above — and is correct for the first
+  time under the reorder. The sharpest evidence is a turn answered with <strong>zero tool calls</strong> in both
+  runs: 0.5 contaminated, 1.0 clean. <strong>Context reuse is not the defect; reusing a wrong population
+  is</strong>, and the scoping bug recorded above is therefore worse in production than its benchmark score
+  implies. Caveat: one run per ordering, and three improved / seven tied / none worse is p ≈ 0.25 on
+  a sign test — the weight is on the observed presence or absence of the tenant query, not the tally.</li>
+<li><strong>The reported tool-call fragility did not reproduce — and this test could not have detected it.</strong>
+  Across 17 logged turns there were no repetition loops, no malformed <code>&lt;tool_call&gt;</code>, no premature
+  stops, no truncation. But at the reported ~0.7%-per-turn rate, <strong>24 tool calls yields ~0.17
+  expected failures</strong>. Observing zero is consistent with the problem being real. The claim that
+  fragility <em>disqualifies</em> this model was stated too strongly and is withdrawn; it is not refuted.</li>
+<li><del><strong>≥32k context is required.</strong> The first advanced attempt died at <code>18181 tokens exceeds the
+  available context size (16384)</code> — a configuration limit chosen because quantized KV could not be
+  confirmed safe on this hybrid GDN architecture. At 32k it ran to 28,106 tokens and succeeded. The
+  failure was the harness operator's, not the model's.</del>
+  <strong>WITHDRAWN — understated.</strong> A 12-question run lost <strong>3 of 12</strong> questions to context <em>at 32k</em>
+  (2 hard overflows, 1 silent truncation), with peak context reaching 44,295 tokens once the
+  ceiling was lifted. The measured requirement is <strong>≥128k</strong>. <del>obtained via <code>--no-kv-offload</code></del> —
+  the window needs no offload at all: 131k of KV costs only <strong>3.00 GiB</strong> on this hybrid
+  architecture and fits in VRAM. See the Correction above.</li>
+<li><strong>Throughput: the full harness has now been RUN, not extrapolated — 6.78 h.</strong> Ninety questions,
+  one model, serial: <strong>6 h 47 m at 271.6 s/question</strong>, corr <strong>0.906</strong>, comp 0.944, entity_cov 0.866,
+  5.52 tool calls, <strong>0 errors</strong>, zero truncations, zero overflows, peak context 75,571 of 131,072.
+  Per tier: simple 0.917 / medium 0.933 / advanced 0.867. Decode held at a 13.47 t/s median across
+  507 requests, falling only to 10.25 at peak context. That supersedes every extrapolation below —
+  but <strong>attribute it to the configuration, not to one flag</strong>: this run differs from the ~15.8 h
+  figure in four ways (KV in VRAM, <code>reasoning_effort="low"</code>, <code>max_tokens</code> 8192, model <code>profile</code>
+  set). The clean per-flag number for removing <code>--no-kv-offload</code> remains the 1.87×/2.02× measured
+  in the three-question A/B, where nothing else changed.
+  <strong>The projection was wrong again, and the reason generalises.</strong> A 12-question sample predicted
+  3.2–4.5 h; the real figure is 6.78 h, optimistic by <strong>1.5–2.1×</strong>. The sample peaked at 22,532
+  tokens of context where the full set reached <strong>75,571</strong> — stratified sampling caught the tiers but
+  not the expensive tail. <em>A subset that is representative of difficulty is not thereby
+  representative of cost.</em></li>
+<li><del><strong>Throughput makes the full v5 harness impractical</strong>, and the working configuration makes it more
+  so. At 32k the 12-question run averaged 412 s/question (<strong>~10.3 h</strong> extrapolated to 90); at 128k
+  it averaged 775 s/question (<strong>~19.4 h</strong>, or ~2.4 days at the 3× replication standard). Adding
+  <code>-ub 2048</code> brings this to <strong>~15.8 h — now measured, not modelled.</strong></del> (Superseded by the measured
+  6.78 h above; retained because the 1.23× <code>-ub 2048</code> comparison below is still valid.) A second 12-question run with
+  the flag took <strong>126.3 min against the baseline's 155.1 (1.23×)</strong> at identical correctness (11/12,
+  zero context failures) and 77 tool calls against 88. The earlier projection of ~105 min / ~12.6 h
+  was <strong>optimistic by ~20%</strong>: it credited the flag's isolated 3.8× prefill gain against <em>all</em> prompt
+  tokens, when ~85% of them were already served from the prefix cache. Only the genuinely-new
+  remainder and each question's cold first turn are accelerated — and decode, which is untouched,
+  now accounts for roughly two thirds of the remaining wall time.</li>
+<li><strong>Speculative decoding is unavailable in every form.</strong> <code>--spec-type ngram-simple</code> needs no draft
+  model and looked well matched to an agent that echoes tool-result strings, but measured <strong>163
+  drafts and zero accepted</strong>, costing 24% of decode; combined with <code>-ub 2048</code> it degraded both axes.
+  A 0% acceptance rate is mechanical, not a tuning failure — it needs an exactly-repeating 12-token
+  run and a table of distinct device names has none. Draft-model speculation is separately
+  impossible: <code>common/speculative.cpp</code> throws on vocab mismatch and no qwen4exp-vocab draft model
+  exists; the MTP head PRs (#27836, #28243) remain unmerged.</li>
+<li><strong>Prompt caching is not a remaining lever — it already works.</strong> Median LCP similarity <strong>0.956</strong>
+  across 75 slot selections, 75 of 76 requests warm, and only 2,432 of a mean 16,405-token context
+  actually prefilled: <strong>~85% served from cache</strong>. The residual prefill is genuinely new tool-result
+  text.</li>
+<li><strong>MoE CPU decode achieves only ~19% of memory bandwidth (19–20 GB/s against a 101.5 GB/s STREAM
+  triad) and no remedy is available.</strong> NUMA weight mirroring is the matched fix and
+  <code>GGML_NUMA_STRATEGY_MIRROR</code> exists in ggml's enum <em>and nowhere else in the source</em>. Alternative
+  runtimes do not help: KTransformers requires Ampere+ and AMX this host lacks; vLLM and SGLang
+  cannot host 112 GB on 21 GiB of VRAM.</li>
+<li><strong>Ollama cannot serve this architecture</strong> on this host: the installed version (0.13.3, Dec 2025)
+  predates <code>qwen4exp</code> by nine months, and local GGUF import for the architecture is reported broken.
+  <code>llama-server</code> is the only working path.</li>
+<li><strong>No Turing-specific datapoint exists in the wild</strong> for this model; bf16 tensor-core paths are
+  unavailable below Ampere, though fp16 paths are not.</li>
+</ul>
+<h2 id="relationship-to-adr-0037">Relationship to ADR-0037<a class="headerlink" href="#relationship-to-adr-0037" title="Permanent link">&para;</a></h2>
+<p>ADR-0037 concluded that <strong>efficiency, not correctness, is the usable routing signal</strong>. This ADR is
+the first local evidence consistent with that conclusion and sharpens it: correctness did not
+separate the tiers here (all 1.0), while <strong>cost separated them by 10×</strong>. A handoff policy keyed on
+anchor count or hop count — not on topic — now has direct supporting evidence.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../phases/phase-5-production-deepagents/local-frontier-inference/">Phase 5 → Local Frontier Inference</a></li>
+<li><a href="../0037-stratified-benchmark-v5-difficulty-not-capability/">ADR-0037 — Stratified v5 Benchmark</a></li>
+<li><a href="../0028-native-local-and-cloud-models-on-deepagents/">ADR-0028 — Native Local &amp; Cloud Models on DeepAgents</a></li>
+<li><a href="../../methods/benchmarking/">Research Methods → Benchmarking</a></li>
+<li>Upstream: <code>ggml-org/llama.cpp</code> PR #27742 (<code>qwen4exp</code> architecture, merged 2026-08-27)</li>
+<li>Repository: <code>src/agents/llamacpp_config.py</code>, <code>tests/eval/dataset_v5.py</code>, <code>tests/eval/run_matrix.py</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "content.code.annotate", "toc.follow", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
