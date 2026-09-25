@@ -404,6 +404,64 @@ a fixable routing bug rather than three separate capability misses.
 belongs to the configuration as a whole. The clean per-flag figure for removing `--no-kv-offload`
 is still the 1.87×/2.02× from the three-question A/B, where nothing else varied.
 
+## The session harness: one wrong scope, four wrong answers
+
+Every figure above comes from a harness where each question starts cold — fresh thread, empty
+context. That is not how the agent is used, and it makes the benchmark **structurally blind** to
+anything that goes wrong because turns share a conversation. `tests/eval/run_session.py` runs 11
+turns down **one accumulating thread**, using v5-verbatim question text so matched turns score
+against the existing references.
+
+| | site-first | tenant-first |
+|---|---|---|
+| mean correctness (10 scored turns) | **0.750** | **0.950** |
+| tool calls | 39 | 38 |
+| wall clock | 36 min | 43 min |
+| — of which agent turns | 26 min | 32 min |
+| peak context | 46,376 | 58,519 |
+| decode | 14.83 → 12.62 t/s | 13.77 → 11.93 t/s |
+| compaction fired | 0 | 0 |
+
+**Three turns scored 0.5 that had each scored 1.0 in the full v5 run**, and all three trace to one
+origin. Turns 1–3 were scoped to site `HVL-SEA-DC1`, and turn 3 fetched every device at
+`site_id: 25`. Turn 4 then asked a **tenant**-scoped question — how many PDUs does Halvorsen
+Logistics have — and answered *"there are **6** PDUs **at the site**"* straight from that inherited
+list, **never issuing a tenant query at all**. Six PDUs and 48 outlets, against a true 12 and 96.
+Turns 5, 6 and 8 inherited the wrong denominator.
+
+**Reordering the same 11 questions recovers it.** With the site questions moved to the end, turn 1
+resolves `tenancy.tenant` → id 14, calls `netbox_get_objects(dcim.device, tenant_id=14)`, and
+answers **12 PDUs, 8 outlets each**. That question scored 0.0 in v5 *and* 0.0 in the first session —
+in v5 with the identical *"Halvorsen Logistics was not found in NetBox"* denial recorded above — so
+it is answered correctly here for the first time in any condition. Three recoveries, seven ties,
+zero regressions, at the same tool cost.
+
+**The load-bearing evidence is a turn that did no work.** In both runs one question is answered with
+**zero tool calls**, purely from context. Contaminated it scored 0.5; clean it scored **1.0**,
+correctly naming *"the other 9 PDUs (HQ ×3, Portland, Spokane, Tacoma, and sea-dc1-pdu04/05/06)"*.
+Identical behaviour, opposite outcome. **Context reuse is not the defect — reusing a wrong
+population is.** The failure mode is propagation: cold, this defect costs one question; across a
+session it cost four. It also has a direction — with the site questions at turns 8–10, after seven
+tenant turns, all three still scored 1.0 and turn 8 re-queried `site_id: 25` rather than inheriting.
+
+**Question order also decides GraphQL routing.** The site-first run made **zero** GraphQL calls; the
+tenant-first run used it on three turns. The skill was never being declined — a cold cross-model
+question is what triggers it, and in the first ordering none arrived cold. It then routed badly:
+turn 1 burned four malformed queries (`id__in`, `filter:`, `poweroutlet_count`) before falling back
+to MCP, and the fallback is what produced the correct answer.
+
+**The projection missed a fourth time, and for the first time in the other direction.** I predicted
+3.5–4.5 h; it took **36 minutes**, wrong by ~6× where the previous three misses were all optimistic
+about cost. The cause mirrors the v5 miss: sized from the 90-question run's expensive tail
+(75,571 peak context) when one thread of 11 related questions reaches 46,376 and reuses almost
+everything.
+
+**Limits.** One run per ordering. Three improved, seven tied, none worse is **p ≈ 0.25** on a sign
+test, so the evidence is the directly observed `tenant_id` query rather than the tally. One turn
+scored 0.5 in both orders despite an answer giving 12 PDUs / 96 outlets / 17 in use — substantively
+what v5 said when it scored 1.0 — so that is likely judge noise, left as measured rather than
+argued up.
+
 **See also**: [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
 [ADR-0037 — Stratified v5 Benchmark](../../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md) ·
 [Stratified Benchmark v5](stratified-benchmark-v5.md) ·

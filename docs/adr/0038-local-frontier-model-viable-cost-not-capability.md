@@ -220,6 +220,23 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   it. This is a scoping failure that produces an authoritative denial rather than an error, which is
   the same dangerous shape as the silent truncation this ADR records elsewhere. Counting it as three
   independent capability misses would overstate the model's weakness and hide a fixable routing bug.
+- **This benchmark cannot see multi-turn contamination, and that is where the same defect costs
+  four answers instead of one.** Every v5 question starts cold, so nothing that goes wrong *because*
+  turns share a conversation is detectable here. A session harness (11 turns, one accumulating
+  thread, v5-verbatim questions) scored **0.750** where the same questions score 1.0 cold. Three
+  turns degraded from a single origin: earlier turns were scoped to site `HVL-SEA-DC1`, one of them
+  fetching every device at `site_id: 25`; the next turn asked a **tenant**-scoped question and
+  answered *"there are 6 PDUs at the site"* from that inherited list without ever issuing a tenant
+  query — 6 PDUs / 48 outlets against a true 12 / 96 — and later turns inherited the wrong
+  denominator. Reordering the identical questions so the tenant question comes first recovers it to
+  **0.950** at the same tool cost (38 calls against 39), with the origin turn now resolving the
+  tenant and calling `netbox_get_objects(dcim.device, tenant_id=14)`. That turn scores 0.0 in v5 —
+  with the same *"not found in NetBox"* denial as the defect above — and is correct for the first
+  time under the reorder. The sharpest evidence is a turn answered with **zero tool calls** in both
+  runs: 0.5 contaminated, 1.0 clean. **Context reuse is not the defect; reusing a wrong population
+  is**, and the scoping bug recorded above is therefore worse in production than its benchmark score
+  implies. Caveat: one run per ordering, and three improved / seven tied / none worse is p ≈ 0.25 on
+  a sign test — the weight is on the observed presence or absence of the tenant query, not the tally.
 - **The reported tool-call fragility did not reproduce — and this test could not have detected it.**
   Across 17 logged turns there were no repetition loops, no malformed `<tool_call>`, no premature
   stops, no truncation. But at the reported ~0.7%-per-turn rate, **24 tool calls yields ~0.17
