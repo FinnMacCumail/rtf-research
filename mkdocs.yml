@@ -1,4 +1,8 @@
 site_name: RTF AI Research Portfolio
+site_url: https://finnmaccumail.github.io/rtf-research/
+repo_url: https://github.com/FinnMacCumail/rtf-research
+repo_name: FinnMacCumail/rtf-research
+edit_uri: edit/main/docs/
 theme:
   name: material
   palette:

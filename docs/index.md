@@ -2,7 +2,9 @@
 
 Welcome to the professional hub for **RTF AI research** into LLM-driven developer tooling, symbolic/semantic retrieval, and multi-step planning systems.
 
-This portfolio demonstrates a structured research approach with reproducible demos, architecture decisions, and performance analysis across two comprehensive phases:
+This portfolio demonstrates a structured research approach with reproducible demos, architecture decisions, and performance analysis across five phases (2025–2026):
+
+**Source repository**: https://github.com/FinnMacCumail/rtf-research · **RTF**: https://rtf.spc.org/
 
 ## Project Overview
 
@@ -10,7 +12,7 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **Phase 2 – NetBox MCP Server**: Official NetBoxLabs MCP server with 3 generic tools (get_objects, get_object_by_id, get_changelogs) providing shared infrastructure for agent frameworks
 - **Phase 3 – OpenAI Orchestration (FAILED)**: Multi-agent orchestration attempt with 0% success rate - see ADR-0013 for failure analysis
 - **Phase 4 – Agent Framework Comparison**: Empirical comparison of Deepagents (LangChain) vs Claude SDK approaches to building production NetBox agents
-- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents **0.7.5** with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a **read-only GraphQL cross-domain read path** (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads) — measured, 3×-replicated, and merged to mainline. Finally scaled the evaluation dataset from 6 to **90 stratified questions** to test whether difficulty predicts model choice. Three similar models appeared to saturate the set; a fourth, more distant family **overturned that reading**, producing the first significant differences and showing saturation to be a property of the models tested, not of the questions (ADR-0037). A 176B open-weight model then ran locally, indistinguishable from the best cloud model on that set (ADR-0038), and the agent gained a **web chat** over it — streaming, tool activity, cancel, conversation memory and server-reported token accounting, built without changing what the harnesses measure (ADR-0039)
+- **Phase 5 – Production DeepAgents**: The deepagents build taken forward to DeepAgents **0.7.5** with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability — resolving the local-model failure of ADR-0027. Extended with a reference-grounded correctness evaluator that catches hallucinations the completeness metric missed, and a **read-only GraphQL cross-domain read path** (an on-prem, private reproduction of NetBox Cloud's "agent-native" reads) — measured, 3×-replicated, and merged to mainline. Finally scaled the evaluation dataset from 6 to **90 stratified questions** to test whether difficulty predicts model choice. Three similar models appeared to saturate the set; a fourth, more distant family **overturned that reading**, producing the first significant differences and showing saturation to be a property of the models tested, not of the questions (ADR-0037). A 176B open-weight model then ran locally, indistinguishable from the best cloud model on that set (ADR-0038); a multi-turn harness showed the same 11 questions scoring 0.750 or 0.950 depending only on their order; and the agent gained a **web chat** over the local model — streaming, tool activity, cancel, conversation memory and server-reported token accounting, built without changing what the harnesses measure (ADR-0039)
 
 ## Research Highlights
 
@@ -22,12 +24,15 @@ This portfolio demonstrates a structured research approach with reproducible dem
 - **A Frontier-Class Model on Two Used GPUs**: Qwen3.8-Flash-Next (125B MoE + a 51B n-gram *lookup table*) ran on 2× RTX 2080 Ti and 376 GB RAM, scoring **3/3** across simple/medium/advanced NetBox questions including a two-hop power trace. Correctness did not separate the tiers — **cost did, by 10×** (2 tool calls vs 20). The constraint on local agents is throughput and cost, not capability; `--numa isolate` alone was worth +56% decode, more than a 2362-commit llama.cpp upgrade (ADR-0038)
 - **Anti-Hallucination in Evaluation**: a reference-grounded correctness evaluator catches confident fabrications a completeness metric certifies as complete (a hallucinated "7.7% utilization" vs a verified 0% scored 0.9 on completeness, 0.0 on correctness) — reordering the model leaderboard toward the more *truthful* model
 - **Saturation Is a Property of the Models You Test, Not the Questions**: three unrelated model families landed inside a 2.7pp band on a 90-question set, and the apparent conclusion was a ceiling — 69 of 90 items solved by all three. A fourth, more distant family **overturned it**: saturation fell to 59/90, ten inert questions became discriminating, and two comparisons reached significance (pro − qwen +0.117 [+0.038, +0.196]). The set resolves ~9pp gaps and cannot resolve ~3pp ones — a sample-size limit, not a ceiling. The original negative conclusion is preserved and corrected in place (ADR-0037)
+- **Conversation Order Is a Correctness Variable**: the same 11 NetBox questions run down one accumulating thread scored **0.750** site-first and **0.950** tenant-first, because one turn answered a tenant question from a site-scoped device list inherited from an earlier turn and later turns carried the wrong denominator forward. Cold, that defect costs one question; in a session it cost four. *Context reuse is not the defect — reusing a wrong population is*, which makes "new conversation" a correctness control rather than a convenience
+- **Serving the Agent Without Changing It**: a FastAPI + Nuxt web chat streams tokens, shows every tool call, and reports each model call's context, cached tokens and prefill/decode speed from the server's own counters — over an agent whose `query()`, prompt and middleware are byte-identical to the benchmarked commit. The first streaming client hit a failure the non-streaming harnesses can never see (a 120 s watchdog on ~167 s of silent prefill) and put a number on the framework middleware chain: **0.27%** of wall time (ADR-0039)
 - **Future Roadmap**: Neo4j graph integration (Phase 6), RAG intelligence (Phase 7), and analytics platform (Phase 8)
 
 ## Implementation Repositories
 
 - **Phase 1**: [TMDB Chatbox](https://github.com/FinnMacCumail/tmdbGPT) - Natural language movie/TV query system
 - **Phase 2**: [NetBoxLabs MCP Server](https://github.com/netboxlabs/netbox-mcp-server) - Official NetBox MCP server infrastructure
+- **Phase 3**: OpenAI Orchestration (FAILED) - no working implementation, 0% success rate (ADR-0013)
 - **Phase 4A**: [Deepagents Implementation](https://github.com/FinnMacCumail/deepagents) - LangChain-based flexible framework *(superseded by Phase 5)*
 - **Phase 4B**: [Claude SDK Implementation](https://github.com/FinnMacCumail/claude-agentic-netbox) - Anthropic SDK production framework
 - **Phase 5**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) - Production DeepAgents 0.7.5 with dual local/cloud models, model-matrix + reference-grounded-correctness evaluation, observability, a read-only GraphQL cross-domain read path, and a web chat over the locally served 176B model
@@ -45,17 +50,19 @@ timeline
     2025-09 : Phase 3 Failed : OpenAI multi-agent orchestration : 0% success rate : Documented failure analysis
     2025-10 : Phase 4 Complete : Agent framework comparison study : Deepagents vs Claude SDK : Empirical validation
     2025-12 : ADR-0027 : Claude SDK model selection : Local/LiteLLM attempt reverted
-    2026-06 : Phase 5 Complete : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
+    2026-06 : Phase 5 Launched : Production DeepAgents 0.6.10 : Dual local/cloud models : Model-matrix evaluation & observability
     2026-07 : Phase 5 Extended : Reference-grounded correctness evaluator : Read-only GraphQL cross-domain path : GraphQL vs MCP A/B
     2026-08–09 : Phase 5 Consolidated : DeepAgents 0.7.5 upgrade : GraphQL routing tightened & 3×-replicated : Merged to mainline : LangChain-ecosystem appraisal
     2026-09 : Stratified Benchmark v5 : 90 questions across 3 difficulty tiers : 4 model families, 360 runs : Saturation shown to depend on model spread, not questions
-    2026-09 : Local Frontier Inference : 176B open-weight model on 2× RTX 2080 Ti : 3/3 tiers correct : Cost, not capability, is the local constraint
+    2026-09 : Local Frontier Inference : 176B open-weight model on 2× RTX 2080 Ti : 0.906 on the 90-question v5 set : Cost, not capability, is the local constraint
+    2026-09 : Session Harness : 11 turns down one thread : 0.750 → 0.950 by question order alone : Contamination propagates, order is a variable
+    2026-09 : Web Chat : FastAPI + Nuxt over the unchanged agent : Server-side token accounting, per-turn trace links : First streaming client finds a 120 s prefill-silence watchdog
     2026-09+ : Future Development : Neo4j graph integration : RAG-powered intelligence : Analytics platform
 ```
 
 ## Core Architecture
 
-The research demonstrates a consistent architectural pattern across both phases:
+The research demonstrates a consistent architectural pattern across all five phases:
 
 ```mermaid
 flowchart TD

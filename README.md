@@ -1,14 +1,16 @@
-# RTF AI Research Portfolio (2025)
+# RTF AI Research Portfolio (2025–2026)
 
 ## Research Overview: Systematic Anti-Hallucination in Domain-Specific LLM Applications
 
 This repository documents RTF's comprehensive research program addressing the critical challenge of **LLM hallucination in domain-specific applications**. Through systematic development of constraint-based validation, direct tool protocols, orchestration failure analysis, and intelligent caching systems, this research demonstrates how to achieve reliable, factually accurate LLM responses in complex technical domains.
 
+**Documentation site**: https://finnmaccumail.github.io/rtf-research/ · **RTF**: https://rtf.spc.org/
+
 ### Core Research Hypothesis
 *Multi-stage validation combining symbolic constraints, structured tool protocols, and progressive verification can eliminate fabricated responses while maintaining natural language interaction quality.*
 
 ### Research Evolution Overview
-The research progressed through four comprehensive phases, building sophisticated anti-hallucination mechanisms through iterative development and failure analysis:
+The research progressed through five phases between January 2025 and September 2026, building sophisticated anti-hallucination mechanisms through iterative development and failure analysis:
 
 - **Phase 1 – TMDB RAG API Routing + Constraint-Based Validation System**
   - **Repository**: https://github.com/FinnMacCumail/tmdbGPT
@@ -33,10 +35,10 @@ The research progressed through four comprehensive phases, building sophisticate
   - **Research Focus**: Empirical comparison of flexible vs production-ready agent frameworks
   - **Key Innovation**: Validated that framework choice is context-dependent; both approaches successfully build production agents with different trade-offs (flexibility vs convenience)
 
-- **Phase 5 – Production DeepAgents: Multi-Model & Observability**
+- **Phase 5 – Production DeepAgents: Multi-Model, Evaluation, Local Inference & Serving**
   - **Repository**: https://github.com/FinnMacCumail/ollamaDeepAgents (supersedes the Phase 4 Deepagents build)
   - **Research Focus**: Taking the Deepagents agent to DeepAgents 0.7.5 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, trace-driven observability, a locally served 176B model, and a web chat over it built without changing what the harnesses measure
-  - **Key Innovation**: Resolved ADR-0027's local-model failure via a native (no-proxy) backend; a frontier cloud model (`deepseek-v4-flash:cloud`) matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest multi-step queries
+  - **Key Innovation**: Resolved ADR-0027's local-model failure via a native (no-proxy) backend; a frontier cloud model (`deepseek-v4-flash:cloud`) matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest multi-step queries. A 176B open-weight model then ran locally on two used GPUs and scored **0.906** on the 90-question benchmark — indistinguishable from `deepseek-v4-flash` on that set (ADR-0038). A multi-turn harness showed the same 11 questions scoring **0.750 or 0.950 depending only on their order**, making conversation hygiene a correctness control that the web chat (ADR-0039) puts in the operator's hands
 
 
 ## Research Methodology: Multi-Protocol Anti-Hallucination System
@@ -197,6 +199,20 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **Conversation Continuity**: Multi-turn context preservation without cross-contamination
 - **Orchestration Transparency**: Complete audit trail of tool selection, execution, and result processing
 
+### Phase 5: Production DeepAgents — Measuring, Then Serving, the Agent
+
+**Research Question**: Can the Phase 4 deepagents build be taken to production quality — evaluated systematically across local and cloud models, run on a frontier-class open-weight model locally, and served to a person — without the proxy layer that broke SDK features in Phase 4?
+
+**Methodology**: One repository ([ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents)), one fixed NetBox dataset, and a LangSmith evaluation harness as the gate for every framework, prompt, middleware and model change; each result recorded as an ADR with its limits, and corrected in place when a later run overturned it.
+
+- **Native local and cloud backends** (ADR-0028): Ollama and llama.cpp reached directly, resolving the local-model failure of ADR-0027 that a LiteLLM proxy had caused.
+- **Reference-grounded correctness** (ADR-0033): a completeness metric certified a fabricated "7.7% utilization" as 0.9 complete; a correctness evaluator scored it 0.0 and reordered the model leaderboard toward the more truthful model.
+- **Read-only GraphQL read path** (ADR-0034): an on-prem reproduction of NetBox Cloud's agent-native cross-domain reads; combined correctness 0.667 → ≈0.82 across three replications, with routing keyed on the number of anchor objects.
+- **A benchmark's discriminating power is a property of the models tested** (ADR-0037): three similar families landed inside a 2.7pp band on 90 questions and looked saturated; a fourth, more distant family produced the first significant differences. The set resolves ~9pp gaps and cannot resolve ~3pp ones.
+- **A frontier-class model on two used GPUs** (ADR-0038): Qwen3.8-Flash-Next (176B MoE) on 2× RTX 2080 Ti scored **0.906** on the full 90-question set — 0.5pp below `deepseek-v4-flash`, inside the set's resolution. `--numa isolate` alone was worth +56% decode; the local constraint is cost, not capability.
+- **Conversation order is a correctness variable**: the same 11 questions down one accumulating thread scored **0.750** site-first and **0.950** tenant-first, because one turn reused a wrong population inherited from an earlier one. *Context reuse is not the defect — reusing a wrong population is.*
+- **Serving the agent without changing it** (ADR-0039): a FastAPI + Nuxt web chat with token-level streaming, tool activity, cancel and server-reported token accounting, over an agent whose `query()`, prompt, middleware and skills are byte-identical to the benchmarked commit. The first streaming client found a failure the non-streaming harnesses could never hit — a 120 s watchdog tripped by ~167 s of silent prefill — and measured the framework middleware chain at **0.27%** of wall time.
+
 ### Cross-Phase Validation Results
 
 **Quantitative Anti-Hallucination Metrics:**
@@ -204,6 +220,9 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **NetBox Phase**: 100% tool accessibility with structured response validation
 - **Orchestration Failure**: Phase 3 achieved 0% success rate demonstrating complexity risks
 - **Deepagents Success**: Phase 4 achieved successful Claude CLI replacement with intelligent caching
+- **Phase 5 Correctness**: a locally served 176B model scored 0.906 on 90 stratified NetBox questions against re-scored cloud figures of 0.911 (flash), 0.928 (kimi) and 0.944 (pro), with 0 errors and zero truncations
+- **Phase 5 Conversation Order**: identical questions scored 0.750 or 0.950 depending only on order across an 11-turn thread — error propagation, not capability
+- **Phase 5 Serving**: framework middleware measured at 0.27% of wall time; a 120 s streaming watchdog found only by the browser path, never by the harnesses
 - **Enterprise Safety**: Zero fabricated infrastructure data across production environments
 
 **Key Research Innovations:**
@@ -217,6 +236,10 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 8. **Multi-Protocol API Intelligence**: Seamless integration spanning TMDB, NetBox MCP, and deepagents orchestration
 9. **Intelligent Multi-Model Routing Discovery**: Documented Claude SDK's automatic model selection (70-80% cost savings)
 10. **Framework Architecture Dependencies**: Established that SDK features require direct API access; proxy layers break managed benefits
+11. **Reference-Grounded Correctness Evaluation**: A completeness metric certifies confident fabrications; grounding the judge in verified references catches them and reorders the leaderboard
+12. **Testing a Benchmark Before Trusting It**: Saturation turned out to be a property of the models compared, not of the questions; the set's resolution (~9pp) is now stated with every result
+13. **Frontier-Class Inference on Consumer Hardware**: A 176B open-weight model on two used GPUs matches a frontier cloud model on this benchmark; the binding constraint is cost and throughput, not capability
+14. **Measurement Path Must Match Product Path**: A non-streaming harness cannot find a streaming client's failure; the first browser turn exposed a watchdog that 90 benchmark questions never could
 
 ## Technical Implementation Highlights
 
@@ -234,10 +257,15 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **Context Quarantine Architecture**: Sub-agent isolation preventing conversation pollution with virtual file system
 - **Cache Performance Monitoring**: Real-time hit rate analytics, cost savings tracking, and utilization pattern analysis
 - **Orchestration Failure Recovery**: Lessons learned from 0% success rate Phase 3 applied to simplified Phase 4 architecture
+- **Dual Native Model Backend**: DeepAgents 0.7.5 with Ollama (local and cloud) and llama.cpp (OpenAI-compatible) selected by one environment variable, no proxy layer
+- **Filter-Recovery Middleware**: NetBox MCP filter violations converted into structured `TOOL_VALIDATION_ERROR` / `TOOL_API_ERROR` messages the model can recover from, instead of opaque HTTP 400s
+- **Read-Only GraphQL Path**: `graphql-core` AST inspection rejects mutations before any request; depth, size and timeout limits bound query cost
+- **Local Frontier Inference Tuning**: `llama-server` with `--numa isolate -t 10`, `-c 131072`, `-b 2048 -ub 2048` — each flag measured, and the dead ends (n-gram speculation, KV offload) recorded
+- **Web Serving Layer**: FastAPI + WebSocket back end and Nuxt 3 front end with per-call token accounting from the server's own `usage` and `timings`, a context gauge, cancel, and per-turn LangSmith trace links
 
 ## Implementation Repositories
 - **Phase 1**: TMDB Chatbox – https://github.com/FinnMacCumail/tmdbGPT
-- **Phase 2**: NetBox MCP Server – https://github.com/FinnMacCumail/mcp-netbox
+- **Phase 2**: NetBox MCP Server – https://github.com/netboxlabs/netbox-mcp-server
 - **Phase 3**: OpenAI Orchestration (Failed) – No working implementation (0% success rate)
 - **Phase 4**: Deepagents Solution – https://github.com/FinnMacCumail/deepagents *(superseded by Phase 5)*
 - **Phase 5**: Production DeepAgents – https://github.com/FinnMacCumail/ollamaDeepAgents
@@ -258,7 +286,7 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
   - **Architecture**: Deepagents framework with automatic NetBox MCP tool wrapper generation and sophisticated cache performance tracking
   - **Model Selection Enhancement (December 2025)**: Discovered intelligent multi-model routing (70-80% cost savings), implemented explicit model selection, documented failed Ollama/LiteLLM integration attempt
 
-- **Phase 5 ✅ COMPLETED**: Production DeepAgents – Multi-Model & Observability
+- **Phase 5 ✅ COMPLETED (June–September 2026)**: Production DeepAgents – Multi-Model, Evaluation, Local Inference & Serving
   - **Repository**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) (supersedes the Phase 4 Deepagents build)
   - **Achievement**: DeepAgents 0.7.5, dual local/cloud model backend (no proxy), LangSmith model-matrix and reference-grounded-correctness evaluation, trace-driven observability, a read-only GraphQL read path, a 176B model served locally, and a web chat over that local model with server-reported token accounting and per-turn trace links
   - **Key Finding**: Resolved ADR-0027's local-model failure; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency, small local models remain insufficient for the hardest queries, and a 176B open-weight model run locally is indistinguishable from flash on the 90-question set (ADR-0038)
@@ -281,12 +309,5 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **Capabilities**: Network bottleneck identification, capacity planning, predictive maintenance, operational intelligence
 - **Impact**: Predictive capabilities delivering 10-100x operational efficiency gains
 
-### Performance Transformation Targets
-
-- **Cost Optimization**: 99% reduction (from $0.13 to $0.001 per query)
-- **Simple Queries**: 15x faster (3-10 seconds → 200ms-1 second)
-- **Complex Queries**: 20-50x faster (30 seconds-3 minutes → 1-3 seconds)
-- **New Capabilities**: Analytical insights previously impossible with traditional approaches
-
-👉 **Phase 4 Success**: The deepagents orchestration system successfully replaced Claude CLI where Phase 3 OpenAI orchestration failed. The upcoming milestones (Phase 5-7) build upon this foundation for advanced capabilities.
+👉 **Phase 5 Success**: The deepagents build reached production quality with a measured evaluation harness, a locally served frontier-class model and a browser front end, where Phase 3 orchestration had failed. The upcoming milestones (Phases 6–8) build on this foundation.
 
