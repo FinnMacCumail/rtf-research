@@ -16,7 +16,7 @@ the answer level.** Phase 5 produced a textbook example.
 
 | Layer | What it does |
 |---|---|
-| **LangSmith tracing** | Every agent run is a trace; every LLM call, tool call, and middleware step is a nested sub-run with token counts, latency, inputs/outputs. |
+| **LangSmith tracing** | Every agent run is a trace; every LLM call, tool call, and middleware step is a nested sub-run with token counts, latency, inputs/outputs. On the llama.cpp backend the per-call ground truth is the server's `usage`/`timings`, now shown per turn in the [web chat](web-chat.md), which also links each turn to its trace. |
 | **Evaluation harness** (`tests/eval/`) | Runs a fixed dataset across models, attaches `entity_coverage` / `completeness_judge` / `tool_call_efficiency` scores, and lands each model as a comparable LangSmith *experiment*. |
 | **Comparison view** | A sortable leaderboard across experiments — the unit of decision-making, replacing hand-written per-run reports. |
 

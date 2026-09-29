@@ -92,13 +92,18 @@ middleware** that converts NetBox filter violations into structured, recoverable
    backend; the prior failure was architecture-specific. Recorded in ADR-0028.
 4. **A framework-maintenance case study** — the DeepAgents 0.6 upgrade, its regressions, and a
    deferred-feature investigation (QuickJS/PTC). See [Lessons Learned](lessons-learned.md).
+5. **A serving layer over the unchanged agent** — a browser chat with token-level streaming,
+   tool activity, cancel, per-conversation memory, server-reported token/context accounting and
+   per-turn trace links, built without touching what the harnesses measure. Building it surfaced
+   a streaming failure the non-streaming harnesses cannot see and put a number (0.27%) on the
+   framework's middleware overhead. See [Web Chat](web-chat.md) and ADR-0039.
 
 ## Relationship to the other repositories
 
 | Repo | Role |
 |---|---|
 | [deepagents](https://github.com/FinnMacCumail/deepagents) | Phase 4 ancestor (vendored 0.0.5, Anthropic-cloud-only). Now **superseded**; its design rationale was harvested into the successor's `docs/lineage/`. |
-| [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) | **This phase.** Production DeepAgents 0.6.10 build with dual-backend + eval harness. |
+| [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) | **This phase.** Production DeepAgents 0.7.5 build with dual-backend, eval harnesses and a web chat over the local model. |
 | [claude-agentic-netbox](https://github.com/FinnMacCumail/claude-agentic-netbox) | Phase 4 Claude SDK build; subject of ADR-0027's local-model attempt. |
 
 **See also**: [Multi-Model Evaluation](multi-model-evaluation.md) ·

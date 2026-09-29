@@ -18,8 +18,11 @@ intermediate result that was later corrupted. Methodology therefore operates at 
 ## Tooling: LangSmith
 
 Each agent run is captured as a **trace** — a tree of sub-runs. For each sub-run LangSmith records
-inputs/outputs, token counts, latency, and type (LLM / tool / chain). This makes three things
-possible that log lines and metric counters do not:
+inputs/outputs, token counts, latency, and type (LLM / tool / chain). For the llama.cpp backend
+the authoritative per-call numbers are the server's own `usage` (resident context, cached
+tokens) and `timings` (prefill/decode t/s), which the web chat surfaces per turn and which agree
+with LangSmith's recorded token counts; in-process estimates undercount by ~19× and are not used
+(ADR-0039). This makes three things possible that log lines and metric counters do not:
 
 1. **Reconstruct the decision chronology** — e.g. observing that a *penultimate* LLM call already
    held the correct answer before a later turn overwrote it.

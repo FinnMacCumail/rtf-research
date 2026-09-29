@@ -35,7 +35,7 @@ The research progressed through four comprehensive phases, building sophisticate
 
 - **Phase 5 – Production DeepAgents: Multi-Model & Observability**
   - **Repository**: https://github.com/FinnMacCumail/ollamaDeepAgents (supersedes the Phase 4 Deepagents build)
-  - **Research Focus**: Taking the Deepagents agent to DeepAgents 0.6.10 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, and trace-driven observability
+  - **Research Focus**: Taking the Deepagents agent to DeepAgents 0.7.5 with a dual local/cloud model backend, a LangSmith model-matrix evaluation harness, trace-driven observability, a locally served 176B model, and a web chat over it built without changing what the harnesses measure
   - **Key Innovation**: Resolved ADR-0027's local-model failure via a native (no-proxy) backend; a frontier cloud model (`deepseek-v4-flash:cloud`) matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest multi-step queries
 
 
@@ -260,9 +260,9 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 
 - **Phase 5 ✅ COMPLETED**: Production DeepAgents – Multi-Model & Observability
   - **Repository**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) (supersedes the Phase 4 Deepagents build)
-  - **Achievement**: DeepAgents 0.6.10, dual local/cloud model backend (no proxy), LangSmith model-matrix evaluation harness, trace-driven observability
-  - **Key Finding**: Resolved ADR-0027's local-model failure; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency, while small local models remain insufficient for the hardest queries
-  - **Decisions**: ADRs 0028 (native local+cloud) · 0029 (LangSmith) · 0030 (eval harness) · 0031 (0.6 upgrade) · 0032 (QuickJS/PTC deferral)
+  - **Achievement**: DeepAgents 0.7.5, dual local/cloud model backend (no proxy), LangSmith model-matrix and reference-grounded-correctness evaluation, trace-driven observability, a read-only GraphQL read path, a 176B model served locally, and a web chat over that local model with server-reported token accounting and per-turn trace links
+  - **Key Finding**: Resolved ADR-0027's local-model failure; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency, small local models remain insufficient for the hardest queries, and a 176B open-weight model run locally is indistinguishable from flash on the 90-question set (ADR-0038)
+  - **Decisions**: ADRs 0028 (native local+cloud) · 0029 (LangSmith) · 0030 (eval harness) · 0031 (0.6 upgrade) · 0032 (QuickJS/PTC deferral) · 0033 (correctness evaluator) · 0034 (GraphQL read path) · 0035 (0.7.5 upgrade) · 0036 (LangChain vs cloud MCP) · 0037 (v5 benchmark) · 0038 (local frontier model) · 0039 (web serving layer)
 
 ### Upcoming Milestones
 

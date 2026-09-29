@@ -276,6 +276,17 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   tokens, when ~85% of them were already served from the prefix cache. Only the genuinely-new
   remainder and each question's cold first turn are accelerated — and decode, which is untouched,
   now accounts for roughly two thirds of the remaining wall time.
+- **Prefill silence is a client-side hazard once you stream — and nothing above could have seen
+  it.** llama-server emits no bytes while it prefills a prompt, and langchain-openai ≥1.2 arms
+  a 120 s gap-between-parsed-chunks watchdog on *async streaming* calls. The first browser turn
+  through the web chat (ADR-0039) died on its 7th model call with **0 chunks in 120.2 s**: the
+  preceding tool result was 64,199 characters, and on replay that call prefilled **19,976 new
+  tokens at 119.6 t/s — ~167 s of silence** before the first token. Every LLM run in every trace
+  behind this ADR is `stream=False`; the CLI and both harnesses call the model without
+  streaming, so the identical prompt on 2026-09-24 waited 217 s and succeeded. The watchdog is
+  now disabled for this backend (`LLAMACPP_STREAM_CHUNK_TIMEOUT_S=0`), with the UI's Stop
+  button as the recovery for a genuine hang. *The harness differs from the product in a
+  property the product depends on, so the harness cannot find the product's failure.*
 - **Speculative decoding is unavailable in every form.** `--spec-type ngram-simple` needs no draft
   model and looked well matched to an agent that echoes tool-result strings, but measured **163
   drafts and zero accepted**, costing 24% of decode; combined with `-ub 2048` it degraded both axes.
@@ -309,6 +320,7 @@ anchor count or hop count — not on topic — now has direct supporting evidenc
 
 - [Phase 5 → Local Frontier Inference](../phases/phase-5-production-deepagents/local-frontier-inference.md)
 - [ADR-0037 — Stratified v5 Benchmark](0037-stratified-benchmark-v5-difficulty-not-capability.md)
+- [ADR-0039 — Web Serving Layer: Serialised Turns, Server Token Counts](0039-web-serving-layer-serialised-turns-server-token-counts.md)
 - [ADR-0028 — Native Local & Cloud Models on DeepAgents](0028-native-local-and-cloud-models-on-deepagents.md)
 - [Research Methods → Benchmarking](../methods/benchmarking.md)
 - Upstream: `ggml-org/llama.cpp` PR #27742 (`qwen4exp` architecture, merged 2026-08-27)

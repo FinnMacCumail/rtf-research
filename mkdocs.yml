@@ -78,6 +78,7 @@ nav:
       - LangChain Ecosystem vs Cloud Platform MCP: phases/phase-5-production-deepagents/langchain-ecosystem.md
       - Stratified Benchmark v5 — Discriminating Power: phases/phase-5-production-deepagents/stratified-benchmark-v5.md
       - Local Frontier Inference — 176B on Two 2080 Tis: phases/phase-5-production-deepagents/local-frontier-inference.md
+      - Web Chat — Serving the Local Agent: phases/phase-5-production-deepagents/web-chat.md
       - Lessons Learned: phases/phase-5-production-deepagents/lessons-learned.md
   - Framework Comparison:
       - Overview: framework-comparison/overview.md
@@ -135,6 +136,7 @@ nav:
       - ADR-0036 LangChain Ecosystem Reproduces Cloud Platform MCP: adr/0036-langchain-ecosystem-reproduces-cloud-platform-mcp.md
       - ADR-0037 Stratified v5 Benchmark — Discriminating Power & Its Limits: adr/0037-stratified-benchmark-v5-difficulty-not-capability.md
       - ADR-0038 Local Frontier Model — Cost, Not Capability: adr/0038-local-frontier-model-viable-cost-not-capability.md
+      - ADR-0039 Web Serving Layer — Serialised Turns, Server Token Counts: adr/0039-web-serving-layer-serialised-turns-server-token-counts.md
 
 plugins:
   - search
