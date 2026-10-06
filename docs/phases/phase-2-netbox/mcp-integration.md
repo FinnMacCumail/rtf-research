@@ -328,9 +328,14 @@ devices = get_objects(
 )
 ip_addresses = get_objects(
     object_type="ipam.ip_addresses",
-    filters={"device_id__in": [d.id for d in devices]}
+    filters={"device_id": [d.id for d in devices]}   # list value = repeated query params
 )
 ```
+
+> **Corrected 2026-10-06.** This example originally used `device_id__in`. NetBox silently
+> ignores the `__in` lookup and returns the *unfiltered* set with HTTP 200, so the "workaround"
+> would have returned every IP address in the instance. The bare key with a list value is the
+> only multi-value syntax. See [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md).
 
 ### Read-Only Operations
 The server does not support:

@@ -49,6 +49,8 @@ front-end composables were ported rather than redesigned.
    agent already had `InMemorySaver` and a per-call `thread_id` override; the web layer needed no
    new memory machinery. Memory is process-local by design (no durable checkpointer); the UI
    shows a "server memory lost" banner after a restart.
+   *Superseded 2026-10-05 by [ADR-0040](0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md):
+   the web process now injects an `AsyncSqliteSaver`; the CLI and harnesses keep `InMemorySaver`.*
 2. **Turns are serialised with one `asyncio.Lock`, not with `--parallel`.** Waiting clients are
    told how many turns are ahead of them. Cancel is `Task.cancel()` on the consumer of
    `agent.astream()`, which closes the HTTP stream and frees the slot. Adding server slots would
@@ -147,8 +149,9 @@ without links, all 7 footers matched the correct run ids in order.
 ### Negative / limitations
 - **One slot means one user at a time.** A second tab queues. This is the correct behaviour for
   the hardware, not a scaling story.
-- **Memory does not survive a backend restart** (`InMemorySaver`). The transcript survives in
-  the browser; the model's memory of it does not.
+- <del>**Memory does not survive a backend restart** (`InMemorySaver`). The transcript survives in
+  the browser; the model's memory of it does not.</del> *Removed by ADR-0040 (2026-10-05): checkpoints
+  are in SQLite and a cancelled turn is rolled back out of the thread.*
 - **With the watchdog off, a genuinely hung stream relies on the Stop button.** The server is
   local and the cancel path is measured, but nothing times out automatically.
 - **A cancelled call reports no tokens**: llama-server emits usage only when a call completes.
@@ -172,6 +175,9 @@ the baseline it should be read against — the framework's wrapper chain is not 
 
 - [Phase 5 → Web Chat — Serving the Local Agent](../phases/phase-5-production-deepagents/web-chat.md)
 - [Phase 5 → Local Frontier Inference](../phases/phase-5-production-deepagents/local-frontier-inference.md)
+- [ADR-0040 — Durable Web-Chat Memory](0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md)
+  (supersedes decision 1); [ADR-0041 — Reject `__in`](0041-in-lookup-silently-ignored-reject-in-validator.md)
+  (found through this layer)
 - [ADR-0038 — Local Frontier Model: Cost, Not Capability](0038-local-frontier-model-viable-cost-not-capability.md)
 - [ADR-0026 — Claude SDK Project Requirements Package](0026-claude-sdk-project-requirements-package.md)
 - Repository: `src/web/` (`api.py`, `session.py`, `events.py`, `tracing.py`),

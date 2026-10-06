@@ -69,6 +69,12 @@ all_devices = get_devices(vlan__id__in=vlan_ids)  # Single bulk call
 all_interfaces = get_interfaces(vlan__id__in=vlan_ids)  # Single bulk call
 ```
 
+> **Note added 2026-10-06.** Through the NetBox REST API and the MCP server, `__in` lookups are
+> silently ignored — the request succeeds and returns the unfiltered set. Multi-value filtering
+> is a list value on the bare key (`vlan_id=[...]`, sent as repeated query parameters). The
+> pattern above stands as the Phase 2 record; the syntax does not. See
+> [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md).
+
 **Results**:
 - VLAN queries: 127 calls → 3 calls (97.6% reduction)
 - Response time: 57 seconds → 1.8 seconds (96.8% improvement)

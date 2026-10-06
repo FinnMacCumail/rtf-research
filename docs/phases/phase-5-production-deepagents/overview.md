@@ -96,7 +96,10 @@ middleware** that converts NetBox filter violations into structured, recoverable
    tool activity, cancel, per-conversation memory, server-reported token/context accounting and
    per-turn trace links, built without touching what the harnesses measure. Building it surfaced
    a streaming failure the non-streaming harnesses cannot see and put a number (0.27%) on the
-   framework's middleware overhead. See [Web Chat](web-chat.md) and ADR-0039.
+   framework's middleware overhead. See [Web Chat](web-chat.md) and ADR-0039. Using it then
+   produced two corrections: durable memory with cancel rollback (ADR-0040), and the discovery
+   that NetBox silently ignores the `__in` lookup the validator and skill had been
+   recommending (ADR-0041).
 
 ## Relationship to the other repositories
 

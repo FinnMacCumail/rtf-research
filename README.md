@@ -212,6 +212,8 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
 - **A frontier-class model on two used GPUs** (ADR-0038): Qwen3.8-Flash-Next (176B MoE) on 2× RTX 2080 Ti scored **0.906** on the full 90-question set — 0.5pp below `deepseek-v4-flash`, inside the set's resolution. `--numa isolate` alone was worth +56% decode; the local constraint is cost, not capability.
 - **Conversation order is a correctness variable**: the same 11 questions down one accumulating thread scored **0.750** site-first and **0.950** tenant-first, because one turn reused a wrong population inherited from an earlier one. *Context reuse is not the defect — reusing a wrong population is.*
 - **Serving the agent without changing it** (ADR-0039): a FastAPI + Nuxt web chat with token-level streaming, tool activity, cancel and server-reported token accounting, over an agent whose `query()`, prompt, middleware and skills are byte-identical to the benchmarked commit. The first streaming client found a failure the non-streaming harnesses could never hit — a 120 s watchdog tripped by ~167 s of silent prefill — and measured the framework middleware chain at **0.27%** of wall time.
+- **Durable memory, and a cancel that leaves nothing behind** (ADR-0040): the web layer's LangGraph checkpoints moved to SQLite after a week of restarts showing the model conversations it had never seen; rollback of a cancelled turn found that a finished parallel tool call survives as a *pending write* that the rollback itself commits — a 7,439-character tool result leaked into the next prompt until a two-pass rollback made the next call's input `[system, human]` again.
+- **A filter that answers 200 instead of 400** (ADR-0041): NetBox silently ignores the `__in` lookup and returns the unfiltered set, so a `device_id__in` over 12 PDUs returned every tenant's outlets (52,721 characters) and cost a 283 s model call. The validator and skill had recommended `__in` for a year on the strength of the MCP server's own whitelist. Rejecting it halved the session harness's tool calls (39 → 20) at the same correctness. *A check that inspects only the status code cannot see a filter the server ignores.*
 
 ### Cross-Phase Validation Results
 
@@ -286,11 +288,11 @@ User Query → Claude Agent → MCP Protocol → NetBox Tools → WebSocket Stre
   - **Architecture**: Deepagents framework with automatic NetBox MCP tool wrapper generation and sophisticated cache performance tracking
   - **Model Selection Enhancement (December 2025)**: Discovered intelligent multi-model routing (70-80% cost savings), implemented explicit model selection, documented failed Ollama/LiteLLM integration attempt
 
-- **Phase 5 ✅ COMPLETED (June–September 2026)**: Production DeepAgents – Multi-Model, Evaluation, Local Inference & Serving
+- **Phase 5 ✅ COMPLETED (June–October 2026)**: Production DeepAgents – Multi-Model, Evaluation, Local Inference & Serving
   - **Repository**: [ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents) (supersedes the Phase 4 Deepagents build)
   - **Achievement**: DeepAgents 0.7.5, dual local/cloud model backend (no proxy), LangSmith model-matrix and reference-grounded-correctness evaluation, trace-driven observability, a read-only GraphQL read path, a 176B model served locally, and a web chat over that local model with server-reported token accounting and per-turn trace links
   - **Key Finding**: Resolved ADR-0027's local-model failure; `deepseek-v4-flash:cloud` matches Claude-class quality at ~36% lower latency, small local models remain insufficient for the hardest queries, and a 176B open-weight model run locally is indistinguishable from flash on the 90-question set (ADR-0038)
-  - **Decisions**: ADRs 0028 (native local+cloud) · 0029 (LangSmith) · 0030 (eval harness) · 0031 (0.6 upgrade) · 0032 (QuickJS/PTC deferral) · 0033 (correctness evaluator) · 0034 (GraphQL read path) · 0035 (0.7.5 upgrade) · 0036 (LangChain vs cloud MCP) · 0037 (v5 benchmark) · 0038 (local frontier model) · 0039 (web serving layer)
+  - **Decisions**: ADRs 0028 (native local+cloud) · 0029 (LangSmith) · 0030 (eval harness) · 0031 (0.6 upgrade) · 0032 (QuickJS/PTC deferral) · 0033 (correctness evaluator) · 0034 (GraphQL read path) · 0035 (0.7.5 upgrade) · 0036 (LangChain vs cloud MCP) · 0037 (v5 benchmark) · 0038 (local frontier model) · 0039 (web serving layer) · 0040 (durable web memory) · 0041 (reject `__in`)
 
 ### Upcoming Milestones
 
