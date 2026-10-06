@@ -141,6 +141,8 @@ nav:
       - ADR-0037 Stratified v5 Benchmark — Discriminating Power & Its Limits: adr/0037-stratified-benchmark-v5-difficulty-not-capability.md
       - ADR-0038 Local Frontier Model — Cost, Not Capability: adr/0038-local-frontier-model-viable-cost-not-capability.md
       - ADR-0039 Web Serving Layer — Serialised Turns, Server Token Counts: adr/0039-web-serving-layer-serialised-turns-server-token-counts.md
+      - ADR-0040 Durable Web-Chat Memory — SQLite Checkpoints, Cancel Rollback: adr/0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md
+      - ADR-0041 Reject __in — A Filter That Answers 200 Instead of 400: adr/0041-in-lookup-silently-ignored-reject-in-validator.md
 
 plugins:
   - search

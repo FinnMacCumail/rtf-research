@@ -4,8 +4,11 @@ Until September 2026 the NetBox DeepAgents agent was reachable in two ways: a Ri
 prints nothing until the whole answer exists, and the evaluation harnesses. Both are fine for
 measuring. Neither is how anyone would use an assistant whose turns take
 [35 to 486 seconds](local-frontier-inference.md). This page records the serving layer that was
-added on top of the agent, and the two things building it revealed that the harnesses could not.
-The decisions are in [ADR-0039](../../adr/0039-web-serving-layer-serialised-turns-server-token-counts.md).
+added on top of the agent, the two things building it revealed that the harnesses could not,
+and the two things a week of using it revealed (durable memory, and a filter NetBox ignores).
+The decisions are in [ADR-0039](../../adr/0039-web-serving-layer-serialised-turns-server-token-counts.md),
+[ADR-0040](../../adr/0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md) and
+[ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md).
 
 ## The rule: the agent does not change
 
@@ -115,11 +118,51 @@ total, is the number to watch. Turns 6 and 7 reused `site_id 25` from earlier tu
 single tool call each — the memory working as intended, and the same mechanism that
 contaminated the site-first session run.
 
+## Memory that survives a restart, and a cancel that leaves nothing behind (October 2026)
+
+A week of use showed the one thing the page above got wrong: after any backend restart the
+browser displayed a conversation the model had never seen, and the operator's follow-up
+started cold. The checkpoints now live in SQLite (`WEB_CHECKPOINT_DB`), injected into the web
+process only — the CLI and the harnesses keep per-process memory, so nothing measured elsewhere
+in Phase 5 changed. Verified by killing the backend mid-conversation: the thread came back
+known, and the follow-up was answered from memory with **0 tool calls in 5.0 s**.
+
+Stop now rolls the thread back as well. Before, a cancelled turn left the question and any
+tool result that had already landed in every later prompt. The rollback found a LangGraph
+behaviour worth recording: when a model call issues two tool calls and one is cancelled, the
+finished one is a *pending write*, invisible to the committed message list and committed by the
+very `aupdate_state` call that performs the rollback. The first "clean" cancel therefore carried
+a 7,439-character tool result into the next turn (context 11,060 against the 8,738 baseline);
+it took a two-pass rollback and a `Send`-graph regression test to make the next call's input
+`[system, human]` again. The decisions are in
+[ADR-0040](../../adr/0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md).
+
+## The outlets question: a filter that returned 200 instead of 400
+
+The first long persisted thread exposed a defect a year old. Its third turn — *"Across all
+Halvorsen Logistics PDUs, how many of the available power outlets are actually in use?"* — spent
+**283 s in one model call**, because the tool result before it was **52,721 characters**: a
+`device_id__in` filter over the 12 PDU ids had returned the first 200 power outlets of every
+tenant. NetBox does not reject `__in`; it drops the filter and answers 200 with everything.
+Verified live against every field class — primary key, relational id, string, integer — none
+honours it, while the bare key with a list value (`{"device_id": [149, 150]}`) filters correctly.
+
+The agent's validator and skill had been *recommending* `__in` since a trace earlier in the
+year, on the strength of the MCP server's own whitelist and tool description, which list it.
+Both now reject it; the local copy of the MCP server is corrected and the diff kept for an
+upstream report. The 11-turn session harness, re-run against the September baseline with the
+same order: **20 tool calls against 39, 1,312 s against 1,552 s, the outlets question down to
+one tool call (177 s against 195 s and 9 calls), zero `__in` attempts, same scores.** The
+scores did not move because their misses are the site-versus-tenant scoping the harness
+documented in September, not filter syntax. [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md)
+records the decision and the measurement principle it adds: a check that inspects only the
+status code cannot see a filter the server ignores.
+
 ## What it does not do
 
 - Serve more than one turn at a time: one llama-server slot, one stdio MCP client, one lock.
-- Remember conversations across a backend restart (in-memory checkpointer; the browser keeps
-  the transcript and shows a banner).
+- <del>Remember conversations across a backend restart</del> — it does since 2026-10-05
+  (ADR-0040); conversations created before that date remain browser-only and show the banner.
 - Show the model's reasoning: `ChatOpenAI` drops `reasoning_content`, so reasoning is counted
   in tokens written but never displayed.
 - Time out a hung stream on its own — the Stop button is the recovery.
@@ -128,4 +171,6 @@ contaminated the site-first session run.
 
 **See also**: [Local Frontier Inference](local-frontier-inference.md) ·
 [Observability & Monitoring](observability-and-monitoring.md) ·
-[ADR-0039](../../adr/0039-web-serving-layer-serialised-turns-server-token-counts.md)
+[ADR-0039](../../adr/0039-web-serving-layer-serialised-turns-server-token-counts.md) ·
+[ADR-0040](../../adr/0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md) ·
+[ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md)
