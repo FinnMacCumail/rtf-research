@@ -318,6 +318,10 @@ in ggml's enum **and nowhere else in the source**: reserved, unimplemented, unre
 runtime does not help either: KTransformers requires Ampere+ and its headline numbers need AMX this
 Cascade Lake host lacks; vLLM and SGLang cannot host 112 GB on 21 GiB of VRAM at all.
 
+*Update, 2026-10-17: the decode half of that sentence stands; the prefill half did not. See
+[the expert-offload question, measured](#the-expert-offload-question-measured-rather-than-argued)
+and [ADR-0042](../../adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md).*
+
 ## Two things recorded because they were wrong
 
 **The context failure was the operator's, not the model's.** The advanced question first died with
@@ -462,7 +466,78 @@ scored 0.5 in both orders despite an answer giving 12 PDUs / 96 outlets / 17 in 
 what v5 said when it scored 1.0 — so that is likely judge noise, left as measured rather than
 argued up.
 
-**See also**: [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
+## The expert-offload question, measured rather than argued
+
+The limitation above said no fix was available. A month later the question was put properly: the
+`colibri` engine (42k stars in three months for streaming experts from NVMe), the GPU expert cache
+llama.cpp merged on 2026-10-07 (PR #29887, 1.6–2.2× decode on 4090/5090 for *this* model), and
+~55 papers on expert caching, prediction and CPU-GPU co-execution. The full report, with sources,
+is in the app repository (`docs/development/2026-10-17_moe-offloading-research.md`). Its framing
+result came first: every one of those techniques acts on **decode**, the cache is bypassed above
+32-token batches, and this agent's worst turns are **prefill** — a cold 8.7k prefix, a 20k-token
+tool result. By Amdahl's arithmetic on the Gate-3 turn, a 1.5× decode gain is worth ~18 s of 167.
+
+**The cache was measured anyway, and lost at every size that fits.** `llama-bench` on the production
+flags, three repetitions, cache split across both cards as the server would split it:
+
+| configuration | pp2048 | tg128 | hit rate |
+|---|---|---|---|
+| no cache | 189.0 | **15.92** | — |
+| 2 GiB | 187.5 | 4.69 | 48% |
+| 4 GiB | 189.9 | 7.87 | 71% |
+| 6 GiB | 189.3 | 10.19 | 80% |
+| 2.5 GiB, one card, pinned RAM, process on that card's socket | 412.7 | 13.31 | 60% |
+| 2.5 GiB, one card, pinned RAM, process on the far socket | 413.6 | 13.47 | 60% |
+
+The last pair is the mechanism: moving the process across the socket changed the cached decode by
+1%, so PCIe locality is not the problem. The miss path is — ~250 uploads of ~2.7 MB per token,
+serialised against compute; at 2 GiB the cache moved ~290 GB over the bus for 384 tokens. Six GiB
+is more VRAM than the 131k-context server has, and it is still 36% slower than nothing.
+
+**Colibri solves a problem this box does not have.** It streams experts from disk for models that
+exceed RAM; this model is RAM-resident. Its own README puts this model at 1.9–4.0 tok/s on CPU; on a
+RAM-resident MoE and an RTX 3070 it is slower than llama.cpp-under-Ollama (30.0 vs 38.1 tok/s) at
+worse perplexity for equal bits. Skipped, with the numbers recorded so it stays skipped.
+
+**What did pay was not offloading.** Two things, both free:
+
+- **A newer build.** b11053 → b11713 (660 commits, fused shared experts, grouped top-k): `tg128`
+  11.48 → 15.92, `pp2048` 176.9 → 189.0 on identical flags.
+- **`--load-mode none`.** Copy the CPU-resident experts into pinned RAM instead of mmap-ing the
+  GGUF, so the per-microbatch expert uploads are DMA. `pp2048` 189 → **390**; decode unchanged. The
+  old server had printed *"tensor overrides to CPU are used with mmap enabled - consider using
+  --load-mode none"* at every start for a month. That is the error of this page: the warning was in
+  the log the whole time the page said no fix existed.
+
+And one that was free but surprising: `--numa isolate` pins to whichever node the process *starts*
+on. Started on node 1, decode is 15.7; on node 0, 11.7, prefill equal. The serve script now starts
+under `taskset -c 10-19,30-39`, and the page cache was dropped once so the 74 GB pinned buffer sits
+on the same node as the threads.
+
+**On real traffic, from the server's own timing lines** — the old server's 24-day log against the
+new server's first day:
+
+| | legacy | new |
+|---|---|---|
+| prefill, ≥256 new tokens, aggregate | 96.9 tok/s | **218.5 tok/s** |
+| prefill, ≥4,000 new tokens | 113.3 | **242.0** |
+| decode, ≥32 generated, aggregate | 13.64 | 14.60 |
+
+**Eight v5 questions through the agent**, same evaluators, all eight correct both times: 1,285 s →
+1,180 s summed (1.09×), but 35.7 → **28.5 s per model call** and 3.0 → **1.9 ms per prompt token**.
+The gap between those two numbers is planning variance — 12 tool calls where the September run made
+4, three times the tool-result text on another question, and the cold prefix landing on the first
+item. Questions where the model made the same number of calls both times came in 1.22×, 1.34× and
+1.56× faster. Per call, the server is faster; per turn, the call count is the larger term, which is
+the same conclusion [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md)
+reached from the other side.
+
+**Limits.** Eight questions, one run each, against single legacy runs. Decode's 11.5 → 15.9 in
+`llama-bench` does not survive the server's overheads at 131k context. The node-1 advantage is
+measured, not explained. `kernel.numa_balancing` is still on.
+
+**See also**: [ADR-0042 — Expert Offloading Is Not the Lever](../../adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md) ·
+[ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
 [ADR-0037 — Stratified v5 Benchmark](../../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md) ·
 [Stratified Benchmark v5](stratified-benchmark-v5.md) ·
 [Model-Matrix Benchmarking](../../methods/benchmarking.md)

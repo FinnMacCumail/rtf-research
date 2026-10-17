@@ -143,6 +143,7 @@ nav:
       - ADR-0039 Web Serving Layer — Serialised Turns, Server Token Counts: adr/0039-web-serving-layer-serialised-turns-server-token-counts.md
       - ADR-0040 Durable Web-Chat Memory — SQLite Checkpoints, Cancel Rollback: adr/0040-durable-web-chat-memory-sqlite-checkpoints-cancel-rollback.md
       - ADR-0041 Reject __in — A Filter That Answers 200 Instead of 400: adr/0041-in-lookup-silently-ignored-reject-in-validator.md
+      - ADR-0042 Expert Offloading Is Not the Lever — Pinned Weights, Rejected GPU Expert Cache: adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md
 
 plugins:
   - search

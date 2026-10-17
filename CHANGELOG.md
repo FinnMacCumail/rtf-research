@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: expert offloading measured and rejected; prefill doubled by a flag the server had been recommending - Oct 2026**: The offloading question ADR-0038 left as "no available fix" was answered with a literature survey (`colibri`, llama.cpp's new GPU expert cache, ~55 papers) and then `llama-bench` on the production model.
+  - **`--moe-cache-mib` loses at every size that fits**: 15.9 tok/s without, 4.7 / 7.9 / 10.2 at 2 / 4 / 6 GiB; socket locality worth 1%, the miss path is the cost.
+  - **Colibri skipped**: it streams experts from NVMe for models that exceed RAM; this one is RAM-resident, and its own numbers for this model are 3–7× slower.
+  - **What paid**: llama.cpp b11713 (+39% decode in `llama-bench`), `--load-mode none` (prefill 189 → 390 in `llama-bench`, **97 → 219 tok/s on real traffic**), and starting on NUMA node 1 (`taskset`), since `--numa isolate` pins to the starting socket.
+  - **Eight v5 questions rerun**: 8/8 correct, 35.7 → 28.5 s per model call; summed wall only 1.09× because the model planned more tool calls.
+  - **Limits stated**: decode unchanged on real traffic (13.6 → 14.6); eight questions, one run each; the node-1 effect is measured, not explained.
+  - **Docs**: ADR-0042 (new); ADR-0038 limitation marked partly superseded; Phase 5 → *Local Frontier Inference* new section.
 - **Phase 5: durable web-chat memory, and a filter NetBox silently ignores - Oct 2026**: A week of using the web chat produced two corrections to the September work ([ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents), `5271e69` + `8af278e`, merged `b2a02ac`)
   - **Memory now survives a backend restart.** LangGraph checkpoints moved from `InMemorySaver` to `AsyncSqliteSaver` (`WEB_CHECKPOINT_DB`), injected into the web process only — the CLI and both harnesses keep per-process memory, so nothing measured elsewhere changed. Startup fails rather than falling back to memory. Verified by killing the backend mid-conversation: thread known on restart, follow-up answered from memory with **0 tool calls in 5.0 s**, 41 checkpoints on disk
   - **A cancelled turn is rolled back out of the thread**, not left as an orphaned question. The rollback is attributed to the node that routes to `END`, discovered from the graph (`FilterErrorRecoveryMiddleware.after_model`, not `model`) because `aupdate_state(as_node=X)` schedules X's successors

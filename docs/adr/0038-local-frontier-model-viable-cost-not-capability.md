@@ -303,6 +303,11 @@ on an MoE analogue (13.71 → 21.38 tok/s), with sub-1% run-to-run deviation. Se
   `GGML_NUMA_STRATEGY_MIRROR` exists in ggml's enum *and nowhere else in the source*. Alternative
   runtimes do not help: KTransformers requires Ampere+ and AMX this host lacks; vLLM and SGLang
   cannot host 112 GB on 21 GiB of VRAM.
+  *Partly superseded by [ADR-0042](0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md)
+  (October 2026): the decode ceiling stands (13.6 → 14.6 tok/s on real traffic after a newer
+  build), but prefill — where the outlier turns were — had a remedy the server printed at every
+  start, `--load-mode none`, worth 2.2× on real traffic; the GPU expert cache llama.cpp merged on
+  2026-10-07 was measured on this host and rejected.*
 - **Ollama cannot serve this architecture** on this host: the installed version (0.13.3, Dec 2025)
   predates `qwen4exp` by nine months, and local GGUF import for the architecture is reported broken.
   `llama-server` is the only working path.
