@@ -159,7 +159,10 @@ per turn, planning variance is larger than the inference gain.
   placement needed a one-off `drop_caches` as root because the GGUF page cache filled node 1.
 - **The rerun is eight questions, one run each**, against single legacy runs. It shows direction
   and per-call rate, not a new benchmark figure; the 90-question harness was not re-run.
-- `kernel.numa_balancing` is still 1, flagged by llama-server as harmful, and still unactioned.
+- `kernel.numa_balancing=0`, flagged by llama-server as harmful, was set and measured the same
+  evening: decode 14.45 → 14.72 tok/s median over five 200-token runs, inside the spread of two
+  runs taken with it on (14.13–14.86). Once the process is pinned and its memory node-local the
+  balancer has nothing to migrate, so it is not a lever here. Left off, not persisted.
 
 ## Relationship to ADR-0038
 

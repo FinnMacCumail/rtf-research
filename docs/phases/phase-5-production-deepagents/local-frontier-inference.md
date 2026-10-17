@@ -534,7 +534,9 @@ reached from the other side.
 
 **Limits.** Eight questions, one run each, against single legacy runs. Decode's 11.5 → 15.9 in
 `llama-bench` does not survive the server's overheads at 131k context. The node-1 advantage is
-measured, not explained. `kernel.numa_balancing` is still on.
+measured, not explained. `kernel.numa_balancing=0`, the last open item from ADR-0038, was then set
+and measured: decode 14.45 → 14.72 tok/s median over five 200-token runs, inside the spread of two
+runs with it on. Pinned and node-local, there is nothing left for the balancer to move.
 
 **See also**: [ADR-0042 — Expert Offloading Is Not the Lever](../../adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md) ·
 [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
