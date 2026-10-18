@@ -532,11 +532,26 @@ item. Questions where the model made the same number of calls both times came in
 the same conclusion [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md)
 reached from the other side.
 
-**Limits.** Eight questions, one run each, against single legacy runs. Decode's 11.5 → 15.9 in
-`llama-bench` does not survive the server's overheads at 131k context. The node-1 advantage is
-measured, not explained. `kernel.numa_balancing=0`, the last open item from ADR-0038, was then set
-and measured: decode 14.45 → 14.72 tok/s median over five 200-token runs, inside the spread of two
-runs with it on. Pinned and node-local, there is nothing left for the balancer to move.
+**Then the full harness, the same night.** All 90 questions, same evaluators and judge as the
+2026-09-23 run: **6 h 47 m → 5 h 18 m** of wall clock, agent time **1.34× faster**, 73 of 90
+questions quicker, correctness 0.906 → 0.922 (five up, four down — the same level), tool calls
+5.52 → 4.88, zero errors. By tier: simple 1.12×, medium 1.23×, **advanced 1.53×** — the tier
+whose turns prefill the largest tool results, which is the axis the flag doubled. Per model call,
+40.8 → 33.9 s; per prompt token, 2.77 → 2.12 ms; September's 26-minute outlier took 12.7 minutes.
+
+The run also answers an attribution question, because [ADR-0041](../../adr/0041-in-lookup-silently-ignored-reject-in-validator.md)
+landed between the two harness runs. It is not the driver: September used `__in` in 8 of 497 tool
+calls on 5 questions; October used it never, read *more* tool text (6.2M vs 4.9M characters) and
+was still faster; and the quantities that moved are per-call and per-token rates a validator
+cannot touch. Its bounded share is in the call count (462 → 411), alongside ordinary planning
+variance.
+
+**Limits.** One full run against one full run, neither replicated. Decode's 11.5 → 15.9 in
+`llama-bench` does not survive the server's overheads at 131k context (13.6 → 14.6 on real
+traffic). The node-1 advantage is measured, not explained. `kernel.numa_balancing=0`, the last
+open item from ADR-0038, was set and measured: decode 14.45 → 14.72 tok/s median over five
+200-token runs, inside the spread of two runs with it on. Pinned and node-local, there is nothing
+left for the balancer to move.
 
 **See also**: [ADR-0042 — Expert Offloading Is Not the Lever](../../adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md) ·
 [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·

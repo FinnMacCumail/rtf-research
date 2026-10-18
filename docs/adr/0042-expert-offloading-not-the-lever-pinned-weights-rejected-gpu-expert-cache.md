@@ -12,8 +12,9 @@ experts into pinned RAM, and a newer build. The decode ceiling in ADR-0038 stand
 half had a fix the server had been printing at startup.
 **Repository**: [https://github.com/FinnMacCumail/ollamaDeepAgents](https://github.com/FinnMacCumail/ollamaDeepAgents)
 (`43afc28` serve script; research report in `docs/development/2026-10-17_moe-offloading-research.md`;
-A/B and rerun in `docs/development/2026-10-17_moe-cache-ab-and-server-switch.md`; raw
-`llama-bench` tables in `docs/traces/2026-10-17_llama-bench_moe-cache-ab.md`)
+A/B and reruns in `docs/development/2026-10-17_moe-cache-ab-and-server-switch.md`; raw
+`llama-bench` tables in `docs/traces/2026-10-17_llama-bench_moe-cache-ab.md`; full-run trace in
+`docs/traces/2026-10-17_netbox-benchmark-v5_newbuild-full.md`)
 **Bears on**: [ADR-0038](0038-local-frontier-model-viable-cost-not-capability.md) (partly
 superseded: the "no available fix" limitation), [ADR-0039](0039-web-serving-layer-serialised-turns-server-token-counts.md)
 (the turn-time accounting the comparison uses), [ADR-0041](0041-in-lookup-silently-ignored-reject-in-validator.md)
@@ -131,11 +132,44 @@ run's first question paid the cold prefix where in the legacy run it ran seventh
 of model time with one tool call each). Per call and per token, the inference is faster;
 per turn, planning variance is larger than the inference gain.
 
+**The full 90-question harness, rerun the same night** (experiment
+`llamacpp-qwen3.8-flash-next-UD-Q4_K_XL-v5-newbuild-full-2865e34b`, same dataset, evaluators
+and judge as the 2026-09-23 run; `kernel.numa_balancing=0` also in effect):
+
+| | 2026-09-23 (old build, mmap) | 2026-10-17 (new configuration) |
+|---|---|---|
+| wall, first question to last | 6.78 h | **5.30 h** |
+| agent time, sum of 90 root runs | 19,345 s | **14,396 s** (1.34×) |
+| mean / median / longest question | 214.9 / 152.7 / 1,588 s | **160.0 / 119.9 / 761 s** |
+| simple / medium / advanced tier, mean | 108.5 / 205.9 / 330.5 s | 96.7 / 167.6 / **215.6** s (1.12× / 1.23× / **1.53×**) |
+| questions faster than September | — | 73 of 90 |
+| correctness | 0.906 | 0.922 (5 up, 4 down) |
+| completeness · entity coverage | 0.944 · 0.866 | 0.944 · 0.859 |
+| tool calls per question | 5.522 | 4.878 |
+| model calls · seconds in the model | 462 · 18,869 s | 411 · 13,938 s |
+| seconds per model call · ms per prompt token | 40.8 · 2.77 | **33.9 · 2.12** |
+| errors | 0 | 0 |
+
+The per-call rate (1.20×) is the server change; the remainder of the 1.34× is the model making
+11% fewer calls this run. The advanced tier gains most because its turns prefill the largest
+tool results, which is the axis `--load-mode none` doubled. Correctness moved on nine questions
+in both directions: the same ~0.91 level, not a quality change.
+
+**Attribution against ADR-0041.** The `__in` rejection also landed between the two runs. It
+cannot be the driver: September used `__in` in 8 of 497 tool calls on 5 questions (3 returning
+the oversized unfiltered result); October used it 0 times yet read *more* tool text (61 results
+over 20k characters against 45; 6.2M against 4.9M characters) and was still faster; 73 of 90
+questions improved where the fix could touch 5; and the quantities that moved — seconds per
+call, milliseconds per token — are ones a validator cannot change. The one entangled number is
+the call count (462 → 411), where ADR-0041 is a bounded contributor on 5 questions and planning
+variance is the rest.
+
 ## Consequences
 
 ### Positive
 - **Prefill, the axis the agent lives on, is 2.2× faster on real traffic** for no quality
-  change, no new dependency and one flag. The cold 8.7k-token prefix drops from ~82 s to ~27 s;
+  change, no new dependency and one flag; over the full v5 harness that is **6.78 → 5.30 h of
+  wall clock at the same correctness**, with the advanced tier 1.53× faster. The cold 8.7k-token prefix drops from ~82 s to ~27 s;
   a 20k-token tool result from ~167 s to ~65 s.
 - **The expert-cache question is closed with numbers rather than an argument**, including the
   mechanism (miss path, not socket locality), so it will not be re-opened each time a new
@@ -150,15 +184,16 @@ per turn, planning variance is larger than the inference gain.
   the old log. `llama-bench`'s 11.5 → 15.9 does not survive the server's overheads at 131k
   context. ADR-0038's decode ceiling and its cause stand.
 - **Turn time is now dominated by call count and tool-result size**, which this ADR does not
-  touch. The 1.09× end-to-end figure is the honest one; the per-call 1.25× is what the server
-  changes bought.
+  touch. Over the full harness the per-call 1.20× is what the server changes bought; the 1.34×
+  end-to-end includes 11% fewer calls that this configuration did not cause.
 - **`--load-mode none` costs ~74 GB of pinned RAM and a 60–90 s cold start** instead of a lazy
   mmap. On this 376 GB host that is free; on a smaller one it would not be.
 - **The node-1 advantage was measured twice and not explained.** Node 0 carries the desktop and
   the agent's own processes; that is the likely cause, not a verified one. The pinned-buffer
   placement needed a one-off `drop_caches` as root because the GGUF page cache filled node 1.
-- **The rerun is eight questions, one run each**, against single legacy runs. It shows direction
-  and per-call rate, not a new benchmark figure; the 90-question harness was not re-run.
+- **One full run against one full run.** The 90-question harness was re-run and is the figure of
+  record above; the eight-question subset is kept as the per-call analysis that preceded it.
+  Neither run is replicated, and the September-to-October gap also spans ADR-0041.
 - `kernel.numa_balancing=0`, flagged by llama-server as harmful, was set and measured the same
   evening: decode 14.45 → 14.72 tok/s median over five 200-token runs, inside the spread of two
   runs taken with it on (14.13–14.86). Once the process is pinned and its memory node-local the
