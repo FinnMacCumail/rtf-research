@@ -79,6 +79,15 @@ get_objects(
 )
 ```
 
+> **Corrected 2026-10-19.** All three examples above were checked against NetBox 4.3.3 and
+> none works as written. `filters={"site": "DM-Scranton"}` is a 400 (relation slugs are
+> lowercase: `dm-scranton`). `filters={"prefix": "10.0.0.0/24"}` on IP addresses is
+> **silently ignored** — every address in the instance comes back with HTTP 200; the
+> address-in-prefix filter is `parent`. `filters={"name__contains": "prod"}` sent straight to
+> NetBox is **also silently ignored** (all 94 VLANs); the MCP server's suffix is `name__ic`
+> (1 VLAN). The agent's validator now rejects all three with the working form in the message.
+> See [ADR-0043](../../adr/0043-filter-grammar-after-in-null-relations-ip-parent-graphql-ids.md).
+
 **Supported Object Types**:
 - **DCIM**: devices, sites, racks, interfaces, cables, power feeds, etc.
 - **IPAM**: IP addresses, prefixes, VLANs, VRFs, aggregates

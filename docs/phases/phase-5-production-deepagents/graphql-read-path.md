@@ -127,6 +127,26 @@ The strategic point: this capability is reproducible **on-prem, read-only, and p
 Cloud product's cross-domain reads without shipping infrastructure data to a managed service, which
 the project's privacy mandate forbids.
 
+## Grammar, re-verified (October 2026)
+
+The skill's grammar section was written against NetBox 4.4 documentation and one line of it was
+wrong for the 4.3.3 instance the agent runs against: it said ID filters accept a list,
+`{id: [6, 7, 8]}`. They do not — NetBox answers *"ID cannot represent a non-string and
+non-integer value"* — and six of the twenty GraphQL failures in the 2026-10-17 full run were the
+model doing exactly what the skill told it. The 2026-09-23 run had 34 GraphQL rejections in 65
+calls; 2026-10-17 had 16 in 31. The forms that work, introspected and tested: one bare id per ID
+key at any nesting depth (`tenant: {id: 14}`), `name: {in_list: [...]}` and `i_contains` on string
+fields, `pagination: {limit, offset}` rather than `limit:`, at most 10 aliases; and
+`{tenant_id: null}` is silently ignored, so "unassigned" questions belong on the REST tool. The
+`netbox_graphql` tool now rejects every one of these shapes before the request leaves the
+process, with the fix in the message, and the skill is corrected.
+
+The measured effect cut the other way from the projection: with a skill it could trust, the model
+used GraphQL for **18 questions instead of 9** (53 queries instead of 31), got 30 of them accepted
+instead of 15, and completeness rose from 0.944 to 0.978 — while the residual 16 rejections are now
+field-name mistakes a grammar check cannot see, and wall time did not move. Detail in
+[ADR-0043](../../adr/0043-filter-grammar-after-in-null-relations-ip-parent-graphql-ids.md).
+
 **See also**: [Evaluating for Correctness](evaluation-correctness.md) ·
 [DeepAgents 0.7.5 Upgrade](0-7-5-upgrade.md) ·
 [LangChain Ecosystem vs Cloud Platform MCP](langchain-ecosystem.md) ·

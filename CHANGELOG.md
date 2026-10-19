@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: after `__in`, the rest of the class — Oct 2026**: both full v5 runs' tool calls classified and every suspect filter verified live on NetBox 4.3.3; 41 of 439 calls (9%) were wasted on forms NetBox ignores, inverts or rejects.
+  - **Four more forms**: "no X assigned" is `{"<x>_id": null}` only (`__empty`/`__isnull` ignored, `__n: null` inverted); ip-addresses use `parent` (`within`/`prefix` ignored, `vrf=` wants the RD); GraphQL ID keys take one bare id at any depth (the skill had taught a list), `filters:`/`pagination`/10 aliases, `<x>_id: null` ignored; change-log `action` is `create/update/delete` (the MCP server description says `created/...`).
+  - **Validator + GraphQL pre-check + skills + prompt** fixed in the ADR-0041 shape; server docstring patched locally, diff kept for upstream.
+  - **Full v5 run**: targeted REST mistakes 8 → 0, GraphQL grammar rejections 8 → 0, correctness 0.922 → 0.928, completeness 0.944 → 0.978, wall 5.30 → 5.26 h (a wash: GraphQL use doubled into the freed budget).
+  - **Limits stated**: one run each way; follow-ups unit-tested only; 4.3.3 facts to re-verify on upgrade; upstream defects unreported.
+  - **Docs**: ADR-0043 (new); Phase 5 → *GraphQL Read Path* new section; Phase 2 → *MCP Integration* examples corrected.
 - **Phase 5: expert offloading measured and rejected; prefill doubled by a flag the server had been recommending - Oct 2026**: The offloading question ADR-0038 left as "no available fix" was answered with a literature survey (`colibri`, llama.cpp's new GPU expert cache, ~55 papers) and then `llama-bench` on the production model.
   - **`--moe-cache-mib` loses at every size that fits**: 15.9 tok/s without, 4.7 / 7.9 / 10.2 at 2 / 4 / 6 GiB; socket locality worth 1%, the miss path is the cost.
   - **Colibri skipped**: it streams experts from NVMe for models that exceed RAM; this one is RAM-resident, and its own numbers for this model are 3–7× slower.
