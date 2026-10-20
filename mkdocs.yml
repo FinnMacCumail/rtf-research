@@ -145,6 +145,7 @@ nav:
       - ADR-0041 Reject __in — A Filter That Answers 200 Instead of 400: adr/0041-in-lookup-silently-ignored-reject-in-validator.md
       - ADR-0042 Expert Offloading Is Not the Lever — Pinned Weights, Rejected GPU Expert Cache: adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md
       - ADR-0043 Filter Grammar After __in — Null Relations, IP parent, GraphQL IDs, Change-Log Verbs: adr/0043-filter-grammar-after-in-null-relations-ip-parent-graphql-ids.md
+      - ADR-0044 A Search That Cannot See Tenants — Search Defaults, Name Resolution, Parent Counts: adr/0044-search-defaults-tenants-providers-parent-counts.md
 
 plugins:
   - search

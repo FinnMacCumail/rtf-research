@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: the search that could not see tenants - Oct 2026**: a 377 s / 9-call web-chat turn traced to the MCP server's global search returning eight empty lists for a tenant name (tenants, providers and manufacturers were not in its default types); 26/35 and 18/24 benchmark searches had returned nothing for the same reason.
+  - **Local server now searches `tenancy.tenant`, `circuits.provider`, `dcim.manufacturer` by default** (patch saved); skill resolves such names in one call and answers per-parent counts from `*_count` fields; prompt lines.
+  - **Full v5 run, fastest of four**: wall 5.26 → 5.14 h, median 113 → 97 s, 4.99 → 4.49 calls/question, empty default searches 12 → 0, GraphQL use 53 → 17 queries; correctness 0.917 / completeness 0.972 (judge spread).
+  - **Limits stated**: one run each way; tool-result size unchanged (next lever); upstream report still unfiled.
+  - **Docs**: ADR-0044 (new); Phase 2 → *MCP Integration* gains *Global Search*.
 - **Phase 5: after `__in`, the rest of the class — Oct 2026**: both full v5 runs' tool calls classified and every suspect filter verified live on NetBox 4.3.3; 41 of 439 calls (9%) were wasted on forms NetBox ignores, inverts or rejects.
   - **Four more forms**: "no X assigned" is `{"<x>_id": null}` only (`__empty`/`__isnull` ignored, `__n: null` inverted); ip-addresses use `parent` (`within`/`prefix` ignored, `vrf=` wants the RD); GraphQL ID keys take one bare id at any depth (the skill had taught a list), `filters:`/`pagination`/10 aliases, `<x>_id: null` ignored; change-log `action` is `create/update/delete` (the MCP server description says `created/...`).
   - **Validator + GraphQL pre-check + skills + prompt** fixed in the ADR-0041 shape; server docstring patched locally, diff kept for upstream.

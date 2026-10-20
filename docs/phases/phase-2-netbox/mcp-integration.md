@@ -134,6 +134,22 @@ get_changelogs(
 )
 ```
 
+### 4. Global Search (`search_objects`)
+
+```python
+# Free-text search across several object types in one call
+search_objects(query="hq-acc04")                         # devices, sites, IPs, interfaces, racks, VLANs, circuits, VMs
+search_objects(query="Halvorsen", object_types=["tenancy.tenant"])
+```
+
+> **Corrected 2026-10-19.** The server's default search list did not include tenants,
+> providers or manufacturers, so a search for an organisation name — the first thing most
+> questions name — returned eight empty lists with HTTP 200. The agent read that as "no such
+> object" and guessed other classes; in two full benchmark runs 26 of 35 and 18 of 24 searches
+> came back empty for this reason. The local copy now searches `tenancy.tenant`,
+> `circuits.provider` and `dcim.manufacturer` by default. See
+> [ADR-0044](../../adr/0044-search-defaults-tenants-providers-parent-counts.md).
+
 ## Integration with Agent Frameworks
 
 The NetBoxLabs MCP server serves as **shared infrastructure** for different agent frameworks:
