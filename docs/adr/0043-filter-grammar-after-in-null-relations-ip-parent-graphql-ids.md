@@ -39,7 +39,11 @@ read-only token.
 
 ## Decision
 
-1. **"No `<relation>` assigned" is `{"<relation>_id": null}` only.** The validator rejects
+1. **"No `<relation>` assigned" is `{"<relation>_id": null}` only.** *(Corrected by
+   [ADR-0045](0045-schema-driven-filter-validation-null-wire-tool-results-twice.md): right about
+   NetBox, wrong about the wire — `requests` drops a `None` value, so the JSON null never reached
+   NetBox and the "correct uses" counted below were unfiltered; the wrapper now sends the string
+   `"null"`.)* The validator rejects
    `<relation>__empty` (silently ignored) and `<relation>__n: null` (returns the complement),
    and its suggestion for `__null` / `__isnull` names the `_id: null` form. A `RELATION_FIELDS`
    set plus any `*_id` key decides what counts as a relation; `__empty` on a string field

@@ -150,6 +150,15 @@ search_objects(query="Halvorsen", object_types=["tenancy.tenant"])
 > `circuits.provider` and `dcim.manufacturer` by default. See
 > [ADR-0044](../../adr/0044-search-defaults-tenants-providers-parent-counts.md).
 
+> **Two more, 2026-10-20.** (1) The agent's tool wrapper rebuilt each MCP tool without
+> `response_format="content_and_artifact"`, so the adapter's `(content, artifact)` pair was
+> stringified into the tool message and the model read every result twice — once JSON-escaped,
+> once as `structured_content`; 4.85M characters on a benchmark run for 1.99M of data. (2) A
+> JSON `null` filter value never reaches NetBox: `requests` drops `None` parameters, so
+> `{"tenant_id": null}` returns every device; the string `"null"` returns the 15 without a
+> tenant. Both fixed in the wrapper; see
+> [ADR-0045](../../adr/0045-schema-driven-filter-validation-null-wire-tool-results-twice.md).
+
 ## Integration with Agent Frameworks
 
 The NetBoxLabs MCP server serves as **shared infrastructure** for different agent frameworks:

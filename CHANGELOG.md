@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: the schema becomes the authority for filter names; two bugs no benchmark could see - Oct 2026**: four-researcher study of NetBox's OpenAPI document as the authority for "does this filter exist here"; prototype replayed over 1,237 recorded calls with 349 live checks.
+  - **54 unknown-key uses, 27 distinct names, all silently ignored live, 0 false positives**; enum layer 6/6; schema 58 vs hand rules 25, combined 61. Shipped as layers in front of the hand rules (vendored version-stamped index, fail-open); GraphQL now uses `graphql.validate` on the cached introspected schema.
+  - **JSON null never reached NetBox** (`requests` drops `None`): the null-form "wins" counted on 18-19 Oct were unfiltered; wrapper now sends `"null"`.
+  - **Every MCP tool result reached the model twice** (missing `response_format="content_and_artifact"`): 4.85M chars for 1.99M of data on a run; fixed, 63,717 → 27,076 chars on the 68-device query.
+  - **Ladders**: 971 s / 15 / 10 of 10, then 839 s / 17 / 10 of 10 with context at end 40,911 vs 70,321.
+  - **Limits stated**: full v5 run not yet run; index is a 4.3.3 artefact; upstream reports drafted, unfiled.
+  - **Docs**: ADR-0045 (new); ADR-0043 annotated; Phase 5 → *GraphQL Read Path* and Phase 2 → *MCP Integration* sections.
 - **Phase 5: the search that could not see tenants - Oct 2026**: a 377 s / 9-call web-chat turn traced to the MCP server's global search returning eight empty lists for a tenant name (tenants, providers and manufacturers were not in its default types); 26/35 and 18/24 benchmark searches had returned nothing for the same reason.
   - **Local server now searches `tenancy.tenant`, `circuits.provider`, `dcim.manufacturer` by default** (patch saved); skill resolves such names in one call and answers per-parent counts from `*_count` fields; prompt lines.
   - **Full v5 run, fastest of four**: wall 5.26 → 5.14 h, median 113 → 97 s, 4.99 → 4.49 calls/question, empty default searches 12 → 0, GraphQL use 53 → 17 queries; correctness 0.917 / completeness 0.972 (judge spread).

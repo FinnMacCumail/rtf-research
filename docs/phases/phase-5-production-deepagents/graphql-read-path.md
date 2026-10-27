@@ -147,6 +147,19 @@ instead of 15, and completeness rose from 0.944 to 0.978 — while the residual 
 field-name mistakes a grammar check cannot see, and wall time did not move. Detail in
 [ADR-0043](../../adr/0043-filter-grammar-after-in-null-relations-ip-parent-graphql-ids.md).
 
+## Validated against the schema (October 2026)
+
+The grammar pre-check of 18 October lasted two days. The schema that `netbox_graphql_schema`
+already introspects and caches is the same object graphql-core's standard `validate()` takes,
+and NetBox's GraphQL layer is graphql-core, so running `validate` locally produces NetBox's
+error messages byte for byte — including the "Did you mean" suggestions and the field-name
+errors (`Cannot query field 'virtualmachine_count'`) that no hand-written rule could know. 1.4
+ms per document after a 0.6 s introspection. Three things stay custom because the schema cannot
+express them: the 10-alias runtime cap, the read-only guard (the schema has no mutation type, so
+`validate` passes a mutation), and `tenant_id: null`, which validates clean on a nullable ID and
+returns every object. Detail in
+[ADR-0045](../../adr/0045-schema-driven-filter-validation-null-wire-tool-results-twice.md).
+
 **See also**: [Evaluating for Correctness](evaluation-correctness.md) ·
 [DeepAgents 0.7.5 Upgrade](0-7-5-upgrade.md) ·
 [LangChain Ecosystem vs Cloud Platform MCP](langchain-ecosystem.md) ·
