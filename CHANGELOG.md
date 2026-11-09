@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Phase 5: the inference server swapped under an unchanged agent - Nov 2026**: the local model moved from llama-server to Strata, a closed llama.cpp-derived server a collaborator installed on the same two 2080 Tis to serve the same UD-Q4_K_XL files (profile-placed expert cache, KV streaming, speculative decoding, one slot behind an API key).
+  - **Three additions to the agent, none about the model**: Bearer header on the `/v1/models` and `/slots` probes; cached-token count read from llama.cpp's `timings.cache_n` because Strata reports `cached_tokens: 0` on a 16,197-of-16,202 prefix hit; `timings` kept on non-streaming calls so every harness model call in LangSmith carries server-side compute time.
+  - **Gated on the benchmark, twice**: 8-question subset 1,180 → 683 s (1.73×, 8/8); full 90-question v5 agent time **14,396 → 8,603 s (1.67×)**, 33.9 → 19.2 s per model call, 2.12 → 1.41 ms per prompt token, correctness 0.922 → 0.939, 74 of 90 questions faster, model calls 411 vs 412, zero errors.
+  - **Queue wait on the shared slot measured at 21 s across the run** from the new per-call timings (compute 7,889 of 7,910 s inside model calls).
+  - **Wall time got worse (5.30 → 5.91 h)**: the `gpt-oss:20b` judge ran on CPU because Strata leaves < 1 GB per GPU, and competed with the server under test; agent time excludes judging and the comparison is not at equal load.
+  - **Limits stated**: closed binary (no NUMA pinning, internals known only from its log); one slot shared with another agent; scores within judge noise; llama-server cannot run beside it; cloud-matrix re-run still owed.
+  - **Docs**: ADR-0046 (new); Phase 5 → *Local Frontier Inference* gains *The server swap*; Phase 5 overview item 6; README and site index bullets; nav.
 - **Phase 5: the schema becomes the authority for filter names; two bugs no benchmark could see - Oct 2026**: four-researcher study of NetBox's OpenAPI document as the authority for "does this filter exist here"; prototype replayed over 1,237 recorded calls with 349 live checks.
   - **54 unknown-key uses, 27 distinct names, all silently ignored live, 0 false positives**; enum layer 6/6; schema 58 vs hand rules 25, combined 61. Shipped as layers in front of the hand rules (vendored version-stamped index, fail-open); GraphQL now uses `graphql.validate` on the cached introspected schema.
   - **JSON null never reached NetBox** (`requests` drops `None`): the null-form "wins" counted on 18-19 Oct were unfiltered; wrapper now sends `"null"`.
