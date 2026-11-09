@@ -553,7 +553,73 @@ open item from ADR-0038, was set and measured: decode 14.45 → 14.72 tok/s medi
 200-token runs, inside the spread of two runs with it on. Pinned and node-local, there is nothing
 left for the balancer to move.
 
+## The server swap: same weights, 1.67× the agent
+
+In November a collaborator installed **Strata** — a closed, precompiled ggml/llama.cpp-derived
+server — on the same machine, to serve the same UD-Q4_K_XL files to his own agent. It holds both
+cards (~10.3 GB each, 110 GB RSS), serves one request at a time behind an API key, and does the
+thing the October A/B had rejected in llama.cpp's form: an expert cache in VRAM, but placed from
+a usage profile and pre-filled at start (72.8 % hit rate during decode in its own log), with the
+prompt path borrowing cache slots so prefill runs in 6,400-token GPU chunks, int8 KV streamed
+from RAM beyond a resident 32k, a conversation cache keyed by prefix, and speculative decoding
+with a shipped draft model. The headline number, 33.6 tok/s, was prose.
+
+**On agent traffic the win is prefill, not decode.** Idle-box probes with the agent's real
+prompt shape: decode 16.1 tok/s on tool-call output against 13.5–14.7 (drafts accepted about
+half the time; on prose far more), **prefill 937 vs 219–315 tok/s** at 16k context, and the
+prefix cache reusing 16,197 of 16,202 tokens — while reporting `cached_tokens: 0` in the OpenAI
+`usage` block. The true count sits in llama.cpp's `timings.cache_n`, which the agent now reads
+when the OpenAI field is zero; without that the ledger's *cached* column from
+[Web Chat](web-chat.md) would have lied on every turn.
+
+**The agent changed in three places, none of them about the model.** The `/v1/models` and
+`/slots` probes send the key as a Bearer header; the cached count falls back to `cache_n`; and
+the `timings` block is kept on non-streaming calls as well as streamed ones, so every model call
+the harness records carries `prompt_ms`, `predicted_ms` and token counts. That last one is what
+makes a shared slot auditable: wall minus compute is queue wait, per call, in LangSmith.
+
+**Gated the same way the October server change was.** The 8-question subset first: 8/8,
+1,180 → 683 s (1.73×), 40 → 36 model calls, 29.5 → 19.0 s per call. Then the full 90, same
+dataset, evaluators and judge as October's run:
+
+| | October, llama-server | Strata |
+|---|---|---|
+| agent time, sum of 90 root runs | 14,396 s | **8,603 s (1.67×)** |
+| mean / median per question | 160.0 / 119.9 s | **95.6 / 63.1 s** |
+| simple / medium / advanced tier mean | 96.7 / 167.6 / 215.6 s | 51.9 / 91.4 / 143.5 s |
+| questions faster | — | 74 of 90 |
+| correctness · completeness | 0.922 · 0.944 | **0.939** · 0.972 (8 up, 6 down) |
+| model calls · seconds per call | 411 · 33.9 s | 412 · **19.2 s** |
+| ms per prompt token (incl. cached) | 2.12 | **1.41** |
+| wall, first start to last end | 5.30 h | **5.91 h** |
+
+**The speed-up is the server, not the plan.** 412 model calls against 411, 121.6k completion
+tokens against 122.6k: the model did the same work and each call cost 43 % less. The per-call
+timings put compute at 7,889 of the 7,910 s inside model calls — **21 s of queue wait** across
+the run, so the slot shared with the collaborator's agent was never contended. 288 tok/s prefill
+and 20.4 tok/s generation under load.
+
+**Why the wall clock got worse while the agent got faster, recorded because it will mislead
+anyone who reads only the clock.** Strata leaves under 1 GB free per card, so the 14 GB
+`gpt-oss:20b` judge ran entirely on CPU and competed with Strata's own CPU expert path: load
+average 36 on 40 threads, judging ~130 s per question against ~52 s in October. Agent time
+excludes judging. It also means the comparison is not at equal load — Strata's advantage under
+equal conditions is *at least* 1.67×.
+
+**What it does not change.** The slowest questions are still the ones where the model chose ten
+tool calls instead of four, and a 14k-token GraphQL result is still read once — ~60 s on
+llama-server, ~49 s on Strata under judge load, ~15 s on Strata idle — before the prefix cache
+makes it free on later calls. The field-selection and page-limit guidance in the skills is worth
+exactly what it was. And the binary is closed: the `--numa isolate` flag worth +56 % on
+llama-server has no counterpart, Strata's log lists per-node NUMA placement as a known
+limitation, and the fallback if it breaks is llama-server, which cannot run beside it.
+
+**Limits.** One full run per server; scores 8 up / 6 down are judge noise and are read as "no
+regression". The cloud-matrix re-run owed since the `__in` change remains owed. Recorded in
+[ADR-0046](../../adr/0046-strata-inference-server-same-weights-faster-agent.md).
+
 **See also**: [ADR-0042 — Expert Offloading Is Not the Lever](../../adr/0042-expert-offloading-not-the-lever-pinned-weights-rejected-gpu-expert-cache.md) ·
+[ADR-0046 — Strata as the Inference Server](../../adr/0046-strata-inference-server-same-weights-faster-agent.md) ·
 [ADR-0038 — Local Frontier Model Viable](../../adr/0038-local-frontier-model-viable-cost-not-capability.md) ·
 [ADR-0037 — Stratified v5 Benchmark](../../adr/0037-stratified-benchmark-v5-difficulty-not-capability.md) ·
 [Stratified Benchmark v5](stratified-benchmark-v5.md) ·

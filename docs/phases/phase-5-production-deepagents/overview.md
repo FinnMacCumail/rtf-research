@@ -100,6 +100,11 @@ middleware** that converts NetBox filter violations into structured, recoverable
    produced two corrections: durable memory with cancel rollback (ADR-0040), and the discovery
    that NetBox silently ignores the `__in` lookup the validator and skill had been
    recommending (ADR-0041).
+6. **The inference server swapped under an unchanged agent** — Strata, a closed llama.cpp-derived
+   server serving the same weights on the same GPUs, gated by the same v5 benchmark: agent time
+   1.67× faster at identical model-call count and correctness, with server-side compute time
+   now recorded on every model call. See [Local Frontier Inference](local-frontier-inference.md)
+   and ADR-0046.
 
 ## Relationship to the other repositories
 
