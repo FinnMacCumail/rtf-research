@@ -159,6 +159,18 @@ search_objects(query="Halvorsen", object_types=["tenancy.tenant"])
 > tenant. Both fixed in the wrapper; see
 > [ADR-0045](../../adr/0045-schema-driven-filter-validation-null-wire-tool-results-twice.md).
 
+> **The result header, 2026-11-09.** Every `get_objects` / `get_changelogs` result the agent
+> receives now opens with `NETBOX_RESULT scope={...} matched_count=N returned_count=M
+> complete=true|false`, an `INCOMPLETE:` line with the next offset when NetBox paginated, and
+> — when a filtered call returns exactly the endpoint's unfiltered total — the verdict of an
+> impossible-value probe per filter key: `WARNING: filter(s) X had NO EFFECT …` naming the keys
+> NetBox silently ignored (a valid key with a value form it drops, such as `has_primary_ip=no`,
+> which no schema check can see), or `NOTE: the filters are honoured and happen to match every …`
+> for the coincidences small endpoints produce. Replay of the October runs: 25 of 533 scoped
+> calls had returned the whole table, every one an ignored key or a dropped null. Full v5 with
+> the header: correctness 0.939 → 0.961, 412 → 384 model calls, 9 % fewer prompt tokens. See
+> [ADR-0047](../../adr/0047-result-envelope-silently-unfiltered-detector.md).
+
 ## Integration with Agent Frameworks
 
 The NetBoxLabs MCP server serves as **shared infrastructure** for different agent frameworks:

@@ -105,6 +105,12 @@ middleware** that converts NetBox filter violations into structured, recoverable
    1.67× faster at identical model-call count and correctness, with server-side compute time
    now recorded on every model call. See [Local Frontier Inference](local-frontier-inference.md)
    and ADR-0046.
+7. **A result envelope on every list result** — the filters actually sent, NetBox's count, the
+   rows returned and a complete flag as the first block of every tool result, with an
+   impossible-value probe that names the filter NetBox silently dropped when a scoped call
+   returns the whole table. Closes the failure the schema layer (ADR-0045) cannot see; full
+   v5 correctness 0.939 → 0.961 at 7 % fewer model calls and 9 % fewer prompt tokens. See
+   ADR-0047.
 
 ## Relationship to the other repositories
 
